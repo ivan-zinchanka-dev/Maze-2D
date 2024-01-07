@@ -1,0 +1,52 @@
+# =============== #
+# Unity generated #
+# =============== #
+[Tt]emp/
+[Oo]bj/
+[Bb]uild
+AndroidBuild
+IosBuild
+/[Ll]ibrary/
+/Assets/Resources/SharedAssets/EditorGameCenter?*.asset*
+/Assets/Plugins/Editor/JetBrains/
+/AndroidBuild/
+/[Bb]uilds/
+sysinfo.txt
+*.stackdump
+Logs/
+/Assets/Firebase/
+/Assets/Firebase.meta
+
+# ======================================================= #
+# Visual Studio / MonoDevelop / Rider / Consulo generated #
+# ======================================================= #
+[Ee]xported[Oo]bj/
+.vs/
+/*.userprefs
+/*.csproj
+/*.pidb/*.pidb
+/*.suo
+/*.sln*
+/*.user
+/*.unityproj
+/*.booproj
+/.idea*/
+.consulo/
+*.csproj
+*.tmp
+*.pidb
+*.svd
+.idea/
+.gradle/
+
+# ============ #
+# OS generated #
+# ============ #
+.DS_Store*
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+[Tt]humbs.db
+[Dd]esktop.ini
+view raw
