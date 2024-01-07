@@ -1,4 +1,5 @@
 using Maze;
+using Storage;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -7,8 +8,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; } = null;
 
     public static Difficulty DifficultyLevel { get; set; } = Difficulty.NORMAL;
-    public static PlayerCustomisations PlayerCustoms { get; set; } = new PlayerCustomisations() { RGBAColor = Color.white, ColorIndex = 0 };
-
+    
     public bool Pause { get; set; } = false;
 
     [SerializeField] private PlayerController _playerPrefab = null;
@@ -26,12 +26,12 @@ public class GameManager : MonoBehaviour
 
     public void ToMainMenu()
     {
-        SceneManager.LoadScene(GUIManager.MainMenuScene);
+        SceneManager.LoadScene(StartMenuPresenter.MainMenuScene);
     }
 
     public void RestartGame()
     {
-        SceneManager.LoadScene(GUIManager.GameSessionScene);
+        SceneManager.LoadScene(StartMenuPresenter.GameSessionScene);
     }
 
     public void ResetPlayer()
@@ -77,10 +77,10 @@ public class GameManager : MonoBehaviour
 
         _playerStartPosition = new Vector2(mask.x * _mazeRenderer.CellSize / 2, mask.y * _mazeRenderer.CellSize / 2);
 
-        _player = Instantiate(_playerPrefab, _playerStartPosition, Quaternion.identity) as PlayerController;
+        _player = Instantiate(_playerPrefab, _playerStartPosition, Quaternion.identity);
         _player.Initialize(_mazeRenderer.Maze, _mazeRenderer.CellSize, _playerStartPosition);
 
-        _player.Renderer.color = PlayerCustoms.RGBAColor;
+        _player.Renderer.color = StorageUtility.GetPlayerColor();
     }
 
     private void Update()
@@ -91,15 +91,6 @@ public class GameManager : MonoBehaviour
             _gameMenu.gameObject.SetActive(Pause);                  
         }
     }
-
-}
-
-public struct PlayerCustomisations
-{
-    public static PlayerCustomisations Default { get; } = new PlayerCustomisations { ColorIndex = 0, RGBAColor = Color.white };
-
-    public Color RGBAColor { get; set; }
-    public int ColorIndex { get; set; }
 
 }
 

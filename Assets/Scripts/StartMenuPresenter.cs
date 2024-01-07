@@ -1,18 +1,21 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Storage;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 
 
-public class GUIManager : MonoBehaviour
+public class StartMenuPresenter : MonoBehaviour
 {
     public const int MainMenuScene = 0;
     public const int GameSessionScene = 1;
 
-    public static GUIManager Instance { get; private set; } = null;
+    public static StartMenuPresenter Instance { get; private set; } = null;
 
     [SerializeField] private RectTransform _mainMenu = null;
     [SerializeField] private RectTransform _settingsMenu = null;
@@ -31,6 +34,61 @@ public class GUIManager : MonoBehaviour
         public RectTransform Right;
     }
 
+
+    private PlayerColorToggle[] _colorToggles;
+    
+    
+    private void Awake()
+    {
+        Instance = this;
+
+        _colorToggles = _playerColors.transform.GetComponentsInChildren<PlayerColorToggle>(true);
+        Color[] playerColors = _colorToggles.Select(colorToggle => colorToggle.Sprite.color).ToArray();
+        
+        StorageUtility.Initialize(playerColors);
+
+        _difficultySlider.value = (float)StorageUtility.GetDifficulty();
+        _difficultySlider.onValueChanged.AddListener(OnDifficultyChanged);
+        
+        Color currentColor = StorageUtility.GetPlayerColor();
+        
+        
+        for (int i = 0; i < _colorToggles.Length; i++)
+        {
+            if (ApproximatelyEquals(_colorToggles[i].Sprite.color, currentColor, 0.001f))
+            {
+                Debug.Log("Match");
+                _colorToggles[i].Toggle.isOn = true;
+            }
+            
+            _colorToggles[i].OnColorSelected += OnPlayerColorChanged;
+        }
+        
+    }
+    
+
+    private static void OnDifficultyChanged(float value)
+    {
+        StorageUtility.SetDifficulty((Difficulty)value);
+    }
+    
+    private static void OnPlayerColorChanged(Color newColor)
+    {
+        StorageUtility.SetPlayerColor(newColor);
+    }
+
+    private static bool ApproximatelyEquals(Color first, Color second, float eps)
+    {
+        return ApproximatelyEquals(first.r, second.r, eps) &&
+               ApproximatelyEquals(first.g, second.g, eps) &&
+               ApproximatelyEquals(first.b, second.b, eps) &&
+               ApproximatelyEquals(first.a, second.a, eps);
+    }
+    
+    private static bool ApproximatelyEquals(float first, float second, float eps)
+    {
+        return Mathf.Abs(first - second) < eps;
+    }
 
     public void StartGame() {
 
@@ -72,18 +130,9 @@ public class GUIManager : MonoBehaviour
         EventSystem.current.SetSelectedGameObject(_settingsButton.gameObject);
     }
 
-    public void SetDifficultyLevel(Slider difficultySlider)
-    {        
-        difficultySlider.value = (float)GameManager.DifficultyLevel;
-    }
+    
 
-    public void ChangeDifficultyLevel(Slider difficultySlider)
-    {       
-        GameManager.DifficultyLevel = (Difficulty)difficultySlider.value;
-        DeviceStorage.WriteDifficulty(GameManager.DifficultyLevel);
-    }
-
-    public void SetPlayerColor(ToggleGroup _toggleGroup) {
+    /*public void SetPlayerColor(ToggleGroup _toggleGroup) {
 
         List<Toggle> toggles = new List<Toggle>(_toggleGroup.transform.GetComponentsInChildren<Toggle>(true));
        
@@ -97,11 +146,11 @@ public class GUIManager : MonoBehaviour
                 break;
             }        
         }
-    }
+    }*/
 
     public void ChangePlayerColor(PlayerColorToggle toggle) {
 
-        if (toggle.Info.isOn)
+        /*if (toggle.Toggle.isOn)
         {
             GameManager.PlayerCustoms = new PlayerCustomisations()
             {
@@ -109,33 +158,34 @@ public class GUIManager : MonoBehaviour
                 ColorIndex = toggle.transform.GetSiblingIndex()
             };
 
-            DeviceStorage.WritePlayerColorIndex(toggle.transform.GetSiblingIndex());
-        }
+            StorageUtility.SetPlayerColor(toggle.transform.GetSiblingIndex());
+        }*/
         
     }
 
-    private void InitPlayerData() {
-
-        try
-        {
-            GameManager.DifficultyLevel = DeviceStorage.ReadDifficulty();
-            GameManager.PlayerCustoms = DeviceStorage.ReadPlayerCustoms(_playerColors);
-        }
-        catch (DeviceStorageException)
-        {
-            GameManager.DifficultyLevel = Difficulty.EASY;
-            GameManager.PlayerCustoms = PlayerCustomisations.Default;
-        }
-    }
-
-
-    private void Awake()
+    /*
+    private Color GetPlayerColorByIndex(int index)
     {
-        Instance = this;
-        InitPlayerData();
+        List<PlayerColorToggle> toggles = new List<PlayerColorToggle>(_playerColors.transform.GetComponentsInChildren<PlayerColorToggle>(true));
 
-        SetDifficultyLevel(_difficultySlider);
-        SetPlayerColor(_playerColors);
+        foreach (PlayerColorToggle currentToggle in toggles)
+        {
+            if (currentToggle.transform.GetSiblingIndex() == index)
+            {
+                return currentToggle.Sprite.color;
+            }
+        }
+
+        return Color.white;
     }
+
+    private void InitializeCache() {
+
+        CacheUtility.DifficultyLevel = StorageUtility.GetDifficulty();
+        CacheUtility.PlayerColor = GetPlayerColorByIndex(StorageUtility.GetPlayerColorIndex());
+    }*/
+
+
+    
 
 }
