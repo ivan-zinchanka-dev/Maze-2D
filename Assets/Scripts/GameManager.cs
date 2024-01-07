@@ -35,7 +35,7 @@ public class GameManager : MonoBehaviour
 
     public void ResetPlayer()
     {
-        _player.ReInitialize(_playerStartPosition);
+        _player.SetPosition(_playerStartPosition);
         _gameMenu.gameObject.SetActive(false);
         Pause = false;
     }
@@ -79,7 +79,7 @@ public class GameManager : MonoBehaviour
         _player = Instantiate(_playerPrefab, _playerStartPosition, Quaternion.identity) as PlayerController;
         _player.Initialize(_mazeRenderer.Maze, _mazeRenderer.CellSize, _playerStartPosition);
 
-        _player.Sprite.color = PlayerCustoms.RGBAColor;
+        _player.Renderer.color = PlayerCustoms.RGBAColor;
     }
 
     private void Update()

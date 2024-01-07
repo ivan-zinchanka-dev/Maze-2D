@@ -14,49 +14,45 @@ public class PlayerController : MonoBehaviour
     private bool _canMove = true;
 
     
-    public SpriteRenderer Sprite { get { return _spriteRender; } }    
-   
+    public SpriteRenderer Renderer => _spriteRender;
+
 
     private Vector2Int WorldToMapCoords(Vector2 source) {
 
+        Vector2Int mapCoords = new Vector2Int(_map.GetLength(0) / 2, _map.GetLength(1) / 2);
+
         if (source.y < 0)
         {
-            if (source.x > 0) return _currentPosInMap = new Vector2Int(_map.GetLength(0) / 2 + 1, _map.GetLength(1) / 2 - 1);
-            else return _currentPosInMap = new Vector2Int(_map.GetLength(0) / 2, _map.GetLength(1) / 2 - 1);
+            mapCoords += Vector2Int.down;
         }
-        else
+
+        if (source.x > 0)
         {
-            if (source.x > 0) return _currentPosInMap = new Vector2Int(_map.GetLength(0) / 2 + 1, _map.GetLength(1) / 2);
-            else return _currentPosInMap = new Vector2Int(_map.GetLength(0) / 2, _map.GetLength(1) / 2);
-        }        
+            mapCoords += Vector2Int.right;
+        }
+
+        return mapCoords;
     }
 
 
     public void Initialize(WallState[,] map, float mapCellSize, Vector2 startPosition)
     {
         _map = map;
-        _canMove = true;
         _mapCellSize = mapCellSize;
-       
-        //transform.position = new Vector2(_mapCellSize / 2, _mapCellSize / 2);
-        //_currentPosInMap = new Vector2Int(_map.GetLength(0) / 2 + 1, _map.GetLength(1) / 2);
-        
-        transform.position = startPosition;
-        _currentPosInMap = WorldToMapCoords(startPosition);
-
+        SetPosition(startPosition);
     }
 
-    public void ReInitialize(Vector2 startPosition) {
+    public void SetPosition(Vector2 startPosition) {
 
         _canMove = true;
         transform.position = startPosition;
         _currentPosInMap = WorldToMapCoords(startPosition);
-
-
     }
 
     private IEnumerator MakeStep(Vector2 target, float speed) {
 
+        _canMove = false;
+        
         while (transform.position.x != target.x || transform.position.y != target.y)
         {
             transform.position = Vector2.MoveTowards(transform.position, target, speed * Time.deltaTime);
@@ -81,31 +77,24 @@ public class PlayerController : MonoBehaviour
             }
             else if (Input.GetButton("Left") && !_map[_currentPosInMap.x, _currentPosInMap.y].HasFlag(WallState.LEFT))
             {
-                _canMove = false;
                 StartCoroutine(MakeStep(new Vector2(transform.position.x - _mapCellSize, transform.position.y), _speed));
                 _currentPosInMap.x--;
-
             }
             else if (Input.GetButton("Right") && !_map[_currentPosInMap.x, _currentPosInMap.y].HasFlag(WallState.RIGHT))
             {
-                _canMove = false;
                 StartCoroutine(MakeStep(new Vector2(transform.position.x + _mapCellSize, transform.position.y), _speed));
                 _currentPosInMap.x++;
             }
             else if (Input.GetButton("Up") && !_map[_currentPosInMap.x, _currentPosInMap.y].HasFlag(WallState.UP))
             {
-                _canMove = false;
                 StartCoroutine(MakeStep(new Vector2(transform.position.x, transform.position.y + _mapCellSize), _speed));
                 _currentPosInMap.y++;
             }
             else if (Input.GetButton("Down") && !_map[_currentPosInMap.x, _currentPosInMap.y].HasFlag(WallState.DOWN))
             {
-                _canMove = false;
                 StartCoroutine(MakeStep(new Vector2(transform.position.x, transform.position.y - _mapCellSize), _speed));
                 _currentPosInMap.y--;
             }
-
-
         }
         catch (Exception ex) {
 
