@@ -1,3 +1,4 @@
+using Maze;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 

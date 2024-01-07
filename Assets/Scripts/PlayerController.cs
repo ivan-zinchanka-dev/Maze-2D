@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Maze;
 using UnityEngine;
 
 
@@ -75,22 +76,22 @@ public class PlayerController : MonoBehaviour
             {
                 GameManager.Instance.RestartGame();
             }
-            else if (Input.GetButton("Left") && !_map[_currentPosInMap.x, _currentPosInMap.y].HasFlag(WallState.LEFT))
+            else if (Input.GetButton("Left") && !_map[_currentPosInMap.x, _currentPosInMap.y].HasFlag(WallState.Left))
             {
                 StartCoroutine(MakeStep(new Vector2(transform.position.x - _mapCellSize, transform.position.y), _speed));
                 _currentPosInMap.x--;
             }
-            else if (Input.GetButton("Right") && !_map[_currentPosInMap.x, _currentPosInMap.y].HasFlag(WallState.RIGHT))
+            else if (Input.GetButton("Right") && !_map[_currentPosInMap.x, _currentPosInMap.y].HasFlag(WallState.Right))
             {
                 StartCoroutine(MakeStep(new Vector2(transform.position.x + _mapCellSize, transform.position.y), _speed));
                 _currentPosInMap.x++;
             }
-            else if (Input.GetButton("Up") && !_map[_currentPosInMap.x, _currentPosInMap.y].HasFlag(WallState.UP))
+            else if (Input.GetButton("Up") && !_map[_currentPosInMap.x, _currentPosInMap.y].HasFlag(WallState.Up))
             {
                 StartCoroutine(MakeStep(new Vector2(transform.position.x, transform.position.y + _mapCellSize), _speed));
                 _currentPosInMap.y++;
             }
-            else if (Input.GetButton("Down") && !_map[_currentPosInMap.x, _currentPosInMap.y].HasFlag(WallState.DOWN))
+            else if (Input.GetButton("Down") && !_map[_currentPosInMap.x, _currentPosInMap.y].HasFlag(WallState.Down))
             {
                 StartCoroutine(MakeStep(new Vector2(transform.position.x, transform.position.y - _mapCellSize), _speed));
                 _currentPosInMap.y--;
