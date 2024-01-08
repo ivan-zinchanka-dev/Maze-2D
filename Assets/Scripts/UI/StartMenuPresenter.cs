@@ -48,6 +48,7 @@ namespace UI
             if (currentColor == default)
             {
                 _colorToggles[0].IsOn = true;
+                StorageUtility.SetPlayerColor(_colorToggles[0].Color);
 
                 foreach (var colorToggle in _colorToggles)
                 {
