@@ -1,23 +1,22 @@
 using System.Collections;
 using Maze;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Game
 {
     public class PlayerController : MonoBehaviour
     {
         [SerializeField] private float _speed = 5.0f;
-        [SerializeField] private SpriteRenderer _spriteRender = null;
+        [SerializeField] private SpriteRenderer _spriteRenderer = null;
 
         private WallState[,] _map = null;
         private float _mapCellSize = default;
         private Vector2Int _currentPosInMap = default;
         private bool _canMove = true;
-
-    
-        public SpriteRenderer Renderer => _spriteRender;
-
-
+        
+        public SpriteRenderer SpriteRenderer => _spriteRenderer;
+        
         private Vector2Int WorldToMapCoords(Vector2 source) {
 
             Vector2Int mapCoords = new Vector2Int(_map.GetLength(0) / 2, _map.GetLength(1) / 2);

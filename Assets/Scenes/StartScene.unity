@@ -553,7 +553,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 876435589}
         m_TargetAssemblyTypeName: GUIManager, Assembly-CSharp
-        m_MethodName: ViewMainMenu
+        m_MethodName: ShowMainMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -729,7 +729,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -927,7 +927,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 152.5, y: -17.5}
+  m_AnchoredPosition: {x: 174.99625, y: -25}
   m_SizeDelta: {x: 35, y: 35}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &764864311
@@ -976,19 +976,7 @@ MonoBehaviour:
   m_Group: {fileID: 1863229006}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 876435589}
-        m_TargetAssemblyTypeName: GUIManager, Assembly-CSharp
-        m_MethodName: ChangePlayerColor
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 764864313}
-          m_ObjectArgumentAssemblyTypeName: PlayerColorToggle, Assembly-CSharp
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   m_IsOn: 0
 --- !u!222 &764864312
 CanvasRenderer:
@@ -1313,7 +1301,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -1699,7 +1687,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -1872,19 +1860,7 @@ MonoBehaviour:
   m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 876435589}
-        m_TargetAssemblyTypeName: GUIManager, Assembly-CSharp
-        m_MethodName: ChangeDifficultyLevel
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 1151599678}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Slider, UnityEngine.UI
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &1188721546
 GameObject:
   m_ObjectHideFlags: 0
@@ -1924,7 +1900,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 62.5, y: -17.5}
+  m_AnchoredPosition: {x: 72.14125, y: -25}
   m_SizeDelta: {x: 35, y: 35}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1188721548
@@ -1973,20 +1949,8 @@ MonoBehaviour:
   m_Group: {fileID: 1863229006}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 876435589}
-        m_TargetAssemblyTypeName: GUIManager, Assembly-CSharp
-        m_MethodName: ChangePlayerColor
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 1188721550}
-          m_ObjectArgumentAssemblyTypeName: PlayerColorToggle, Assembly-CSharp
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  m_IsOn: 1
+      m_Calls: []
+  m_IsOn: 0
 --- !u!222 &1188721549
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2124,7 +2088,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 107.5, y: -17.5}
+  m_AnchoredPosition: {x: 123.568756, y: -25}
   m_SizeDelta: {x: 35, y: 35}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1249454164
@@ -2173,19 +2137,7 @@ MonoBehaviour:
   m_Group: {fileID: 1863229006}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 876435589}
-        m_TargetAssemblyTypeName: GUIManager, Assembly-CSharp
-        m_MethodName: ChangePlayerColor
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 1249454166}
-          m_ObjectArgumentAssemblyTypeName: PlayerColorToggle, Assembly-CSharp
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   m_IsOn: 0
 --- !u!222 &1249454165
 CanvasRenderer:
@@ -2261,7 +2213,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -2660,7 +2612,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -2829,7 +2781,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 876435589}
         m_TargetAssemblyTypeName: GUIManager, Assembly-CSharp
-        m_MethodName: ViewSettings
+        m_MethodName: ShowSettings
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2992,7 +2944,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 17.5, y: -17.5}
+  m_AnchoredPosition: {x: 20.713753, y: -25}
   m_SizeDelta: {x: 35, y: 35}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1765949089
@@ -3041,19 +2993,7 @@ MonoBehaviour:
   m_Group: {fileID: 1863229006}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 876435589}
-        m_TargetAssemblyTypeName: GUIManager, Assembly-CSharp
-        m_MethodName: ChangePlayerColor
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 1765949091}
-          m_ObjectArgumentAssemblyTypeName: PlayerColorToggle, Assembly-CSharp
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   m_IsOn: 0
 --- !u!222 &1765949090
 CanvasRenderer:
@@ -3375,7 +3315,6 @@ GameObject:
   - component: {fileID: 1863229004}
   - component: {fileID: 1863229005}
   - component: {fileID: 1863229006}
-  - component: {fileID: 1863229007}
   m_Layer: 5
   m_Name: ColorsGroup
   m_TagString: Untagged
@@ -3404,8 +3343,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 6.1, y: 3.2}
-  m_SizeDelta: {x: 100, y: 50}
+  m_AnchoredPosition: {x: 68.00002, y: 15.5}
+  m_SizeDelta: {x: 195.71, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1863229005
 MonoBehaviour:
@@ -3424,7 +3363,7 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 0
+  m_ChildAlignment: 4
   m_Spacing: 10
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
@@ -3446,19 +3385,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_AllowSwitchOff: 0
---- !u!114 &1863229007
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1863229003}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de054c084bb39a1469be14aafb510b75, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _toggleGroup: {fileID: 1863229006}
 --- !u!1 &1923198829
 GameObject:
   m_ObjectHideFlags: 0
@@ -3736,7 +3662,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -3871,7 +3797,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:

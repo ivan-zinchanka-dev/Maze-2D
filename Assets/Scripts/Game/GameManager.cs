@@ -70,7 +70,7 @@ namespace Game
             _player = Instantiate(_playerPrefab, _playerStartPosition, Quaternion.identity);
             _player.Initialize(_mazeRenderer.Maze, _mazeRenderer.CellSize, _playerStartPosition);
 
-            _player.Renderer.color = StorageUtility.GetPlayerColor();
+            _player.SpriteRenderer.color = StorageUtility.GetPlayerColor();
         }
 
         private void Update()

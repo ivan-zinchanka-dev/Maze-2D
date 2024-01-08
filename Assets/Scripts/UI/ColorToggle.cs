@@ -4,17 +4,20 @@ using UnityEngine.UI;
 
 namespace UI
 {
-    public class PlayerColorToggle : MonoBehaviour
+    public class ColorToggle : MonoBehaviour
     {
         [SerializeField] private Toggle _toggle = null;
         [SerializeField] private Image _image = null;
-
+        
+        public bool IsOn
+        {
+            get => _toggle.isOn;
+            set => _toggle.isOn = value;
+        }
+        
+        public Color Color => _image.color;
         public event Action<Color> OnColorSelected;
-    
-        public Toggle Toggle { get { return _toggle; } }
-        public Image Sprite { get { return _image; } }
-
-
+        
         private void OnEnable()
         {
             _toggle.onValueChanged.AddListener(OnToggleValueChanged);

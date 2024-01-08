@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Linq;
 using Game;
 using Storage;
 using UnityEngine;
@@ -30,39 +29,42 @@ namespace UI
             public RectTransform Center;
             public RectTransform Right;
         }
-
-
-        private PlayerColorToggle[] _colorToggles;
-    
-    
+        
+        private ColorToggle[] _colorToggles;
+        
         private void Awake()
         {
             Instance = this;
+            _colorToggles = _playerColors.transform.GetComponentsInChildren<ColorToggle>(true);
+        }
 
-            _colorToggles = _playerColors.transform.GetComponentsInChildren<PlayerColorToggle>(true);
-            Color[] playerColors = _colorToggles.Select(colorToggle => colorToggle.Sprite.color).ToArray();
-        
-            StorageUtility.Initialize(playerColors);
-
+        private void Start()
+        {
             _difficultySlider.value = (float)StorageUtility.GetDifficulty();
             _difficultySlider.onValueChanged.AddListener(OnDifficultyChanged);
-        
-            Color currentColor = StorageUtility.GetPlayerColor();
-        
-        
-            for (int i = 0; i < _colorToggles.Length; i++)
-            {
-                if (ApproximatelyEquals(_colorToggles[i].Sprite.color, currentColor, 0.001f))
-                {
-                    Debug.Log("Match");
-                    _colorToggles[i].Toggle.isOn = true;
-                }
             
-                _colorToggles[i].OnColorSelected += OnPlayerColorChanged;
+            Color currentColor = StorageUtility.GetPlayerColor();
+
+            if (currentColor == default)
+            {
+                _colorToggles[0].IsOn = true;
+
+                foreach (var colorToggle in _colorToggles)
+                {
+                    colorToggle.OnColorSelected += OnPlayerColorChanged;
+                }
             }
-        
+            else
+            {
+                foreach (var colorToggle in _colorToggles)
+                {
+                    colorToggle.IsOn = 
+                        ApproximatelyEquals(colorToggle.Color, currentColor, 0.001f);
+                    
+                    colorToggle.OnColorSelected += OnPlayerColorChanged;
+                }
+            }
         }
-    
 
         private static void OnDifficultyChanged(float value)
         {
@@ -111,7 +113,7 @@ namespace UI
         }
 
 
-        public void ViewSettings() {
+        public void ShowSettings() {
 
             StartCoroutine(Move(_mainMenu, _menuPositions.Left, () => _mainMenu.gameObject.SetActive(false)));
             _settingsMenu.gameObject.SetActive(true);
@@ -119,71 +121,13 @@ namespace UI
             EventSystem.current.SetSelectedGameObject(_difficultySlider.gameObject);
         }
 
-        public void ViewMainMenu()
+        public void ShowMainMenu()
         {
             StartCoroutine(Move(_settingsMenu, _menuPositions.Right, () => _settingsMenu.gameObject.SetActive(false)));
             _mainMenu.gameObject.SetActive(true);
             StartCoroutine(Move(_mainMenu, _menuPositions.Center));
             EventSystem.current.SetSelectedGameObject(_settingsButton.gameObject);
         }
-
-    
-
-        /*public void SetPlayerColor(ToggleGroup _toggleGroup) {
-
-        List<Toggle> toggles = new List<Toggle>(_toggleGroup.transform.GetComponentsInChildren<Toggle>(true));
-       
-        foreach (Toggle currentToggle in toggles) {
-
-            Debug.Log(currentToggle);
-
-            if (currentToggle.transform.GetSiblingIndex() == GameManager.PlayerCustoms.ColorIndex) {
-
-                currentToggle.isOn = true;
-                break;
-            }        
-        }
-    }*/
-
-        public void ChangePlayerColor(PlayerColorToggle toggle) {
-
-            /*if (toggle.Toggle.isOn)
-        {
-            GameManager.PlayerCustoms = new PlayerCustomisations()
-            {
-                RGBAColor = toggle.Sprite.color,
-                ColorIndex = toggle.transform.GetSiblingIndex()
-            };
-
-            StorageUtility.SetPlayerColor(toggle.transform.GetSiblingIndex());
-        }*/
         
-        }
-
-        /*
-    private Color GetPlayerColorByIndex(int index)
-    {
-        List<PlayerColorToggle> toggles = new List<PlayerColorToggle>(_playerColors.transform.GetComponentsInChildren<PlayerColorToggle>(true));
-
-        foreach (PlayerColorToggle currentToggle in toggles)
-        {
-            if (currentToggle.transform.GetSiblingIndex() == index)
-            {
-                return currentToggle.Sprite.color;
-            }
-        }
-
-        return Color.white;
-    }
-
-    private void InitializeCache() {
-
-        CacheUtility.DifficultyLevel = StorageUtility.GetDifficulty();
-        CacheUtility.PlayerColor = GetPlayerColorByIndex(StorageUtility.GetPlayerColorIndex());
-    }*/
-
-
-    
-
     }
 }
