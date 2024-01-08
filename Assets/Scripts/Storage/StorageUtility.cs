@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Game;
 using UnityEngine;
 
 namespace Storage
@@ -9,7 +10,7 @@ namespace Storage
         private const string DifficultyKey = "difficulty";
         private const string PlayerColorKey = "color";
         
-        private const Difficulty DefaultDifficulty = Difficulty.NORMAL;
+        private const Difficulty DefaultDifficulty = Difficulty.Normal;
         private const int DefaultIndex = -1;
 
         private static Color[] _playerColors = Array.Empty<Color>();

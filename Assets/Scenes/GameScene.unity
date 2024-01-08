@@ -208,7 +208,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 783591701}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: ResetPlayer
+        m_MethodName: RestartPlayerProgress
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -888,7 +888,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 783591701}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: RestartGame
+        m_MethodName: RegenerateMaze
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
