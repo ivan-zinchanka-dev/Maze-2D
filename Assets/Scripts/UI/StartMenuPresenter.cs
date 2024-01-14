@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections;
 using Game;
-using Storage;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Utilities;
 
 namespace UI
 {

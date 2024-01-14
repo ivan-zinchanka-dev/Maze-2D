@@ -8,7 +8,6 @@ namespace Maze
         [SerializeField] [Range(10, 50)] private int _height = 10;
 
         [SerializeField] private Transform _wallPrefab = null;
-
         [SerializeField] private float _cellSize = 1.0f;
 
         public float CellSize { get { return _cellSize; } }

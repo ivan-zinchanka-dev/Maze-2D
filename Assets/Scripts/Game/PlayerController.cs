@@ -17,6 +17,22 @@ namespace Game
         
         public SpriteRenderer SpriteRenderer => _spriteRenderer;
         
+        
+        
+        /*private Vector2Int WorldToMapCoords(Vector2 source) {
+
+            if (source.y < 0)
+            {
+                if (source.x > 0) return _currentPosInMap = new Vector2Int(_map.GetLength(0) / 2 + 1, _map.GetLength(1) / 2 - 1);
+                else return _currentPosInMap = new Vector2Int(_map.GetLength(0) / 2, _map.GetLength(1) / 2 - 1);
+            }
+            else
+            {
+                if (source.x > 0) return _currentPosInMap = new Vector2Int(_map.GetLength(0) / 2 + 1, _map.GetLength(1) / 2);
+                else return _currentPosInMap = new Vector2Int(_map.GetLength(0) / 2, _map.GetLength(1) / 2);
+            }        
+        }*/
+        
         private Vector2Int WorldToMapCoords(Vector2 source) {
 
             Vector2Int mapCoords = new Vector2Int(_map.GetLength(0) / 2, _map.GetLength(1) / 2);

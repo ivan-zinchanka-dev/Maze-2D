@@ -1,7 +1,7 @@
 ﻿using Game;
 using UnityEngine;
 
-namespace Storage
+namespace Utilities
 {
     static class StorageUtility
     {

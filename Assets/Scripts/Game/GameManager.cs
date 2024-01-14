@@ -1,7 +1,7 @@
 using Maze;
-using Storage;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Utilities;
 
 namespace Game
 {
