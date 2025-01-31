@@ -3,7 +3,9 @@
     "rootNamespace": "Maze2D",
     "references": [
         "GUID:d528c8c98d269ca44a06cd9624a03945",
-        "GUID:b93f844d45cfcc44fa2b0eed5c9ec6bb"
+        "GUID:b93f844d45cfcc44fa2b0eed5c9ec6bb",
+        "GUID:b0214a6008ed146ff8f122a6a9c2f6cc",
+        "GUID:f51ebe6a0ceec4240a699833d6309b23"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
