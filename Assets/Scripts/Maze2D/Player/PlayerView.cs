@@ -1,24 +1,35 @@
 ﻿using DG.Tweening;
+using Maze2D.Game;
 using Maze2D.Maze;
 using UnityEngine;
+using VContainer;
 
 namespace Maze2D.Player
 {
     public class PlayerView : MonoBehaviour
     {
-        [SerializeField] private float _speed = 5.0f;
-        [SerializeField] private SpriteRenderer _spriteRenderer;
+        [SerializeField] 
+        private float _speed = 5.0f;
+        
+        [SerializeField] 
+        private SpriteRenderer _spriteRenderer;
 
+        [Inject] 
+        private StorageService _storageService;
+        
         private WallState[,] _map;
         private float _mapCellSize;
         private Vector2Int _currentPosInMap;
 
         private Tween _movingTween;
         
+        
         public void Initialize(WallState[,] map, float mapCellSize)
         {
             _map = map;
             _mapCellSize = mapCellSize;
+
+            _spriteRenderer.color = _storageService.GetPlayerColor();
             SetToMapCenter();
         }
 
