@@ -16,14 +16,12 @@ namespace Maze2D.Maze
         [field: SerializeField]
         public float CellSize { get; private set; } = 1.0f;
         
-        public WallState[,] Maze {
+        public WallState[,] Maze { get; }
 
-            get {
-
-                var maze = new MazeGenerator().Generate(Width, Height);
-                Draw(maze);
-                return maze;
-            }    
+        public MazeRenderer(WallState[,] maze)
+        {
+            Maze = maze;
+            Draw(Maze);
         }
         
         private void Draw(WallState[,] maze)
