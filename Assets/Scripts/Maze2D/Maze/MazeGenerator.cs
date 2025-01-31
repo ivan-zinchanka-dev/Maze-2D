@@ -5,28 +5,30 @@ namespace Maze2D.Maze
 {
     public class MazeGenerator
     {
-        private static WallState GetOppositeWall(WallState wall) {
+        public WallState[,] Generate(int width, int height) {
 
-            switch (wall) {
+            WallState[,] maze = new WallState[width, height];
+            WallState initial = WallState.Right | WallState.Left | WallState.Up | WallState.Down;
 
-                case WallState.Right: return WallState.Left;
-                case WallState.Left: return WallState.Right;
-                case WallState.Up: return WallState.Down;
-                case WallState.Down: return WallState.Up;
+            for (int i = 0; i < width; i++) {
 
-                default: return WallState.Right;
+                for (int j = 0; j < height; j++) {
+
+                    maze[i, j] = initial;            
+                }        
             }
+
+            return ApplyRecursiveBackTracker(maze, width, height);
         }
-
-        private static WallState[,] ApplyRecursiveBacktracker(WallState[,] maze, int width, int height) {
-
-            System.Random range = new System.Random();
+        
+        private WallState[,] ApplyRecursiveBackTracker(WallState[,] maze, int width, int height) {
+            
             Stack<Vector2Int> positionStack = new Stack<Vector2Int>();
 
             Vector2Int position = new Vector2Int
             {
-                x = range.Next(0, width),
-                y = range.Next(0, height)
+                x = Random.Range(0, width),
+                y = Random.Range(0, height)
             };
 
             maze[position.x, position.y] |= WallState.Visited;
@@ -41,7 +43,7 @@ namespace Maze2D.Maze
 
                     positionStack.Push(current);
 
-                    int randomIndex = range.Next(0, neighbours.Count);
+                    int randomIndex = Random.Range(0, neighbours.Count);
                     Neighbour randomNeighbour = neighbours[randomIndex];
 
                     Vector2Int nPos = randomNeighbour.Position;
@@ -57,31 +59,6 @@ namespace Maze2D.Maze
             CreateExit(maze, width, height);
 
             return maze;
-        }
-
-        private static void CreateExit(WallState[,] maze, int width, int height) {
-
-            switch (Random.Range(0, 4))
-            {
-                case 0:
-                    maze[Random.Range(0, width), 0] ^= WallState.Down;
-                    break;
-
-                case 1:
-                    maze[Random.Range(0, width), height - 1] ^= WallState.Up;
-                    break;
-
-                case 2:
-                    maze[0, Random.Range(0, height)] ^= WallState.Left;
-                    break;
-
-                case 3:
-                    maze[width - 1, Random.Range(0, height)] ^= WallState.Right;
-                    break;
-
-                default: break;
-            }
-
         }
         
         private static List<Neighbour> GetUnvisitedNeighbours(Vector2Int position, WallState[,] maze, int width, int height) {
@@ -136,21 +113,40 @@ namespace Maze2D.Maze
             
             return neighbours;
         }
-        
-        public static WallState[,] Generate(int width, int height) {
 
-            WallState[,] maze = new WallState[width, height];
-            WallState initial = WallState.Right | WallState.Left | WallState.Up | WallState.Down;
+        private WallState GetOppositeWall(WallState wall) {
 
-            for (int i = 0; i < width; i++) {
+            switch (wall) {
 
-                for (int j = 0; j < height; j++) {
+                case WallState.Right: return WallState.Left;
+                case WallState.Left: return WallState.Right;
+                case WallState.Up: return WallState.Down;
+                case WallState.Down: return WallState.Up;
 
-                    maze[i, j] = initial;            
-                }        
+                default: return WallState.Right;
             }
+        }
+        
+        private static void CreateExit(WallState[,] maze, int width, int height) {
 
-            return ApplyRecursiveBacktracker(maze, width, height);
+            switch (Random.Range(0, 4))
+            {
+                case 0:
+                    maze[Random.Range(0, width), 0] ^= WallState.Down;
+                    break;
+
+                case 1:
+                    maze[Random.Range(0, width), height - 1] ^= WallState.Up;
+                    break;
+
+                case 2:
+                    maze[0, Random.Range(0, height)] ^= WallState.Left;
+                    break;
+
+                case 3:
+                    maze[width - 1, Random.Range(0, height)] ^= WallState.Right;
+                    break;
+            }
         }
     }
 }
