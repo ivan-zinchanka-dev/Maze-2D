@@ -41,6 +41,8 @@ namespace Maze2D.Player
 
         public void SetToMapCenter() {
             
+            StopMovingIfNeed();
+            
             transform.position = GetStartPositionInWorldCoords(_map.CellSize);
             _currentPosInMap = WorldToMapCoords(transform.position);
         }
@@ -110,6 +112,7 @@ namespace Maze2D.Player
 
         private void Step(Vector2 target)
         {
+            StopMovingIfNeed();
             _movingTween = Step(target, _speed);
         }
 
@@ -126,7 +129,15 @@ namespace Maze2D.Player
         {
             return !_movingTween.IsActive() && !_map.Maze[_currentPosInMap.x, _currentPosInMap.y].HasFlag(direction);
         }
-        
+
+        private void StopMovingIfNeed()
+        {
+            if (_movingTween.IsActive())
+            {
+                _movingTween.Kill();
+            }
+        }
+
         private Vector2Int WorldToMapCoords(Vector2 source) {
 
             Vector2Int mapCoords = new Vector2Int(_map.Width / 2, _map.Height / 2);

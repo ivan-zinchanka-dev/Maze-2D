@@ -27,7 +27,7 @@ namespace Maze2D.Management
         protected override void Configure(IContainerBuilder builder)
         {
             builder.RegisterInstance<IInputSystemService>(new InputSystemService(true));
-            builder.RegisterInstance<StorageService>(new StorageService(Difficulty.Normal));
+            builder.RegisterInstance<StorageService>(new StorageService(Difficulty.Easy));
             builder.RegisterInstance<ViewFactory>(_viewFactory);
             builder.RegisterInstance<DifficultyConfigContainer>(_difficultyConfigContainer);
 

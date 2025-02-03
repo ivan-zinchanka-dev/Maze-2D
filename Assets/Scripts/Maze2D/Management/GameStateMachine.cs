@@ -1,9 +1,6 @@
-﻿using System;
-using Maze2D.CodeBase.Controls;
+﻿using Maze2D.CodeBase.Controls;
 using Maze2D.CodeBase.View;
-using Maze2D.Configs;
 using Maze2D.Controls;
-using Maze2D.Game;
 using Maze2D.Maze;
 using Maze2D.Player;
 using Maze2D.UI;

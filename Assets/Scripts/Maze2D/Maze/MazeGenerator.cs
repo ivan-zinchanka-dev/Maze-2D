@@ -1,20 +1,10 @@
 ﻿using System.Collections.Generic;
-using Maze2D.Configs;
-using Maze2D.Game;
 using UnityEngine;
 
 namespace Maze2D.Maze
 {
     public class MazeGenerator
     {
-        /*private DifficultyConfigContainer _configContainer;
-
-        public MazeGenerator(DifficultyConfigContainer configContainer)
-        {
-            _configContainer = configContainer;
-        }*/
-        
-
         public WallState[,] Generate(int width, int height) {
 
             WallState[,] maze = new WallState[width, height];

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using UnityEditor.Graphs;
+using UnityEngine;
 
 namespace Maze2D.Game
 {
@@ -8,6 +9,7 @@ namespace Maze2D.Game
         private const string PlayerColorKey = "color";
         
         private readonly Difficulty _defaultDifficulty;
+        private static readonly Color DefaultColor = Color.red;
 
         public StorageService(Difficulty defaultDifficulty)
         {
@@ -41,7 +43,7 @@ namespace Maze2D.Game
             }
             else
             {
-                return default;
+                return DefaultColor;
             }
         }
     }
