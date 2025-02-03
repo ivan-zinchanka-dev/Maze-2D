@@ -19,7 +19,7 @@ namespace Maze2D.UI
         private Button _mainMenuButton;
         
         [field: SerializeField] 
-        public UnityAction<CommandKind> CommandInvoked { get; private set; }
+        public UnityEvent<CommandKind> CommandInvoked { get; private set; }
 
         [Inject] 
         private IInputSystemService _inputSystemService;
@@ -57,7 +57,7 @@ namespace Maze2D.UI
 
         private bool ResumeGameDemand(long unit)
         {
-            return _inputSystemService.GetButtonUp(InputActions.Pause);
+            return _inputSystemService.GetButtonDown(InputActions.Pause);
         }
 
         private void OnDisable()
