@@ -2,6 +2,7 @@
 using Maze2D.CodeBase.Controls;
 using Maze2D.Controls;
 using UnityEngine;
+using UnityEngine.Events;
 using VContainer;
 
 namespace Maze2D.Player
@@ -10,12 +11,20 @@ namespace Maze2D.Player
     {
         [SerializeField] 
         private PlayerView _playerView;
+        
+        [field:SerializeField] 
+        public UnityEvent Finished { get; private set; }
 
         [Inject] 
         private IInputSystemService _inputSystemService;
-        
-        public event Action Finished;
 
+        public PlayerView View => _playerView;
+
+        private void Reset()
+        {
+            _playerView = GetComponent<PlayerView>();
+        }
+        
         private void Update()
         {
             //if (!_canMove || GameManager.Instance.Pause) return;

@@ -5,6 +5,12 @@ namespace Maze2D.CodeBase.Controls
     public class InputSystemService : IInputSystemService
     {
         public bool IsActive { get; set; }
+        
+        public InputSystemService(bool initiallyActive)
+        {
+            IsActive = initiallyActive;
+        }
+        
         public bool GetButton(string actionName)
         {
             return IsActive && Input.GetButton(actionName);

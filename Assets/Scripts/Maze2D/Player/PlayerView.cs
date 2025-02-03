@@ -12,7 +12,7 @@ namespace Maze2D.Player
     public class PlayerView : MonoBehaviour
     {
         [SerializeField] 
-        private float _speed = 5.0f;
+        private float _speed = 3.0f;
         
         [SerializeField] 
         private SpriteRenderer _spriteRenderer;
@@ -23,7 +23,12 @@ namespace Maze2D.Player
         private PlayerMap _map;
         private Vector2Int _currentPosInMap;
         private Tween _movingTween;
-        
+
+        private void Reset()
+        {
+            _spriteRenderer = GetComponent<SpriteRenderer>();
+        }
+
         private void Awake()
         {
             _spriteRenderer.color = _storageService.GetPlayerColor();
@@ -114,7 +119,7 @@ namespace Maze2D.Player
             return transform
                 .DOMove(target, speed)
                 .SetSpeedBased()
-                .SetEase(Ease.OutSine)
+                .SetEase(Ease.Linear)
                 .SetLink(gameObject);
         }
 

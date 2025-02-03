@@ -13,6 +13,9 @@ namespace Maze2D.Management
     public class GameStateMachine : MonoBehaviour
     {
         [Inject] 
+        private IObjectResolver _objectResolver;
+        
+        [Inject] 
         private IInputSystemService _inputSystemService;
 
         [Inject] 
@@ -28,11 +31,9 @@ namespace Maze2D.Management
         private MazeRenderer _mazeRenderer;
         
         [Inject] 
+        private PlayerControllerFactory _playerFactory;
+
         private PlayerController _playerController;
-        [Inject] 
-        private PlayerView _playerView;
-        
-        
         private GameState _currentState;
         
         public GameState CurrentState
@@ -53,16 +54,14 @@ namespace Maze2D.Management
             DifficultyConfig config = _difficultyConfigContainer.GetConfigByLevel(difficultyLevel);
             WallState[,] maze = _mazeGenerator.Generate(config.MazeWidth, config.MazeHeight);
             PlayerMap map = _mazeRenderer.Draw(maze);
-            _playerView.SetMap(map);
+
+            _playerController = _playerFactory.CreatePlayer();
+            _playerController.View.SetMap(map);
+            _playerController.Finished.AddListener(OnMapFinished);
             
             CurrentState = GameState.Played;
         }
-
-        private void OnEnable()
-        {
-            _playerController.Finished += OnMapFinished;
-        }
-
+        
         private void OnMapFinished()
         {
             Debug.Log("Map finished");
@@ -76,9 +75,5 @@ namespace Maze2D.Management
             }
         }
         
-        private void OnDisable()
-        {
-            _playerController.Finished -= OnMapFinished;
-        }
     }
 }
