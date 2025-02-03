@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9eef879f110647349bcacaf1242ab701, type: 3}
+  m_Name: difficulty_config
+  m_EditorClassIdentifier: 
+  _configs:
+  - Level: 0
+    MazeWidth: 20
+    MazeHeight: 20
+  - Level: 1
+    MazeWidth: 30
+    MazeHeight: 30
+  - Level: 2
+    MazeWidth: 40
+    MazeHeight: 30

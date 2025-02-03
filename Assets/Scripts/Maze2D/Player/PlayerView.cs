@@ -1,11 +1,14 @@
-﻿using DG.Tweening;
+﻿using System;
+using DG.Tweening;
 using Maze2D.Game;
 using Maze2D.Maze;
 using UnityEngine;
 using VContainer;
+using Random = UnityEngine.Random;
 
 namespace Maze2D.Player
 {
+    [DisallowMultipleComponent]
     public class PlayerView : MonoBehaviour
     {
         [SerializeField] 
@@ -17,33 +20,32 @@ namespace Maze2D.Player
         [Inject] 
         private StorageService _storageService;
         
-        private WallState[,] _map;
-        private float _mapCellSize;
+        private PlayerMap _map;
         private Vector2Int _currentPosInMap;
-
         private Tween _movingTween;
         
-        
-        public void Initialize(WallState[,] map, float mapCellSize)
+        private void Awake()
+        {
+            _spriteRenderer.color = _storageService.GetPlayerColor();
+        }
+
+        public void SetMap(PlayerMap map)
         {
             _map = map;
-            _mapCellSize = mapCellSize;
-
-            _spriteRenderer.color = _storageService.GetPlayerColor();
             SetToMapCenter();
         }
 
         public void SetToMapCenter() {
             
-            transform.position = GetStartPositionInWorldCoords(_mapCellSize);
+            transform.position = GetStartPositionInWorldCoords(_map.CellSize);
             _currentPosInMap = WorldToMapCoords(transform.position);
         }
         
-        public bool MakeStepRight()
+        public bool StepRight()
         {
             if (CanMoveTo(WallState.Right))
             {
-                MakeStep(new Vector2(transform.position.x + _mapCellSize, transform.position.y));
+                Step(new Vector2(transform.position.x + _map.CellSize, transform.position.y));
                 _currentPosInMap.x++;
                 return true;
             }
@@ -51,11 +53,11 @@ namespace Maze2D.Player
             return false;
         }
         
-        public bool MakeStepLeft()
+        public bool StepLeft()
         {
             if (CanMoveTo(WallState.Left))
             {
-                MakeStep(new Vector2(transform.position.x - _mapCellSize, transform.position.y));
+                Step(new Vector2(transform.position.x - _map.CellSize, transform.position.y));
                 _currentPosInMap.x--;
                 return true;
             }
@@ -63,11 +65,11 @@ namespace Maze2D.Player
             return false;
         }
         
-        public bool MakeStepUp()
+        public bool StepUp()
         {
             if (CanMoveTo(WallState.Up))
             {
-                MakeStep(new Vector2(transform.position.x, transform.position.y + _mapCellSize));
+                Step(new Vector2(transform.position.x, transform.position.y + _map.CellSize));
                 _currentPosInMap.y++;
                 return true;
             }
@@ -75,11 +77,11 @@ namespace Maze2D.Player
             return false;
         }
         
-        public bool MakeStepDown()
+        public bool StepDown()
         {
             if (CanMoveTo(WallState.Down))
             {
-                MakeStep(new Vector2(transform.position.x, transform.position.y - _mapCellSize));
+                Step(new Vector2(transform.position.x, transform.position.y - _map.CellSize));
                 _currentPosInMap.y--;
                 return true;
             }
@@ -89,8 +91,8 @@ namespace Maze2D.Player
 
         public bool IsFinished()
         {
-            return _currentPosInMap.x < 0 || _currentPosInMap.x >= _map.GetLength(0) ||
-                   _currentPosInMap.y < 0 || _currentPosInMap.y >= _map.GetLength(1);
+            return _currentPosInMap.x < 0 || _currentPosInMap.x >= _map.Width ||
+                   _currentPosInMap.y < 0 || _currentPosInMap.y >= _map.Height;
         }
 
         private Vector2 GetStartPositionInWorldCoords(float cellSize)
@@ -102,12 +104,12 @@ namespace Maze2D.Player
             return new Vector2(mask.x * cellSize / 2, mask.y * cellSize / 2);
         }
 
-        private void MakeStep(Vector2 target)
+        private void Step(Vector2 target)
         {
-            _movingTween = MakeStep(target, _speed);
+            _movingTween = Step(target, _speed);
         }
 
-        private Tween MakeStep(Vector2 target, float speed)
+        private Tween Step(Vector2 target, float speed)
         {
             return transform
                 .DOMove(target, speed)
@@ -118,12 +120,12 @@ namespace Maze2D.Player
 
         private bool CanMoveTo(WallState direction)
         {
-            return !_movingTween.IsActive() && !_map[_currentPosInMap.x, _currentPosInMap.y].HasFlag(direction);
+            return !_movingTween.IsActive() && !_map.Maze[_currentPosInMap.x, _currentPosInMap.y].HasFlag(direction);
         }
         
         private Vector2Int WorldToMapCoords(Vector2 source) {
 
-            Vector2Int mapCoords = new Vector2Int(_map.GetLength(0) / 2, _map.GetLength(1) / 2);
+            Vector2Int mapCoords = new Vector2Int(_map.Width / 2, _map.Height / 2);
 
             if (source.y < 0)
             {

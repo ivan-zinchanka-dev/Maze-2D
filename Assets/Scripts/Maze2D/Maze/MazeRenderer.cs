@@ -1,14 +1,18 @@
-﻿using UnityEngine;
+﻿using Maze2D.Configs;
+using Maze2D.Game;
+using Maze2D.Player;
+using UnityEngine;
+using VContainer;
 
 namespace Maze2D.Maze
 {
     public class MazeRenderer : MonoBehaviour
     {
-        [field: SerializeField, Range(10, 50)] 
+        /*[field: SerializeField, Range(10, 50)] 
         public int Width { get; private set; } = 20;
         
         [field: SerializeField, Range(10, 50)] 
-        public int Height { get; private set; } = 10;
+        public int Height { get; private set; } = 10;*/
 
         [SerializeField] 
         private Transform _wallPrefab = null;
@@ -16,22 +20,17 @@ namespace Maze2D.Maze
         [field: SerializeField]
         public float CellSize { get; private set; } = 1.0f;
         
-        public WallState[,] Maze { get; }
-
-        public MazeRenderer(WallState[,] maze)
+        public PlayerMap Draw(WallState[,] maze)
         {
-            Maze = maze;
-            Draw(Maze);
-        }
-        
-        private void Draw(WallState[,] maze)
-        {
-            for (int i = 0; i < Width; i++) {
+            int width = maze.GetLength(0);
+            int height = maze.GetLength(1);
+            
+            for (int i = 0; i < width; i++) {
 
-                for (int j = 0; j < Height; j++) {
+                for (int j = 0; j < height; j++) {
 
                     WallState cell = maze[i, j];
-                    Vector2 position = new Vector2(-Width / 2.0f + i, -Height / 2.0f + j);
+                    Vector2 position = new Vector2(-width / 2.0f + i, -height / 2.0f + j);
 
                     if (cell.HasFlag(WallState.Right))
                     {
@@ -58,7 +57,7 @@ namespace Maze2D.Maze
                         }
                     }
 
-                    if (j == Height - 1) 
+                    if (j == height - 1) 
                     {
                         if (cell.HasFlag(WallState.Up))
                         {
@@ -70,6 +69,8 @@ namespace Maze2D.Maze
                     }
                 }       
             }
+
+            return new PlayerMap(maze, CellSize);
         }
     }
 }
