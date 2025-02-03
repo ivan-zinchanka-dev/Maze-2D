@@ -13,23 +13,15 @@ namespace Maze2D.Management
     public class GameStateMachine : MonoBehaviour
     {
         [Inject] 
-        private IObjectResolver _objectResolver;
-        
-        [Inject] 
         private IInputSystemService _inputSystemService;
-
         [Inject] 
         private StorageService _storageService;
-        
         [Inject] 
         private DifficultyConfigContainer _difficultyConfigContainer;
-        
         [Inject] 
         private MazeGenerator _mazeGenerator;
-        
         [Inject] 
         private MazeRenderer _mazeRenderer;
-        
         [Inject] 
         private PlayerControllerFactory _playerFactory;
 
