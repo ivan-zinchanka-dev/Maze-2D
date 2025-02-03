@@ -85,11 +85,16 @@ namespace Maze2D.Management
                     _playerController.View.SetToMapCenter();
                     CurrentState = GameState.Played;
                     break;
+                
                 case PauseMenu.CommandKind.RegenerateLevel:
+                    PlayerMap map = _mapGenerator.GeneratePlayerMap();
+                    _playerController.View.SetMap(map);
                     CurrentState = GameState.Played;
                     break;
+                
                 case PauseMenu.CommandKind.ToMainMenu:
                     break;
+                
                 case PauseMenu.CommandKind.Continue:
                     CurrentState = GameState.Played;
                     break;
@@ -107,11 +112,10 @@ namespace Maze2D.Management
             CurrentState = GameState.Played;
         }
         
-        //private PlayerMap GeneratePlayerMap()
-        
         private void OnMapFinished()
         {
-            Debug.Log("Map finished");
+            PlayerMap map = _mapGenerator.GeneratePlayerMap();
+            _playerController.View.SetMap(map);
         }
 
         private void Update()
@@ -121,6 +125,10 @@ namespace Maze2D.Management
                 CurrentState = GameState.Paused;
             }
         }
-        
+
+        private void OnDestroy()
+        {
+            _playerController.Finished.RemoveListener(OnMapFinished);
+        }
     }
 }

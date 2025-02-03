@@ -1,5 +1,4 @@
-﻿using System;
-using DG.Tweening;
+﻿using DG.Tweening;
 using Maze2D.Game;
 using Maze2D.Maze;
 using UnityEngine;

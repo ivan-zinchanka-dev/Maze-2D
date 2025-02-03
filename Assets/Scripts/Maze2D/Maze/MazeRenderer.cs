@@ -16,6 +16,8 @@ namespace Maze2D.Maze
         
         public PlayerMap RenderMaze(WallState[,] maze)
         {
+            ClearWallsIfNeed();
+            
             int width = maze.GetLength(0);
             int height = maze.GetLength(1);
             
@@ -64,6 +66,15 @@ namespace Maze2D.Maze
             wall.eulerAngles = eulerAngles;
             wall.localScale = new Vector2(wall.localScale.x, CellSize);;
             _walls.Push(wall);
+        }
+
+        private void ClearWallsIfNeed()
+        {
+            while (_walls.Count > 0)
+            {
+                Transform wall = _walls.Pop();
+                Destroy(wall.gameObject);
+            }
         }
     }
 }
