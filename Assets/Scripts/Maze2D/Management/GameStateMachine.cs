@@ -17,17 +17,11 @@ namespace Maze2D.Management
         [Inject] 
         private IInputSystemService _inputSystemService;
         [Inject] 
-        private StorageService _storageService;
-        [Inject] 
-        private DifficultyConfigContainer _difficultyConfigContainer;
-        [Inject] 
-        private MazeGenerator _mazeGenerator;
-        [Inject] 
-        private MazeRenderer _mazeRenderer;
-        [Inject] 
         private PlayerControllerFactory _playerFactory;
         [Inject] 
         private ViewFactory _viewFactory;
+        [Inject] 
+        private PlayerMapGenerator _mapGenerator;
         
         private PlayerController _playerController;
         private GameState _currentState;
@@ -88,6 +82,7 @@ namespace Maze2D.Management
             switch (command)
             {
                 case PauseMenu.CommandKind.RestartLevel:
+                    _playerController.View.SetToMapCenter();
                     CurrentState = GameState.Played;
                     break;
                 case PauseMenu.CommandKind.RegenerateLevel:
@@ -103,11 +98,7 @@ namespace Maze2D.Management
 
         private void Awake()
         {
-            Difficulty difficultyLevel = _storageService.GetDifficulty();
-            
-            DifficultyConfig config = _difficultyConfigContainer.GetConfigByLevel(difficultyLevel);
-            WallState[,] maze = _mazeGenerator.Generate(config.MazeWidth, config.MazeHeight);
-            PlayerMap map = _mazeRenderer.Draw(maze);
+            PlayerMap map = _mapGenerator.GeneratePlayerMap();
 
             _playerController = _playerFactory.CreatePlayer();
             _playerController.View.SetMap(map);
@@ -115,6 +106,8 @@ namespace Maze2D.Management
             
             CurrentState = GameState.Played;
         }
+        
+        //private PlayerMap GeneratePlayerMap()
         
         private void OnMapFinished()
         {

@@ -27,7 +27,7 @@ namespace Maze2D.Management
         protected override void Configure(IContainerBuilder builder)
         {
             builder.RegisterInstance<IInputSystemService>(new InputSystemService(true));
-            builder.RegisterInstance<StorageService>(new StorageService(Difficulty. Normal));
+            builder.RegisterInstance<StorageService>(new StorageService(Difficulty.Normal));
             builder.RegisterInstance<ViewFactory>(_viewFactory);
             builder.RegisterInstance<DifficultyConfigContainer>(_difficultyConfigContainer);
 
@@ -35,6 +35,8 @@ namespace Maze2D.Management
             builder.Register<MazeGenerator>(Lifetime.Singleton);
             builder.RegisterComponent<MazeRenderer>(_mazeRenderer);
             builder.RegisterComponent<PlayerControllerFactory>(_playerControllerFactory);
+
+            builder.Register<PlayerMapGenerator>(Lifetime.Singleton);
         }
     }
 }

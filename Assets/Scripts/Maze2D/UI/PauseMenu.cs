@@ -4,6 +4,7 @@ using Maze2D.Controls;
 using UniRx;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using VContainer;
 
@@ -45,6 +46,13 @@ namespace Maze2D.UI
                 .Where(ResumeGameDemand)
                 .Subscribe(unit => CommandInvoked.Invoke(CommandKind.Continue))
                 .AddTo(_disposables);
+
+            SelectDefaultObject();
+        }
+        
+        private void SelectDefaultObject()
+        {
+            EventSystem.current.SetSelectedGameObject(_restartLevelButton.gameObject);
         }
         
         private void InvokeCommandOnClick(Button button, CommandKind commandKind)

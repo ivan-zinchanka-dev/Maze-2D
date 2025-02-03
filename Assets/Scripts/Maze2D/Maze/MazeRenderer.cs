@@ -1,26 +1,20 @@
-﻿using Maze2D.Configs;
-using Maze2D.Game;
+﻿using System.Collections.Generic;
 using Maze2D.Player;
 using UnityEngine;
-using VContainer;
 
 namespace Maze2D.Maze
 {
     public class MazeRenderer : MonoBehaviour
     {
-        /*[field: SerializeField, Range(10, 50)] 
-        public int Width { get; private set; } = 20;
-        
-        [field: SerializeField, Range(10, 50)] 
-        public int Height { get; private set; } = 10;*/
-
         [SerializeField] 
         private Transform _wallPrefab = null;
         
         [field: SerializeField]
         public float CellSize { get; private set; } = 1.0f;
+
+        private readonly Stack<Transform> _walls = new Stack<Transform>();
         
-        public PlayerMap Draw(WallState[,] maze)
+        public PlayerMap RenderMaze(WallState[,] maze)
         {
             int width = maze.GetLength(0);
             int height = maze.GetLength(1);
@@ -34,26 +28,19 @@ namespace Maze2D.Maze
 
                     if (cell.HasFlag(WallState.Right))
                     {
-                        Transform rightWall = Instantiate(_wallPrefab, transform);
-                        rightWall.position = position + new Vector2(0.0f, CellSize / 2);
-                        rightWall.localScale = new Vector2(rightWall.localScale.x, CellSize);
+                        RenderWall(position + new Vector2(0.0f, CellSize / 2), Vector2.zero);
                     }
 
                     if (cell.HasFlag(WallState.Down))
                     {
-                        Transform bottomWall = Instantiate(_wallPrefab, transform);
-                        bottomWall.position = position + new Vector2(-CellSize / 2, 0.0f);
-                        bottomWall.eulerAngles = new Vector3(0, 0, 90);
-                        bottomWall.localScale = new Vector2(bottomWall.localScale.x, CellSize);
+                        RenderWall(position + new Vector2(-CellSize / 2, 0.0f), new Vector3(0, 0, 90));
                     }
 
                     if (i == 0)
                     {                  
                         if (cell.HasFlag(WallState.Left))
                         {
-                            Transform leftWall = Instantiate(_wallPrefab, transform);
-                            leftWall.position = position + new Vector2(-CellSize, CellSize / 2);
-                            leftWall.localScale = new Vector2(leftWall.localScale.x, CellSize);
+                            RenderWall(position + new Vector2(-CellSize, CellSize / 2), Vector2.zero);
                         }
                     }
 
@@ -61,16 +48,22 @@ namespace Maze2D.Maze
                     {
                         if (cell.HasFlag(WallState.Up))
                         {
-                            Transform topWall = Instantiate(_wallPrefab, transform);
-                            topWall.position = position + new Vector2(-CellSize / 2, CellSize);
-                            topWall.eulerAngles = new Vector3(0, 0, 90);
-                            topWall.localScale = new Vector2(topWall.localScale.x, CellSize);
+                            RenderWall(position + new Vector2(-CellSize / 2, CellSize), new Vector3(0, 0, 90));
                         }
                     }
                 }       
             }
 
             return new PlayerMap(maze, CellSize);
+        }
+
+        private void RenderWall(Vector2 position, Vector3 eulerAngles)
+        {
+            Transform wall = Instantiate(_wallPrefab, transform);
+            wall.position = position;
+            wall.eulerAngles = eulerAngles;
+            wall.localScale = new Vector2(wall.localScale.x, CellSize);;
+            _walls.Push(wall);
         }
     }
 }
