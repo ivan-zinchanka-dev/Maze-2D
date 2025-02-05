@@ -13,4 +13,6 @@ MonoBehaviour:
   m_Name: view_container
   m_EditorClassIdentifier: 
   _viewPrefabs:
+  - {fileID: 7331805518337156676, guid: 67148e6862079214c9777bc6ea121e4b, type: 3}
+  - {fileID: 3327490877982129772, guid: ce4bc467bd1696343b3368d9ec98f54e, type: 3}
   - {fileID: 8661540686448415767, guid: 76f9e4ab26229a340bb2c1d3d78fae48, type: 3}

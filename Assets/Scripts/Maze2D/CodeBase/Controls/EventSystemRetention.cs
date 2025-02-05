@@ -4,15 +4,27 @@ using UnityEngine.EventSystems;
 
 namespace Maze2D.CodeBase.Controls
 {
-    public class EventSystemRetention : MonoBehaviour
+    internal class EventSystemRetention : MonoBehaviour
     {
-        [SerializeField] private EventSystem _eventSystem = null;
-
-        private GameObject _selectedObject = null;
-
+        [SerializeField] 
+        private EventSystem _eventSystem;
+        private GameObject _selectedObject;
+        internal static EventSystemRetention Instance { get; private set; }
+        
+        public void Release()
+        {
+            _selectedObject = null;
+            _eventSystem.SetSelectedGameObject(_selectedObject);
+        }
+        
         private void Reset()
         {
             _eventSystem = GetComponent<EventSystem>();
+        }
+
+        private void Awake()
+        {
+            Instance = this;
         }
 
         private void Start()

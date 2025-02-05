@@ -91,10 +91,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 4
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
+    m_SelectOnDown: {fileID: 2865575041129825264}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
@@ -483,9 +483,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 4
     m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
+    m_SelectOnUp: {fileID: 2865575041129825264}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
@@ -605,10 +605,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 4
     m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
+    m_SelectOnUp: {fileID: 2865575040038969429}
+    m_SelectOnDown: {fileID: 2865575041107638337}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
@@ -647,7 +647,7 @@ GameObject:
   - component: {fileID: 2865575041509869416}
   - component: {fileID: 8661540686448415767}
   m_Layer: 5
-  m_Name: PauseMenu
+  m_Name: pause_menu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -691,6 +691,9 @@ MonoBehaviour:
   _restartLevelButton: {fileID: 2865575040038969429}
   _newLevelButton: {fileID: 2865575041129825264}
   _mainMenuButton: {fileID: 2865575041107638337}
+  <CommandInvoked>k__BackingField:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &2865575041808819484
 GameObject:
   m_ObjectHideFlags: 0

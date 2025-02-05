@@ -30,12 +30,12 @@ namespace UI
             public RectTransform Right;
         }
         
-        private ColorToggle[] _colorToggles;
+        private ColorToggleOld[] _colorToggles;
         
         private void Awake()
         {
             Instance = this;
-            _colorToggles = _playerColors.transform.GetComponentsInChildren<ColorToggle>(true);
+            _colorToggles = _playerColors.transform.GetComponentsInChildren<ColorToggleOld>(true);
         }
 
         private void Start()

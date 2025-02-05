@@ -1,14 +1,19 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
-namespace UI
+namespace Maze2D.UI
 {
     public class ColorToggle : MonoBehaviour
     {
-        [SerializeField] private Toggle _toggle = null;
-        [SerializeField] private Image _image = null;
-        
+        [SerializeField] 
+        private Toggle _toggle;
+        [SerializeField] 
+        private Image _image;
+
+        [field:SerializeField] 
+        public UnityEvent<Color> OnColorSelected { get; private set; }
+
         public bool IsOn
         {
             get => _toggle.isOn;
@@ -16,7 +21,6 @@ namespace UI
         }
         
         public Color Color => _image.color;
-        public event Action<Color> OnColorSelected;
         
         private void OnEnable()
         {
