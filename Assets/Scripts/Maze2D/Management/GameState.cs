@@ -3,7 +3,8 @@
     public enum GameState
     {
         None = 0,
-        Played = 1,
-        Paused = 2,
+        Pending = 1,
+        Played = 2,
+        Paused = 3,
     }
 }

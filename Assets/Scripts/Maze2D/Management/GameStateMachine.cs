@@ -1,9 +1,11 @@
-﻿using Maze2D.CodeBase.Controls;
+﻿using System;
+using Maze2D.CodeBase.Controls;
 using Maze2D.CodeBase.View;
 using Maze2D.Controls;
 using Maze2D.Maze;
 using Maze2D.Player;
 using Maze2D.UI;
+using UniRx;
 using UnityEngine;
 using VContainer;
 
@@ -21,30 +23,38 @@ namespace Maze2D.Management
         private PlayerMapGenerator _mapGenerator;
         
         private PlayerController _playerController;
-        private GameState _currentState;
+        private readonly ReactiveProperty<GameState> _currentState = new (GameState.Pending);
         private PauseMenu _pauseMenu;
-        
-        public GameState CurrentState
-        {
-            get => _currentState;
 
-            set
-            {
-                GameState newState = value;
-                
-                if (_currentState != newState)
-                {
-                    _currentState = newState;
-                    OnStateChanged();
-                }
-            }
+        private IDisposable _stateChanging;
+        
+        public IReadOnlyReactiveProperty<GameState> CurrentState => _currentState;
+
+        public void Play()
+        {
+            PlayerMap map = _mapGenerator.GeneratePlayerMap();
+
+            _playerController = _playerFactory.CreatePlayer();
+            _playerController.View.SetMap(map);
+            _playerController.Finished.AddListener(OnMapFinished);
+            
+            _currentState.Value = GameState.Played;
         }
 
-        private void OnStateChanged()
+        private void Awake()
         {
-            _playerController.enabled = _currentState == GameState.Played;
+            _stateChanging = _currentState.Pairwise().Subscribe(pair =>
+            {
+                if (pair.Previous != pair.Current)
+                {
+                    OnStateChanged(pair.Current);
+                }
+            });
+        }
 
-            switch (_currentState)
+        private void OnStateChanged(GameState currentState)
+        {
+            switch (currentState)
             {
                 case GameState.Played:
                     OnPlayed();
@@ -54,7 +64,6 @@ namespace Maze2D.Management
                     OnPaused();
                     break;
             }
-            
         }
 
         private void OnPlayed()
@@ -72,6 +81,8 @@ namespace Maze2D.Management
             _playerController.enabled = false;
             _pauseMenu = _viewFactory.CreateView<PauseMenu>();
             _pauseMenu.CommandInvoked.AddListener(OnPauseMenuCommandInvoked);
+            
+            // TODO Paused event or ReactiveCommand for HUD
         }
 
         private void OnPauseMenuCommandInvoked(PauseMenu.CommandKind command)
@@ -80,52 +91,48 @@ namespace Maze2D.Management
             {
                 case PauseMenu.CommandKind.RestartLevel:
                     _playerController.View.SetToMapCenter();
-                    CurrentState = GameState.Played;
+                    _currentState.Value = GameState.Played;
                     break;
                 
                 case PauseMenu.CommandKind.RegenerateLevel:
                     PlayerMap map = _mapGenerator.GeneratePlayerMap();
                     _playerController.View.SetMap(map);
-                    CurrentState = GameState.Played;
+                    _currentState.Value = GameState.Played;
                     break;
                 
                 case PauseMenu.CommandKind.ToMainMenu:
                     break;
                 
                 case PauseMenu.CommandKind.Continue:
-                    CurrentState = GameState.Played;
+                    _currentState.Value = GameState.Played;
                     break;
             }
         }
 
-        private void Awake()
-        {
-            PlayerMap map = _mapGenerator.GeneratePlayerMap();
-
-            _playerController = _playerFactory.CreatePlayer();
-            _playerController.View.SetMap(map);
-            _playerController.Finished.AddListener(OnMapFinished);
-            
-            CurrentState = GameState.Played;
-        }
-        
         private void OnMapFinished()
         {
             PlayerMap map = _mapGenerator.GeneratePlayerMap();
             _playerController.View.SetMap(map);
+            
+            _currentState.Value = GameState.Pending;
         }
 
         private void Update()
         {
             if (_inputSystemService.GetButtonDown(InputActions.Pause))
             {
-                CurrentState = GameState.Paused;
+                _currentState.Value = GameState.Paused;
             }
         }
 
         private void OnDestroy()
         {
-            _playerController.Finished.RemoveListener(OnMapFinished);
+            _stateChanging?.Dispose();
+            
+            if (CurrentState.Value == GameState.Played || CurrentState.Value == GameState.Paused)
+            {
+                _playerController.Finished.RemoveListener(OnMapFinished);
+            }
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using DG.Tweening;
 using Maze2D.CodeBase.View;
+using Maze2D.Management;
 using UniRx;
 using UnityEngine;
 using VContainer;
@@ -13,10 +14,17 @@ namespace Maze2D.UI
         [SerializeField] 
         private float _viewNavigationDuration = 0.75f;
         [SerializeField] 
-        private ViewHolders _viewHolders = default;
-
+        private ViewHolders _viewHolders;
+        
         [Inject] 
         private ViewFactory _viewFactory;
+        [Inject] 
+        private GameStateMachine _gameStateMachine;
+        
+        
+        private MainMenu _mainMenu;
+        private readonly ICollection<IDisposable> _disposables = new CompositeDisposable();
+        
         
         [Serializable]
         private struct ViewHolders {
@@ -25,13 +33,6 @@ namespace Maze2D.UI
             public RectTransform Center;
             public RectTransform Right;
         }
-
-        private readonly ICollection<IDisposable> _disposables = new CompositeDisposable();
-        
-        private MainMenu _mainMenu;
-        private SettingsMenu _settingsMenu;
-        
-        //private MonoBehaviour _currentView;
         
         private void Awake()
         {
@@ -59,12 +60,13 @@ namespace Maze2D.UI
             }
         }
         
-        private Tween NavigateToMaze()
+        private Sequence NavigateToMaze()
         {
-            return HideView(_mainMenu, _viewHolders.Center, _viewHolders.Left);
+            return HideView(_mainMenu, _viewHolders.Center, _viewHolders.Left)
+                .AppendCallback(() => _gameStateMachine.Play());
         }
 
-        private Tween NavigateToSettings(MonoBehaviour currentView)
+        private Sequence NavigateToSettings(MonoBehaviour currentView)
         {
             SettingsMenu settingsMenu = _viewFactory.CreateView<SettingsMenu>();
             settingsMenu.OnBack.AddListener(() =>
@@ -77,7 +79,7 @@ namespace Maze2D.UI
                 .Join(ShowView(settingsMenu, _viewHolders.Right, _viewHolders.Center));
         }
 
-        private Tween NavigateToMainMenu(MonoBehaviour currentView)
+        private Sequence NavigateToMainMenu(MonoBehaviour currentView)
         {
             if (_mainMenu == null)
             {
@@ -91,7 +93,7 @@ namespace Maze2D.UI
         }
 
         
-        private Tween ShowView(MonoBehaviour view, RectTransform from, RectTransform to)
+        private Sequence ShowView(MonoBehaviour view, RectTransform from, RectTransform to)
         {
             return MoveView(view, from, to)
                 .AppendCallback(() =>
@@ -100,7 +102,7 @@ namespace Maze2D.UI
                 });
         }
         
-        private Tween HideView(MonoBehaviour view, RectTransform from, RectTransform to)
+        private Sequence HideView(MonoBehaviour view, RectTransform from, RectTransform to)
         {
             return MoveView(view, from, to)
                 .AppendCallback(() =>

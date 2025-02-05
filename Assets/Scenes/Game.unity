@@ -464,7 +464,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1176036559
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -554,6 +554,7 @@ MonoBehaviour:
   autoInjectGameObjects:
   - {fileID: 2042664929}
   - {fileID: 1176036558}
+  _headUpDisplay: {fileID: 2042664934}
   _gameStateMachine: {fileID: 1176036560}
   _mazeRenderer: {fileID: 769089986}
   _playerControllerFactory: {fileID: 1176036559}
@@ -688,6 +689,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfa265b581ff4a94862e50a098eb530b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _viewNavigationDuration: 0.75
   _viewHolders:
     Left: {fileID: 689867507}
     Center: {fileID: 2104978060}
