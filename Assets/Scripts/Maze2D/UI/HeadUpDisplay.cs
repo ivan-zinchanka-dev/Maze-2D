@@ -48,6 +48,7 @@ namespace Maze2D.UI
             switch (command)
             {
                 case MainMenu.CommandKind.Play:
+                    NavigateToMaze();
                     break;
                 case MainMenu.CommandKind.Settings:
                     NavigateToSettings(_mainMenu);
@@ -57,62 +58,68 @@ namespace Maze2D.UI
                     break;
             }
         }
+        
+        private Tween NavigateToMaze()
+        {
+            return HideView(_mainMenu, _viewHolders.Center, _viewHolders.Left);
+        }
 
         private Tween NavigateToSettings(MonoBehaviour currentView)
         {
-            currentView.enabled = false;
-            
             SettingsMenu settingsMenu = _viewFactory.CreateView<SettingsMenu>();
-            settingsMenu.transform.localPosition = _viewHolders.Right.localPosition;
-            settingsMenu.enabled = false;
-            
             settingsMenu.OnBack.AddListener(() =>
             {
                 NavigateToMainMenu(settingsMenu);
             });
             
             return DOTween.Sequence()
-                .Append(currentView.transform
-                    .DOLocalMoveX(_viewHolders.Left.localPosition.x, _viewNavigationDuration)
-                    .SetEase(Ease.OutSine))
-                .Join(settingsMenu.transform
-                    .DOLocalMoveX(_viewHolders.Center.localPosition.x, _viewNavigationDuration)
-                    .SetEase(Ease.OutSine))
-                .AppendCallback(() =>
-                {
-                    settingsMenu.enabled = true;
-                    Destroy(currentView.gameObject);
-                })
-                .SetUpdate(true)
-                .SetLink(gameObject);
+                .Append(HideView(currentView, _viewHolders.Center, _viewHolders.Left))
+                .Join(ShowView(settingsMenu, _viewHolders.Right, _viewHolders.Center));
         }
 
         private Tween NavigateToMainMenu(MonoBehaviour currentView)
         {
-            currentView.enabled = false;
-
             if (_mainMenu == null)
             {
                 _mainMenu = _viewFactory.CreateView<MainMenu>();
-                _mainMenu.transform.localPosition = _viewHolders.Left.localPosition;
                 _mainMenu.CommandInvoked.AddListener(ProcessMainMenuCommand);
-                _mainMenu.enabled = false;
             }
 
             return DOTween.Sequence()
-                .Append(currentView.transform
-                    .DOLocalMoveX(_viewHolders.Right.localPosition.x, _viewNavigationDuration)
-                    .SetEase(Ease.OutSine))
-                .Join(_mainMenu.transform
-                    .DOLocalMoveX(_viewHolders.Center.localPosition.x, _viewNavigationDuration)
-                    .SetEase(Ease.OutSine))
+                .Append(HideView(currentView, _viewHolders.Center, _viewHolders.Right))
+                .Join(ShowView(_mainMenu, _viewHolders.Left, _viewHolders.Center));
+        }
+
+        
+        private Tween ShowView(MonoBehaviour view, RectTransform from, RectTransform to)
+        {
+            return MoveView(view, from, to)
                 .AppendCallback(() =>
                 {
-                    _mainMenu.enabled = true;
-                    Destroy(currentView.gameObject);
-                })
+                    view.enabled = true;
+                });
+        }
+        
+        private Tween HideView(MonoBehaviour view, RectTransform from, RectTransform to)
+        {
+            return MoveView(view, from, to)
+                .AppendCallback(() =>
+                {
+                    Destroy(view.gameObject);
+                });
+        }
+
+        private Sequence MoveView(MonoBehaviour view, RectTransform from, RectTransform to)
+        {
+            view.enabled = false;
+            view.transform.localPosition = from.localPosition;
+            
+            return DOTween.Sequence()
+                .Append(view.transform
+                    .DOLocalMoveX(to.localPosition.x, _viewNavigationDuration)
+                    .SetEase(Ease.OutSine))
                 .SetUpdate(true)
-                .SetLink(gameObject);
+                .SetLink(view.gameObject);
         }
 
         private void OnDisable()
