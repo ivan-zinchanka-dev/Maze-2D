@@ -4,17 +4,20 @@ using DG.Tweening;
 using Maze2D.CodeBase.View;
 using UniRx;
 using UnityEngine;
-using UnityEngine.Serialization;
 using VContainer;
 
 namespace Maze2D.UI
 {
     public class HeadUpDisplay : MonoBehaviour
     {
-        [Inject] private ViewFactory _viewFactory;
+        [SerializeField] 
+        private float _viewNavigationDuration = 0.75f;
+        [SerializeField] 
+        private ViewHolders _viewHolders = default;
 
-        [SerializeField] private ViewHolders _viewHolders = default;
-
+        [Inject] 
+        private ViewFactory _viewFactory;
+        
         [Serializable]
         private struct ViewHolders {
 
@@ -37,44 +40,48 @@ namespace Maze2D.UI
 
         private void OnEnable()
         {
-            _mainMenu.CommandInvoked.AsObservable().Subscribe(command =>
-            {
-                switch (command)
-                {
-                    case MainMenu.CommandKind.Play:
-                        break;
-                    case MainMenu.CommandKind.Settings:
-                        NavigateToSettings(_mainMenu);
-                        break;
-                    case MainMenu.CommandKind.Exit:
-                        Application.Quit();
-                        break;
-                }
+            _mainMenu.CommandInvoked.AddListener(ProcessMainMenuCommand);
+        }
 
-            }).AddTo(_disposables);
+        private void ProcessMainMenuCommand(MainMenu.CommandKind command)
+        {
+            switch (command)
+            {
+                case MainMenu.CommandKind.Play:
+                    break;
+                case MainMenu.CommandKind.Settings:
+                    NavigateToSettings(_mainMenu);
+                    break;
+                case MainMenu.CommandKind.Exit:
+                    Application.Quit();
+                    break;
+            }
         }
 
         private Tween NavigateToSettings(MonoBehaviour currentView)
         {
-            const float navigationDuration = 1.5f;
-
             currentView.enabled = false;
             
             SettingsMenu settingsMenu = _viewFactory.CreateView<SettingsMenu>();
             settingsMenu.transform.localPosition = _viewHolders.Right.localPosition;
             settingsMenu.enabled = false;
             
+            settingsMenu.OnBack.AddListener(() =>
+            {
+                NavigateToMainMenu(settingsMenu);
+            });
+            
             return DOTween.Sequence()
                 .Append(currentView.transform
-                    .DOLocalMoveX(_viewHolders.Left.localPosition.x, navigationDuration)
+                    .DOLocalMoveX(_viewHolders.Left.localPosition.x, _viewNavigationDuration)
                     .SetEase(Ease.OutSine))
                 .Join(settingsMenu.transform
-                    .DOLocalMoveX(_viewHolders.Center.localPosition.x, navigationDuration)
+                    .DOLocalMoveX(_viewHolders.Center.localPosition.x, _viewNavigationDuration)
                     .SetEase(Ease.OutSine))
                 .AppendCallback(() =>
                 {
                     settingsMenu.enabled = true;
-                    currentView.gameObject.SetActive(false);
+                    Destroy(currentView.gameObject);
                 })
                 .SetUpdate(true)
                 .SetLink(gameObject);
@@ -82,16 +89,28 @@ namespace Maze2D.UI
 
         private Tween NavigateToMainMenu(MonoBehaviour currentView)
         {
-            const float navigationDuration = 1.5f;
-            
+            currentView.enabled = false;
+
+            if (_mainMenu == null)
+            {
+                _mainMenu = _viewFactory.CreateView<MainMenu>();
+                _mainMenu.transform.localPosition = _viewHolders.Left.localPosition;
+                _mainMenu.CommandInvoked.AddListener(ProcessMainMenuCommand);
+                _mainMenu.enabled = false;
+            }
+
             return DOTween.Sequence()
                 .Append(currentView.transform
-                    .DOLocalMoveX(_viewHolders.Right.localPosition.x, navigationDuration)
+                    .DOLocalMoveX(_viewHolders.Right.localPosition.x, _viewNavigationDuration)
                     .SetEase(Ease.OutSine))
                 .Join(_mainMenu.transform
-                    .DOLocalMoveX(_viewHolders.Center.localPosition.x, navigationDuration)
+                    .DOLocalMoveX(_viewHolders.Center.localPosition.x, _viewNavigationDuration)
                     .SetEase(Ease.OutSine))
-                .AppendCallback(() => Destroy(currentView.gameObject))
+                .AppendCallback(() =>
+                {
+                    _mainMenu.enabled = true;
+                    Destroy(currentView.gameObject);
+                })
                 .SetUpdate(true)
                 .SetLink(gameObject);
         }

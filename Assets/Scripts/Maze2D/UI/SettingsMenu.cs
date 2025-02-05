@@ -6,6 +6,7 @@ using Maze2D.Extensions;
 using Maze2D.Game;
 using UniRx;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using VContainer;
@@ -24,6 +25,9 @@ namespace Maze2D.UI
         private List<ColorToggle> _colorToggles;
         
         private readonly ICollection<IDisposable> _disposables = new CompositeDisposable();
+
+        [field: SerializeField] 
+        public UnityEvent OnBack { get; private set; }
 
         private void Awake()
         {
@@ -83,7 +87,7 @@ namespace Maze2D.UI
 
         private void OnBackClick()
         {
-            
+            OnBack?.Invoke();
         }
 
         private bool BackDemand(long unit)
