@@ -25,8 +25,10 @@ namespace Maze2D.UI
         [Inject] 
         private IInputSystemService _inputSystemService;
         
+        // TODO Interface
         private readonly CompositeDisposable _disposables = new CompositeDisposable();
-
+        
+        // TODO Try to use ReactiveCommand
         public enum CommandKind
         {
             None = 0,
