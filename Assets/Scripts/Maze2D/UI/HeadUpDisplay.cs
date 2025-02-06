@@ -23,6 +23,7 @@ namespace Maze2D.UI
         
         
         private MainMenu _mainMenu;
+        private PauseMenu _pauseMenu;
         private readonly ICollection<IDisposable> _disposables = new CompositeDisposable();
         
         
@@ -36,6 +37,8 @@ namespace Maze2D.UI
         
         private void Awake()
         {
+            _gameStateMachine.CurrentState.Subscribe(OnGameStateChanged).AddTo(_disposables);
+            
             _mainMenu = _viewFactory.CreateView<MainMenu>();
         }
 
@@ -44,12 +47,41 @@ namespace Maze2D.UI
             _mainMenu.CommandInvoked.AddListener(ProcessMainMenuCommand);
         }
 
+        private void OnGameStateChanged(GameState gameState)
+        {
+            switch (gameState)
+            {
+                case GameState.Paused:
+                    NavigateToPauseMenu();
+                    break;
+            }
+        }
+
+        
+        private async void ProcessPauseMenuCommand(PauseMenu.CommandKind command)
+        {
+            switch (command)
+            {
+                case PauseMenu.CommandKind.RestartLevel:
+                    _gameStateMachine.RestartLevel();
+                    break;
+                case PauseMenu.CommandKind.RegenerateLevel:
+                    await _gameStateMachine.RegenerateLevel();
+                    break;
+                case PauseMenu.CommandKind.ToMainMenu:
+                    break;
+                case PauseMenu.CommandKind.Continue:
+                    ResumeGame();
+                    break;
+            }
+        }
+        
         private void ProcessMainMenuCommand(MainMenu.CommandKind command)
         {
             switch (command)
             {
                 case MainMenu.CommandKind.Play:
-                    NavigateToMaze();
+                    StartGame();
                     break;
                 case MainMenu.CommandKind.Settings:
                     NavigateToSettings(_mainMenu);
@@ -60,10 +92,27 @@ namespace Maze2D.UI
             }
         }
         
-        private Sequence NavigateToMaze()
+        private Sequence StartGame()
         {
             return HideView(_mainMenu, _viewHolders.Center, _viewHolders.Left)
                 .AppendCallback(() => _gameStateMachine.Play());
+        }
+        
+        private Sequence ResumeGame()
+        {
+            return HideView(_pauseMenu, _viewHolders.Center, _viewHolders.Right)
+                .AppendCallback(() => _gameStateMachine.Continue());
+        }
+        
+        private Sequence NavigateToPauseMenu()
+        {
+            if (_pauseMenu == null)
+            {
+                _pauseMenu = _viewFactory.CreateView<PauseMenu>();
+                _pauseMenu.CommandInvoked.AddListener(ProcessPauseMenuCommand);
+            }
+            
+            return ShowView(_pauseMenu, _viewHolders.Right, _viewHolders.Center);
         }
 
         private Sequence NavigateToSettings(MonoBehaviour currentView)

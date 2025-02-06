@@ -1,10 +1,10 @@
 ﻿using System;
+using Cysharp.Threading.Tasks;
 using Maze2D.CodeBase.Controls;
 using Maze2D.CodeBase.View;
 using Maze2D.Controls;
 using Maze2D.Maze;
 using Maze2D.Player;
-using Maze2D.UI;
 using UniRx;
 using UnityEngine;
 using VContainer;
@@ -24,12 +24,15 @@ namespace Maze2D.Management
         
         private PlayerController _playerController;
         private readonly ReactiveProperty<GameState> _currentState = new (GameState.Pending);
-        private PauseMenu _pauseMenu;
+        
+        
 
         private IDisposable _stateChanging;
         
         public IReadOnlyReactiveProperty<GameState> CurrentState => _currentState;
 
+        //public IReactiveCommand<>
+        
         public async void Play()
         {
             PlayerMap map = await _mapGenerator.GeneratePlayerMap();
@@ -69,45 +72,32 @@ namespace Maze2D.Management
         private void OnPlayed()
         {
             _playerController.enabled = true;
-            
-            if (_pauseMenu != null)
-            {
-                Destroy(_pauseMenu.gameObject);
-            }
         }
         
         private void OnPaused()
         {
             _playerController.enabled = false;
-            _pauseMenu = _viewFactory.CreateView<PauseMenu>();
-            _pauseMenu.CommandInvoked.AddListener(OnPauseMenuCommandInvoked);
-            
-            // TODO Paused event or ReactiveCommand for HUD
         }
 
-        private async void OnPauseMenuCommandInvoked(PauseMenu.CommandKind command)
+
+        public void RestartLevel()
         {
-            switch (command)
-            {
-                case PauseMenu.CommandKind.RestartLevel:
-                    _playerController.View.SetToMapCenter();
-                    _currentState.Value = GameState.Played;
-                    break;
-                
-                case PauseMenu.CommandKind.RegenerateLevel:
-                    PlayerMap map = await _mapGenerator.GeneratePlayerMap();
-                    _playerController.View.SetMap(map);
-                    _currentState.Value = GameState.Played;
-                    break;
-                
-                case PauseMenu.CommandKind.ToMainMenu:
-                    break;
-                
-                case PauseMenu.CommandKind.Continue:
-                    _currentState.Value = GameState.Played;
-                    break;
-            }
+            _playerController.View.SetToMapCenter();
+            _currentState.Value = GameState.Played;
         }
+        
+        public async UniTask RegenerateLevel()
+        {
+            PlayerMap map = await _mapGenerator.GeneratePlayerMap();
+            _playerController.View.SetMap(map);
+            _currentState.Value = GameState.Played;
+        }
+
+        public void Continue()
+        {
+            _currentState.Value = GameState.Played;
+        }
+        
 
         private async void OnMapFinished()
         {

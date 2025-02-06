@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Maze2D.CodeBase.Controls;
 using Maze2D.Controls;
 using UniRx;
@@ -21,12 +22,12 @@ namespace Maze2D.UI
         
         [field: SerializeField] 
         public UnityEvent<CommandKind> CommandInvoked { get; private set; }
-
+        
+        
         [Inject] 
         private IInputSystemService _inputSystemService;
         
-        // TODO Interface
-        private readonly CompositeDisposable _disposables = new CompositeDisposable();
+        private readonly ICollection<IDisposable> _disposables = new CompositeDisposable();
         
         // TODO Try to use ReactiveCommand
         public enum CommandKind

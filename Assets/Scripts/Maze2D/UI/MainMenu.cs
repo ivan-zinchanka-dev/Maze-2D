@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UniRx;
 using UnityEngine;
 using UnityEngine.Events;
@@ -19,7 +20,7 @@ namespace Maze2D.UI
         [field: SerializeField] 
         public UnityEvent<CommandKind> CommandInvoked { get; private set; }
         
-        private readonly CompositeDisposable _disposables = new CompositeDisposable();
+        private readonly ICollection<IDisposable> _disposables = new CompositeDisposable();
 
         public enum CommandKind
         {
