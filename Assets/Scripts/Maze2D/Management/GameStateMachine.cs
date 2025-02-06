@@ -30,9 +30,9 @@ namespace Maze2D.Management
         
         public IReadOnlyReactiveProperty<GameState> CurrentState => _currentState;
 
-        public void Play()
+        public async void Play()
         {
-            PlayerMap map = _mapGenerator.GeneratePlayerMap();
+            PlayerMap map = await _mapGenerator.GeneratePlayerMap();
 
             _playerController = _playerFactory.CreatePlayer();
             _playerController.View.SetMap(map);
@@ -85,7 +85,7 @@ namespace Maze2D.Management
             // TODO Paused event or ReactiveCommand for HUD
         }
 
-        private void OnPauseMenuCommandInvoked(PauseMenu.CommandKind command)
+        private async void OnPauseMenuCommandInvoked(PauseMenu.CommandKind command)
         {
             switch (command)
             {
@@ -95,7 +95,7 @@ namespace Maze2D.Management
                     break;
                 
                 case PauseMenu.CommandKind.RegenerateLevel:
-                    PlayerMap map = _mapGenerator.GeneratePlayerMap();
+                    PlayerMap map = await _mapGenerator.GeneratePlayerMap();
                     _playerController.View.SetMap(map);
                     _currentState.Value = GameState.Played;
                     break;
@@ -109,9 +109,9 @@ namespace Maze2D.Management
             }
         }
 
-        private void OnMapFinished()
+        private async void OnMapFinished()
         {
-            PlayerMap map = _mapGenerator.GeneratePlayerMap();
+            PlayerMap map = await _mapGenerator.GeneratePlayerMap();
             _playerController.View.SetMap(map);
             
             _currentState.Value = GameState.Pending;

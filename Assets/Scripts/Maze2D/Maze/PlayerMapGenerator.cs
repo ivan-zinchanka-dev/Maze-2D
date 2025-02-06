@@ -1,4 +1,5 @@
-﻿using Maze2D.Configs;
+﻿using Cysharp.Threading.Tasks;
+using Maze2D.Configs;
 using Maze2D.Game;
 using Maze2D.Player;
 
@@ -23,13 +24,13 @@ namespace Maze2D.Maze
             _mazeRenderer = mazeRenderer;
         }
 
-        public PlayerMap GeneratePlayerMap()
+        public async UniTask<PlayerMap> GeneratePlayerMap()
         {
             Difficulty difficultyLevel = _storageService.GetDifficulty();
             DifficultyConfig config = _difficultyConfigContainer.GetConfigByLevel(difficultyLevel);
             
             WallState[,] maze = _mazeGenerator.Generate(config.MazeWidth, config.MazeHeight);
-            return _mazeRenderer.RenderMaze(maze);
+            return await _mazeRenderer.RenderMazeAsync(maze);
         }
     }
 }

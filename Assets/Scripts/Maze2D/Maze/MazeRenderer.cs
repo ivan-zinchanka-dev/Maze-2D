@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using Maze2D.Player;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Maze2D.Maze
 {
@@ -11,10 +13,12 @@ namespace Maze2D.Maze
         
         [field: SerializeField]
         public float CellSize { get; private set; } = 1.0f;
-
-        private readonly Stack<Transform> _walls = new Stack<Transform>();
         
-        public PlayerMap RenderMaze(WallState[,] maze)
+        private readonly Stack<Transform> _walls = new Stack<Transform>();
+        private readonly MazeTransitionHandler _transitionHandler;
+        
+        
+        public async UniTask<PlayerMap> RenderMazeAsync(WallState[,] maze)
         {
             ClearWallsIfNeed();
             
@@ -56,6 +60,8 @@ namespace Maze2D.Maze
                 }       
             }
 
+            await new MazeTransitionHandler(transform).Show().ToUniTask();
+            
             return new PlayerMap(maze, CellSize);
         }
 
