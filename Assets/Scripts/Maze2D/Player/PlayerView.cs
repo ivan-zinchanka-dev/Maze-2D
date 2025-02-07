@@ -1,7 +1,9 @@
-﻿using DG.Tweening;
+﻿using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using Maze2D.Game;
 using Maze2D.Maze;
 using UnityEngine;
+using UnityEngine.Serialization;
 using VContainer;
 using Random = UnityEngine.Random;
 
@@ -11,16 +13,17 @@ namespace Maze2D.Player
     public class PlayerView : MonoBehaviour
     {
         [SerializeField] 
-        private float _speed = 3.0f;
-        
+        private float _stepDuration = 0.25f;
+        [SerializeField] 
+        private float _showHideDuration = 0.25f;
         [SerializeField] 
         private SpriteRenderer _spriteRenderer;
-
         [Inject] 
         private StorageService _storageService;
         
         private PlayerMap _map;
         private Vector2Int _currentPosInMap;
+        private Tween _showHideTween;
         private Tween _movingTween;
 
         private void Reset()
@@ -30,9 +33,39 @@ namespace Maze2D.Player
 
         private void Awake()
         {
-            _spriteRenderer.color = _storageService.GetPlayerColor();
+            Color initialColor = _storageService.GetPlayerColor();
+            initialColor.a = 0.0f;
+            _spriteRenderer.color = initialColor;
         }
 
+        public async UniTask ShowAsync()
+        {
+            if (_showHideTween.IsActive())
+            {
+                _showHideTween.Kill();
+            }
+
+            _showHideTween = _spriteRenderer.DOFade(1.0f, _showHideDuration)
+                .SetEase(Ease.OutSine)
+                .SetLink(gameObject);
+
+            await _showHideTween.ToUniTask();
+        }
+
+        public async UniTask HideAsync()
+        {
+            if (_showHideTween.IsActive())
+            {
+                _showHideTween.Kill();
+            }
+            
+            _showHideTween = _spriteRenderer.DOFade(0.0f, _showHideDuration)
+                .SetEase(Ease.InSine)
+                .SetLink(gameObject);
+
+            await _showHideTween.ToUniTask();
+        }
+        
         public void SetMap(PlayerMap map)
         {
             _map = map;
@@ -113,14 +146,13 @@ namespace Maze2D.Player
         private void Step(Vector2 target)
         {
             StopMovingIfNeed();
-            _movingTween = Step(target, _speed);
+            _movingTween = Step(target, _stepDuration);
         }
 
         private Tween Step(Vector2 target, float speed)
         {
             return transform
                 .DOMove(target, speed)
-                .SetSpeedBased()
                 .SetEase(Ease.Linear)
                 .SetLink(gameObject);
         }

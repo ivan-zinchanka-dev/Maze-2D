@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using Maze2D.CodeBase.View;
 using Maze2D.Management;
@@ -63,7 +64,7 @@ namespace Maze2D.UI
             switch (command)
             {
                 case PauseMenu.CommandKind.RestartLevel:
-                    _gameStateMachine.RestartLevel();
+                    RestartGameAsync();
                     break;
                 case PauseMenu.CommandKind.RegenerateLevel:
                     await _gameStateMachine.RegenerateLevel();
@@ -96,6 +97,17 @@ namespace Maze2D.UI
         {
             return HideView(_mainMenu, _viewHolders.Center, _viewHolders.Left)
                 .AppendCallback(() => _gameStateMachine.Play());
+        }
+        
+        private async void RestartGameAsync()
+        {
+            UniTask hidePlayerTask = _gameStateMachine.HidePlayerAsync();
+            UniTask hidePauseMenuTask = HideView(_pauseMenu, _viewHolders.Center, _viewHolders.Right).ToUniTask();
+
+            await UniTask.WhenAll(hidePlayerTask, hidePauseMenuTask);
+            
+            _gameStateMachine.RestartLevel();
+            await _gameStateMachine.ShowPlayerAsync();
         }
         
         private Sequence ResumeGame()

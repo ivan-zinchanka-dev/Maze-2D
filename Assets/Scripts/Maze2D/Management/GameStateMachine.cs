@@ -40,6 +40,7 @@ namespace Maze2D.Management
             _playerController = _playerFactory.CreatePlayer();
             _playerController.View.SetMap(map);
             _playerController.Finished.AddListener(OnMapFinished);
+            _playerController.View.ShowAsync().Forget();
             
             _currentState.Value = GameState.Played;
         }
@@ -79,12 +80,23 @@ namespace Maze2D.Management
             _playerController.enabled = false;
         }
 
-
+        public async UniTask HidePlayerAsync()
+        {
+            await _playerController.View.HideAsync();
+        }
+        
         public void RestartLevel()
         {
             _playerController.View.SetToMapCenter();
             _currentState.Value = GameState.Played;
         }
+        
+        public async UniTask ShowPlayerAsync()
+        {
+            await _playerController.View.ShowAsync();
+        }
+
+        
         
         public async UniTask RegenerateLevel()
         {

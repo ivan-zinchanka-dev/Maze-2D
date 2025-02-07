@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6155606732698221068}
   - component: {fileID: 600376692241185182}
   m_Layer: 0
-  m_Name: Player
+  m_Name: player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -98,7 +98,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3639c9a02474f929f6a041b8feb2b5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 3
+  _stepDuration: 0.25
+  _showHideDuration: 0.25
   _spriteRenderer: {fileID: 1331449691808506449}
 --- !u!114 &600376692241185182
 MonoBehaviour:
@@ -112,7 +113,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9490ccfb887450cbbe48c22cae6a682, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerView: {fileID: 6155606732698221068}
   <Finished>k__BackingField:
     m_PersistentCalls:
       m_Calls: []
-  _playerView: {fileID: 6155606732698221068}
