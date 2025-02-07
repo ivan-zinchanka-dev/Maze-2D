@@ -23,5 +23,16 @@ namespace Maze2D.Maze
                 .Join(_maze.DOLocalRotate(Vector3.zero, TransitionDuration).SetEase(Ease.OutCirc))
                 .SetLink(_maze.gameObject);
         }
+
+        public Tween Hide()
+        {
+            _maze.localScale = Vector3.one;
+            _maze.localEulerAngles = Vector3.zero;
+            
+            return DOTween.Sequence()
+                .Append(_maze.DOScale(Vector3.zero, TransitionDuration).SetEase(Ease.OutCirc))
+                .Join(_maze.DOLocalRotate(new Vector3(0f, 0f, 90f), TransitionDuration).SetEase(Ease.OutCirc))
+                .SetLink(_maze.gameObject);
+        }
     }
 }

@@ -17,7 +17,6 @@ namespace Maze2D.Maze
         private readonly Stack<Transform> _walls = new Stack<Transform>();
         private readonly MazeTransitionHandler _transitionHandler;
         
-        
         public async UniTask<PlayerMap> RenderMazeAsync(WallState[,] maze)
         {
             ClearWallsIfNeed();
@@ -62,7 +61,12 @@ namespace Maze2D.Maze
 
             await new MazeTransitionHandler(transform).Show().ToUniTask();
             
-            return new PlayerMap(maze, CellSize);
+            return new PlayerMap(maze, CellSize, ClearMazeAsync);
+        }
+
+        public async UniTask ClearMazeAsync()
+        {
+            await new MazeTransitionHandler(transform).Hide().ToUniTask();
         }
 
         private void RenderWall(Vector2 position, Vector3 eulerAngles)

@@ -70,6 +70,7 @@ namespace Maze2D.UI
                     await _gameStateMachine.RegenerateLevel();
                     break;
                 case PauseMenu.CommandKind.ToMainMenu:
+                    ExitGameAsync();
                     break;
                 case PauseMenu.CommandKind.Continue:
                     ResumeGame();
@@ -109,7 +110,15 @@ namespace Maze2D.UI
             _gameStateMachine.RestartLevel();
             await _gameStateMachine.ShowPlayerAsync();
         }
-        
+
+        private async void ExitGameAsync()
+        {
+            UniTask exitTask = _gameStateMachine.ExitAsync();
+            UniTask navigateTask = NavigateToMainMenu(_pauseMenu).ToUniTask();
+            
+            await UniTask.WhenAll(exitTask, navigateTask);
+        }
+
         private Sequence ResumeGame()
         {
             return HideView(_pauseMenu, _viewHolders.Center, _viewHolders.Right)

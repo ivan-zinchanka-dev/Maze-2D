@@ -26,6 +26,17 @@ namespace Maze2D.Player
         private Tween _showHideTween;
         private Tween _movingTween;
 
+        public PlayerMap Map
+        {
+            get => _map;
+
+            set
+            {
+                _map = value;
+                SetToMapCenter();
+            }
+        }
+
         private void Reset()
         {
             _spriteRenderer = GetComponent<SpriteRenderer>();
@@ -64,12 +75,6 @@ namespace Maze2D.Player
                 .SetLink(gameObject);
 
             await _showHideTween.ToUniTask();
-        }
-        
-        public void SetMap(PlayerMap map)
-        {
-            _map = map;
-            SetToMapCenter();
         }
 
         public void SetToMapCenter() {

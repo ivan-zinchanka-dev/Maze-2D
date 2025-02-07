@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using Maze2D.CodeBase.Controls;
 using Maze2D.CodeBase.View;
@@ -38,7 +39,7 @@ namespace Maze2D.Management
             PlayerMap map = await _mapGenerator.GeneratePlayerMap();
 
             _playerController = _playerFactory.CreatePlayer();
-            _playerController.View.SetMap(map);
+            _playerController.View.Map = map;
             _playerController.Finished.AddListener(OnMapFinished);
             _playerController.View.ShowAsync().Forget();
             
@@ -101,7 +102,7 @@ namespace Maze2D.Management
         public async UniTask RegenerateLevel()
         {
             PlayerMap map = await _mapGenerator.GeneratePlayerMap();
-            _playerController.View.SetMap(map);
+            _playerController.View.Map = map;
             _currentState.Value = GameState.Played;
         }
 
@@ -109,12 +110,17 @@ namespace Maze2D.Management
         {
             _currentState.Value = GameState.Played;
         }
-        
 
+        public async UniTask ExitAsync()
+        {
+            await _playerController.View.HideAsync();
+            await _playerController.View.Map.DisposeAsync();
+        }
+        
         private async void OnMapFinished()
         {
             PlayerMap map = await _mapGenerator.GeneratePlayerMap();
-            _playerController.View.SetMap(map);
+            _playerController.View.Map = map;
             
             _currentState.Value = GameState.Pending;
         }
