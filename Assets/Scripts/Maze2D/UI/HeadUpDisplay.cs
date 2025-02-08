@@ -57,7 +57,6 @@ namespace Maze2D.UI
                     break;
             }
         }
-
         
         private void ProcessPauseMenuCommand(PauseMenu.CommandKind command)
         {
@@ -97,7 +96,7 @@ namespace Maze2D.UI
         private Sequence StartGame()
         {
             return HideView(_mainMenu, _viewHolders.Center, _viewHolders.Left)
-                .AppendCallback(() => _gameStateMachine.PlayAsync().Forget());
+                .AppendCallback(() => _gameStateMachine.PlayAsync(NextLevelAsync).Forget());
         }
         
         private async void RestartGameAsync()
@@ -119,7 +118,14 @@ namespace Maze2D.UI
             await _gameStateMachine.ExitAsync();
             await hidePauseMenuTask;
             
-            await _gameStateMachine.PlayAsync();
+            await _gameStateMachine.PlayAsync(NextLevelAsync);
+        }
+        
+        private async void NextLevelAsync()
+        {
+            await _gameStateMachine.HidePlayerAsync();
+            await _gameStateMachine.ExitAsync();
+            await _gameStateMachine.PlayAsync(NextLevelAsync);
         }
 
         private async void ExitGameAsync()

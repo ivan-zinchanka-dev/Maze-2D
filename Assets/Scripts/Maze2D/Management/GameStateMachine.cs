@@ -8,6 +8,7 @@ using Maze2D.Maze;
 using Maze2D.Player;
 using UniRx;
 using UnityEngine;
+using UnityEngine.Events;
 using VContainer;
 
 namespace Maze2D.Management
@@ -28,14 +29,16 @@ namespace Maze2D.Management
         private IDisposable _stateChanging;
         
         public IReadOnlyReactiveProperty<GameState> CurrentState => _currentState;
+        public UnityEvent LevelFinished => _playerController.Finished;
         
-        public async UniTask PlayAsync()
+        public async UniTask PlayAsync(Action onMapFinished)
         {
             PlayerMap map = await _mapGenerator.GeneratePlayerMapAsync();
 
             _playerController = _playerFactory.CreatePlayer();
             _playerController.View.Map = map;
             _playerController.Finished.AddListener(OnMapFinished);
+            _playerController.Finished.AddListener(()=> onMapFinished?.Invoke());
             await _playerController.View.ShowAsync();
             
             _currentState.Value = GameState.Played;
@@ -91,16 +94,7 @@ namespace Maze2D.Management
         {
             await _playerController.View.ShowAsync();
         }
-
         
-        
-        public async UniTask RegenerateLevel()
-        {
-            PlayerMap map = await _mapGenerator.GeneratePlayerMapAsync();
-            _playerController.View.Map = map;
-            _currentState.Value = GameState.Played;
-        }
-
         public void Continue()
         {
             _currentState.Value = GameState.Played;
@@ -110,14 +104,13 @@ namespace Maze2D.Management
         {
             await _playerController.View.HideAsync();
             await _playerController.View.Map.DisposeAsync();
+            _playerController.Finished.RemoveAllListeners();
             Destroy(_playerController.gameObject);
         }
-        
-        private async void OnMapFinished()
+
+        private void OnMapFinished()
         {
-            PlayerMap map = await _mapGenerator.GeneratePlayerMapAsync();
-            _playerController.View.Map = map;
-            
+            _playerController.enabled = false;
             _currentState.Value = GameState.Pending;
         }
 
@@ -133,10 +126,10 @@ namespace Maze2D.Management
         {
             _stateChanging?.Dispose();
             
-            if (CurrentState.Value == GameState.Played || CurrentState.Value == GameState.Paused)
+            /*if (CurrentState.Value == GameState.Played || CurrentState.Value == GameState.Paused)
             {
                 _playerController.Finished.RemoveListener(OnMapFinished);
-            }
+            }*/
         }
     }
 }
