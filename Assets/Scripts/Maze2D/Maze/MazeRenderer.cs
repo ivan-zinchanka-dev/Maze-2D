@@ -2,14 +2,13 @@
 using Cysharp.Threading.Tasks;
 using Maze2D.Player;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace Maze2D.Maze
 {
     public class MazeRenderer : MonoBehaviour
     {
         [SerializeField] 
-        private Transform _wallPrefab = null;
+        private Transform _wallPrefab;
         
         [field: SerializeField]
         public float CellSize { get; private set; } = 1.0f;
@@ -20,6 +19,7 @@ namespace Maze2D.Maze
         public async UniTask<PlayerMap> RenderMazeAsync(WallState[,] maze)
         {
             ClearWallsIfNeed();
+            SetDefaults();
             
             int width = maze.GetLength(0);
             int height = maze.GetLength(1);
@@ -85,6 +85,12 @@ namespace Maze2D.Maze
                 Transform wall = _walls.Pop();
                 Destroy(wall.gameObject);
             }
+        }
+
+        private void SetDefaults()
+        {
+            transform.localScale = Vector3.one;
+            transform.eulerAngles = Vector3.zero;
         }
     }
 }

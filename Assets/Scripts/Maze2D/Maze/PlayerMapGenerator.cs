@@ -24,7 +24,7 @@ namespace Maze2D.Maze
             _mazeRenderer = mazeRenderer;
         }
 
-        public async UniTask<PlayerMap> GeneratePlayerMap()
+        public async UniTask<PlayerMap> GeneratePlayerMapAsync()
         {
             Difficulty difficultyLevel = _storageService.GetDifficulty();
             DifficultyConfig config = _difficultyConfigContainer.GetConfigByLevel(difficultyLevel);

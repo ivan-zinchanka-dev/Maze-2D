@@ -25,23 +25,18 @@ namespace Maze2D.Management
         
         private PlayerController _playerController;
         private readonly ReactiveProperty<GameState> _currentState = new (GameState.Pending);
-        
-        
-
         private IDisposable _stateChanging;
         
         public IReadOnlyReactiveProperty<GameState> CurrentState => _currentState;
-
-        //public IReactiveCommand<>
         
-        public async void Play()
+        public async UniTask PlayAsync()
         {
-            PlayerMap map = await _mapGenerator.GeneratePlayerMap();
+            PlayerMap map = await _mapGenerator.GeneratePlayerMapAsync();
 
             _playerController = _playerFactory.CreatePlayer();
             _playerController.View.Map = map;
             _playerController.Finished.AddListener(OnMapFinished);
-            _playerController.View.ShowAsync().Forget();
+            await _playerController.View.ShowAsync();
             
             _currentState.Value = GameState.Played;
         }
@@ -101,7 +96,7 @@ namespace Maze2D.Management
         
         public async UniTask RegenerateLevel()
         {
-            PlayerMap map = await _mapGenerator.GeneratePlayerMap();
+            PlayerMap map = await _mapGenerator.GeneratePlayerMapAsync();
             _playerController.View.Map = map;
             _currentState.Value = GameState.Played;
         }
@@ -115,11 +110,12 @@ namespace Maze2D.Management
         {
             await _playerController.View.HideAsync();
             await _playerController.View.Map.DisposeAsync();
+            Destroy(_playerController.gameObject);
         }
         
         private async void OnMapFinished()
         {
-            PlayerMap map = await _mapGenerator.GeneratePlayerMap();
+            PlayerMap map = await _mapGenerator.GeneratePlayerMapAsync();
             _playerController.View.Map = map;
             
             _currentState.Value = GameState.Pending;

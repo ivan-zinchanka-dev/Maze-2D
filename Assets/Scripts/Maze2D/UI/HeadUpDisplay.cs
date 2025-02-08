@@ -59,7 +59,7 @@ namespace Maze2D.UI
         }
 
         
-        private async void ProcessPauseMenuCommand(PauseMenu.CommandKind command)
+        private void ProcessPauseMenuCommand(PauseMenu.CommandKind command)
         {
             switch (command)
             {
@@ -67,7 +67,7 @@ namespace Maze2D.UI
                     RestartGameAsync();
                     break;
                 case PauseMenu.CommandKind.RegenerateLevel:
-                    await _gameStateMachine.RegenerateLevel();
+                    RegenerateLevelAsync();
                     break;
                 case PauseMenu.CommandKind.ToMainMenu:
                     ExitGameAsync();
@@ -97,7 +97,7 @@ namespace Maze2D.UI
         private Sequence StartGame()
         {
             return HideView(_mainMenu, _viewHolders.Center, _viewHolders.Left)
-                .AppendCallback(() => _gameStateMachine.Play());
+                .AppendCallback(() => _gameStateMachine.PlayAsync().Forget());
         }
         
         private async void RestartGameAsync()
@@ -109,6 +109,17 @@ namespace Maze2D.UI
             
             _gameStateMachine.RestartLevel();
             await _gameStateMachine.ShowPlayerAsync();
+        }
+
+        private async void RegenerateLevelAsync()
+        {
+            UniTask hidePauseMenuTask = HideView(_pauseMenu, _viewHolders.Center, _viewHolders.Right).ToUniTask();
+            await _gameStateMachine.HidePlayerAsync();
+            
+            await _gameStateMachine.ExitAsync();
+            await hidePauseMenuTask;
+            
+            await _gameStateMachine.PlayAsync();
         }
 
         private async void ExitGameAsync()
