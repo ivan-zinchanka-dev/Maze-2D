@@ -8,7 +8,8 @@ namespace Maze2D.Game
         private const string PlayerColorKey = "color";
         
         private readonly Difficulty _defaultDifficulty;
-        private static readonly Color DefaultColor = new Color(1.0f, 0.1680528f, 0.0f, 1.0f);
+        
+        private static readonly Color32 DefaultColor = new Color(1.0f, 0.1680528f, 0.0f, 1.0f);
 
         public StorageService(Difficulty defaultDifficulty)
         {
@@ -26,13 +27,13 @@ namespace Maze2D.Game
             return (Difficulty)PlayerPrefs.GetInt(DifficultyKey, (int)_defaultDifficulty);
         }
         
-        public void SetPlayerColor(Color playerColor)
+        public void SetPlayerColor(Color32 playerColor)
         {
             PlayerPrefs.SetString(PlayerColorKey, "#" + ColorUtility.ToHtmlStringRGBA(playerColor));
             PlayerPrefs.Save();
         }
         
-        public Color GetPlayerColor() {
+        public Color32 GetPlayerColor() {
 
             string htmlString = PlayerPrefs.GetString(PlayerColorKey, string.Empty);
             

@@ -39,10 +39,10 @@ namespace Maze2D.UI
         {
             _colorToggles = new List<ColorToggle>(
                 _playerColors.transform.GetComponentsInChildren<ColorToggle>(true));
-
-            Color playerColor = _storageService.GetPlayerColor();
-
-            int foundIndex = _colorToggles.FindIndex(toggle => toggle.Color.EqualsApproximately(playerColor));
+            
+            Color32 playerColor = _storageService.GetPlayerColor();
+            
+            int foundIndex = _colorToggles.FindIndex(toggle => playerColor.Equals((Color32)toggle.Color));
 
             if (foundIndex == -1)
             {
