@@ -689,7 +689,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfa265b581ff4a94862e50a098eb530b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _viewNavigationDuration: 0.75
+  _viewNavigationDuration: 0.4
   _viewHolders:
     Left: {fileID: 689867507}
     Center: {fileID: 2104978060}
