@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Maze2D.CodeBase.Controls;
+using Maze2D.CodeBase.Extensions;
 using Maze2D.Controls;
 using Maze2D.Extensions;
 using Maze2D.Game;
@@ -68,10 +69,7 @@ namespace Maze2D.UI
             Observable.EveryUpdate().Where(BackDemand)
                 .Subscribe(u => OnBackClick())
                 .AddTo(_disposables);
-        }
-
-        private void Start()
-        {
+            
             EventSystem.current.SetSelectedGameObject(_difficultySlider.gameObject);
         }
 
@@ -98,6 +96,7 @@ namespace Maze2D.UI
         private void OnDisable()
         {
             _disposables.Clear();
+            EventSystem.current.Release();
         }
     }
 }

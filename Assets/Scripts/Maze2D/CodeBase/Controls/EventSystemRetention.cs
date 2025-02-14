@@ -1,17 +1,16 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace Maze2D.CodeBase.Controls
 {
+    [RequireComponent(typeof(EventSystem))]
     internal class EventSystemRetention : MonoBehaviour
     {
         [SerializeField] 
         private EventSystem _eventSystem;
         private GameObject _selectedObject;
-        internal static EventSystemRetention Instance { get; private set; }
         
-        public void Release()
+        internal void Release()
         {
             _selectedObject = null;
             _eventSystem.SetSelectedGameObject(_selectedObject);
@@ -20,16 +19,6 @@ namespace Maze2D.CodeBase.Controls
         private void Reset()
         {
             _eventSystem = GetComponent<EventSystem>();
-        }
-
-        private void Awake()
-        {
-            Instance = this;
-        }
-
-        private void Start()
-        {
-            if (_eventSystem == null) throw new NullReferenceException("Event system not set!");
         }
 
         private void Update()

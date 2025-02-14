@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Maze2D.CodeBase.Extensions;
 using UniRx;
 using UnityEngine;
 using UnityEngine.Events;
@@ -35,10 +36,10 @@ namespace Maze2D.UI
             InvokeCommandOnClick(_playButton, CommandKind.Play);
             InvokeCommandOnClick(_settingsButton, CommandKind.Settings);
             InvokeCommandOnClick(_exitButton, CommandKind.Exit);
-
+            
             SelectDefaultObject();
         }
-        
+
         private void SelectDefaultObject()
         {
             EventSystem.current.SetSelectedGameObject(_playButton.gameObject);
@@ -55,6 +56,7 @@ namespace Maze2D.UI
         private void OnDisable()
         {
             _disposables.Clear();
+            EventSystem.current.Release();
         }
     }
 }

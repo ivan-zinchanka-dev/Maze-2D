@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Maze2D.CodeBase.Controls;
+using Maze2D.CodeBase.Extensions;
 using Maze2D.Controls;
 using UniRx;
 using UnityEngine;
@@ -74,6 +75,7 @@ namespace Maze2D.UI
         private void OnDisable()
         {
             _disposables.Clear();
+            EventSystem.current.Release();
         }
     }
 }
