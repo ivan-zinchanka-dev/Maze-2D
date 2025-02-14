@@ -13,7 +13,7 @@ namespace Maze2D.UI
     public class HeadUpDisplay : MonoBehaviour
     {
         [SerializeField] 
-        private float _viewNavigationDuration = 0.75f;
+        private float _viewNavigationDuration = 0.25f;
         [SerializeField] 
         private ViewHolders _viewHolders;
         
