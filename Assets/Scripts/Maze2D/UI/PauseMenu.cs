@@ -15,6 +15,8 @@ namespace Maze2D.UI
     public class PauseMenu : MonoBehaviour
     {
         [SerializeField] 
+        private Button _resumeButton;
+        [SerializeField] 
         private Button _restartLevelButton;
         [SerializeField] 
         private Button _newLevelButton;
@@ -42,13 +44,14 @@ namespace Maze2D.UI
 
         private void OnEnable()
         {
+            InvokeCommandOnClick(_resumeButton, CommandKind.Continue);
             InvokeCommandOnClick(_restartLevelButton, CommandKind.RestartLevel);
             InvokeCommandOnClick(_newLevelButton, CommandKind.RegenerateLevel);
             InvokeCommandOnClick(_mainMenuButton, CommandKind.ToMainMenu);
             
             Observable.EveryUpdate()
                 .Where(ResumeGameDemand)
-                .Subscribe(unit => CommandInvoked.Invoke(CommandKind.Continue))
+                .Subscribe(unit => EventSystem.current.Submit(_resumeButton.gameObject))
                 .AddTo(_disposables);
 
             SelectDefaultObject();
@@ -56,7 +59,7 @@ namespace Maze2D.UI
         
         private void SelectDefaultObject()
         {
-            EventSystem.current.SetSelectedGameObject(_restartLevelButton.gameObject);
+            EventSystem.current.SetSelectedGameObject(_resumeButton.gameObject);
         }
         
         private void InvokeCommandOnClick(Button button, CommandKind commandKind)
