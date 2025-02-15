@@ -573,7 +573,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _audioClips:
-  - {fileID: 8300000, guid: dbe482305ee730a469c1ac46d12ad2c3, type: 3}
+  - {fileID: 8300000, guid: 6c01b6670a80df1498c7536383952880, type: 3}
 --- !u!1 &2865575041129825278
 GameObject:
   m_ObjectHideFlags: 0
@@ -725,7 +725,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _audioClips:
-  - {fileID: 8300000, guid: 4024f919706a0714ea70d26e2ebe351f, type: 3}
+  - {fileID: 8300000, guid: 6c01b6670a80df1498c7536383952880, type: 3}
 --- !u!1 &2865575041509869431
 GameObject:
   m_ObjectHideFlags: 0

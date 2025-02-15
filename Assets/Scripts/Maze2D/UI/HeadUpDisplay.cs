@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using Maze2D.Audio;
 using Maze2D.CodeBase.View;
 using Maze2D.Management;
 using UniRx;
@@ -16,12 +17,17 @@ namespace Maze2D.UI
         private float _viewNavigationDuration = 0.25f;
         [SerializeField] 
         private ViewHolders _viewHolders;
+        [SerializeField] 
+        private AudioClip _regenerationClip;
+        [SerializeField] 
+        private AudioClip _pauseClip;
         
         [Inject] 
         private ViewFactory _viewFactory;
         [Inject] 
         private GameStateMachine _gameStateMachine;
-        
+        [Inject] 
+        private AudioManager _audioManager;
         
         private MainMenu _mainMenu;
         private PauseMenu _pauseMenu;
@@ -118,6 +124,8 @@ namespace Maze2D.UI
             await _gameStateMachine.ExitAsync();
             await hidePauseMenuTask;
             
+            _audioManager.PlayOneShot(_regenerationClip);       //TODO Refactor
+            
             await _gameStateMachine.PlayAsync(NextLevelAsync);
         }
         
@@ -149,6 +157,8 @@ namespace Maze2D.UI
                 _pauseMenu = _viewFactory.CreateView<PauseMenu>();
                 _pauseMenu.CommandInvoked.AddListener(ProcessPauseMenuCommand);
             }
+            
+            _audioManager.PlayOneShot(_pauseClip);
             
             return ShowView(_pauseMenu, _viewHolders.Right, _viewHolders.Center);
         }

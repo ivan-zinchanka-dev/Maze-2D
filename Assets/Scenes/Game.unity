@@ -838,6 +838,8 @@ MonoBehaviour:
     Left: {fileID: 689867507}
     Center: {fileID: 2104978060}
     Right: {fileID: 172683272}
+  _regenerationClip: {fileID: 8300000, guid: 4024f919706a0714ea70d26e2ebe351f, type: 3}
+  _pauseClip: {fileID: 8300000, guid: dbe482305ee730a469c1ac46d12ad2c3, type: 3}
 --- !u!1 &2104978059
 GameObject:
   m_ObjectHideFlags: 0
