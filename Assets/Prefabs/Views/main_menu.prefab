@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 6194506306716341454}
   - component: {fileID: 6194506306716341455}
   - component: {fileID: 6194506306716341448}
+  - component: {fileID: 671064749391829596}
+  - component: {fileID: 8219896266618804092}
   m_Layer: 5
   m_Name: StartButton
   m_TagString: Untagged
@@ -122,6 +124,32 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &671064749391829596
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6194506306716341450}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bde200c4b0249c9b0e06f0af2234099, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _audioClips: []
+--- !u!114 &8219896266618804092
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6194506306716341450}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07836e1b8dde4fc3a678b216e024b8ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _audioClips: []
 --- !u!1 &6194506306771305326
 GameObject:
   m_ObjectHideFlags: 0
@@ -269,6 +297,8 @@ GameObject:
   - component: {fileID: 6194506307170914580}
   - component: {fileID: 6194506307170914581}
   - component: {fileID: 6194506307170914582}
+  - component: {fileID: 8291281438896399015}
+  - component: {fileID: 7286625198212030617}
   m_Layer: 5
   m_Name: SettingsButton
   m_TagString: Untagged
@@ -379,6 +409,32 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &8291281438896399015
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6194506307170914576}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bde200c4b0249c9b0e06f0af2234099, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _audioClips: []
+--- !u!114 &7286625198212030617
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6194506307170914576}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07836e1b8dde4fc3a678b216e024b8ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _audioClips: []
 --- !u!1 &6194506307491057766
 GameObject:
   m_ObjectHideFlags: 0
@@ -526,6 +582,8 @@ GameObject:
   - component: {fileID: 6194506307775555977}
   - component: {fileID: 6194506307775555978}
   - component: {fileID: 6194506307775555979}
+  - component: {fileID: 2213989383471099948}
+  - component: {fileID: 7082419921465288512}
   m_Layer: 5
   m_Name: ExitButton
   m_TagString: Untagged
@@ -636,6 +694,32 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &2213989383471099948
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6194506307775556021}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bde200c4b0249c9b0e06f0af2234099, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _audioClips: []
+--- !u!114 &7082419921465288512
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6194506307775556021}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07836e1b8dde4fc3a678b216e024b8ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _audioClips: []
 --- !u!1 &6194506307806531702
 GameObject:
   m_ObjectHideFlags: 0
