@@ -67,7 +67,7 @@ namespace Maze2D.UI
             _backButton.OnClickAsObservable().Subscribe(u => OnBackClick()).AddTo(_disposables);
             
             Observable.EveryUpdate().Where(BackDemand)
-                .Subscribe(u => OnBackClick())
+                .Subscribe(u => EventSystem.current.Submit(_backButton.gameObject))
                 .AddTo(_disposables);
             
             EventSystem.current.SetSelectedGameObject(_difficultySlider.gameObject);

@@ -116,7 +116,7 @@ namespace Maze2D.Management
 
         private void Update()
         {
-            if (_inputSystemService.GetButtonDown(InputActions.Pause))
+            if (_currentState.Value != GameState.Pending && _inputSystemService.GetButtonDown(InputActions.Pause))
             {
                 _currentState.Value = GameState.Paused;
             }

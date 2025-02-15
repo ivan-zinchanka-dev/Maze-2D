@@ -1,4 +1,5 @@
 ﻿using Maze2D.CodeBase.Controls;
+using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace Maze2D.CodeBase.Extensions
@@ -11,6 +12,11 @@ namespace Maze2D.CodeBase.Extensions
             {
                 retention.Release();
             }
+        }
+
+        public static void Submit(this EventSystem eventSystem, GameObject gameObject)
+        {
+            ExecuteEvents.Execute(gameObject, new BaseEventData(eventSystem), ExecuteEvents.submitHandler);
         }
     }
 }
