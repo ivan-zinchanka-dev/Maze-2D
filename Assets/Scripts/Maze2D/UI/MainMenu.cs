@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Maze2D.CodeBase.Extensions;
 using UniRx;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -18,39 +17,38 @@ namespace Maze2D.UI
         [SerializeField] 
         private Button _exitButton;
         
-        [field: SerializeField] 
-        public UnityEvent<CommandKind> CommandInvoked { get; private set; }
-        
         private readonly ICollection<IDisposable> _disposables = new CompositeDisposable();
-
-        public enum CommandKind
+        
+        public IReactiveCommand<Unit> PlayCommand { get; private set; }
+        public IReactiveCommand<Unit> SettingsCommand { get; private set; }
+        public IReactiveCommand<Unit> ExitCommand { get; private set; }
+        
+        private void Awake()
         {
-            None = 0,
-            Play = 1,
-            Settings = 2,
-            Exit = 3,
+            PlayCommand = new ReactiveCommand<Unit>();
+            SettingsCommand = new ReactiveCommand<Unit>();
+            ExitCommand = new ReactiveCommand<Unit>();
         }
 
         private void OnEnable()
         {
-            InvokeCommandOnClick(_playButton, CommandKind.Play);
-            InvokeCommandOnClick(_settingsButton, CommandKind.Settings);
-            InvokeCommandOnClick(_exitButton, CommandKind.Exit);
+            Bind(_playButton, PlayCommand);
+            Bind(_settingsButton, SettingsCommand);
+            Bind(_exitButton, ExitCommand);
             
             SelectDefaultObject();
         }
 
+        private void Bind(Button button, IReactiveCommand<Unit> command)
+        {
+            button.OnClickAsObservable()
+                .Subscribe(unit => command.Execute(unit))
+                .AddTo(_disposables);
+        }
+        
         private void SelectDefaultObject()
         {
             EventSystem.current.SetSelectedGameObject(_playButton.gameObject);
-        }
-        
-        private void InvokeCommandOnClick(Button button, CommandKind commandKind)
-        {
-            button
-                .OnClickAsObservable()
-                .Subscribe(unit => CommandInvoked.Invoke(commandKind))
-                .AddTo(_disposables);
         }
 
         private void OnDisable()

@@ -51,7 +51,7 @@ namespace Maze2D.UI
 
         private void OnEnable()
         {
-            _mainMenu.CommandInvoked.AddListener(ProcessMainMenuCommand);
+            SubscribeToMainMenuCommands(_mainMenu);
         }
 
         private void OnGameStateChanged(GameState gameState)
@@ -83,20 +83,11 @@ namespace Maze2D.UI
             }
         }
         
-        private void ProcessMainMenuCommand(MainMenu.CommandKind command)
+        private void SubscribeToMainMenuCommands(MainMenu mainMenu)
         {
-            switch (command)
-            {
-                case MainMenu.CommandKind.Play:
-                    StartGame();
-                    break;
-                case MainMenu.CommandKind.Settings:
-                    NavigateToSettings(_mainMenu);
-                    break;
-                case MainMenu.CommandKind.Exit:
-                    Application.Quit();
-                    break;
-            }
+            mainMenu.PlayCommand.Subscribe(u => StartGame());
+            mainMenu.SettingsCommand.Subscribe(u => NavigateToSettings(_mainMenu));
+            mainMenu.ExitCommand.Subscribe(u => Application.Quit());
         }
         
         private Sequence StartGame()
@@ -181,7 +172,7 @@ namespace Maze2D.UI
             if (_mainMenu == null)
             {
                 _mainMenu = _viewFactory.CreateView<MainMenu>();
-                _mainMenu.CommandInvoked.AddListener(ProcessMainMenuCommand);
+                SubscribeToMainMenuCommands(_mainMenu);
             }
 
             return DOTween.Sequence()
