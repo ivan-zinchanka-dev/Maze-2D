@@ -13,8 +13,15 @@ namespace Maze2D.Audio
         private List<AudioClip> _audioClips;
         [Inject] 
         private AudioManager _audioManager;
-        
-        public void OnSelect(BaseEventData eventData) => PlayRandomClip();
+
+        public void OnSelect(BaseEventData eventData)
+        {
+            if (eventData is not PointerEventData)
+            {
+                PlayRandomClip();
+            }
+        }
+
         public void OnPointerEnter(PointerEventData eventData) => PlayRandomClip();
         
         private void PlayRandomClip()
