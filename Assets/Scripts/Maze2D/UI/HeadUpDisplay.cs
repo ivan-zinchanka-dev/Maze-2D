@@ -33,6 +33,8 @@ namespace Maze2D.UI
         private PauseMenu _pauseMenu;
         private readonly ICollection<IDisposable> _disposables = new CompositeDisposable();
         
+        private readonly ICollection<IDisposable> _mainMenuDisposables = new CompositeDisposable();
+        private readonly ICollection<IDisposable> _pauseMenuDisposables = new CompositeDisposable();
         
         [Serializable]
         private struct ViewHolders {
@@ -51,9 +53,24 @@ namespace Maze2D.UI
 
         private void OnEnable()
         {
-            SubscribeToMainMenuCommands(_mainMenu);
+            SubscribeToMainMenuCommands(_mainMenu, _mainMenuDisposables);
         }
 
+        private void SubscribeToMainMenuCommands(MainMenu mainMenu, ICollection<IDisposable> disposables)
+        {
+            mainMenu.PlayCommand.Subscribe(u => StartGame()).AddTo(disposables);
+            mainMenu.SettingsCommand.Subscribe(u => NavigateToSettings()).AddTo(disposables);
+            mainMenu.ExitCommand.Subscribe(u => Application.Quit()).AddTo(disposables);
+        }
+        
+        private void SubscribeToPauseMenuCommands(PauseMenu pauseMenu, ICollection<IDisposable> disposables)
+        {
+            pauseMenu.ResumeCommand.Subscribe(u => ResumeGame()).AddTo(disposables);
+            pauseMenu.RestartLevelCommand.Subscribe(u => RestartGameAsync()).AddTo(disposables);
+            pauseMenu.NewLevelCommand.Subscribe(u => RegenerateLevelAsync()).AddTo(disposables);
+            pauseMenu.MainMenuCommand.Subscribe(u => ExitGameAsync()).AddTo(disposables);
+        }
+        
         private void OnGameStateChanged(GameState gameState)
         {
             switch (gameState)
@@ -64,40 +81,20 @@ namespace Maze2D.UI
             }
         }
         
-        private void ProcessPauseMenuCommand(PauseMenu.CommandKind command)
-        {
-            switch (command)
-            {
-                case PauseMenu.CommandKind.RestartLevel:
-                    RestartGameAsync();
-                    break;
-                case PauseMenu.CommandKind.RegenerateLevel:
-                    RegenerateLevelAsync();
-                    break;
-                case PauseMenu.CommandKind.ToMainMenu:
-                    ExitGameAsync();
-                    break;
-                case PauseMenu.CommandKind.Continue:
-                    ResumeGame();
-                    break;
-            }
-        }
         
-        private void SubscribeToMainMenuCommands(MainMenu mainMenu)
-        {
-            mainMenu.PlayCommand.Subscribe(u => StartGame());
-            mainMenu.SettingsCommand.Subscribe(u => NavigateToSettings(_mainMenu));
-            mainMenu.ExitCommand.Subscribe(u => Application.Quit());
-        }
         
         private Sequence StartGame()
         {
+            _mainMenuDisposables.Clear();
+            
             return HideView(_mainMenu, _viewHolders.Center, _viewHolders.Left)
                 .AppendCallback(() => _gameStateMachine.PlayAsync(NextLevelAsync).Forget());
         }
         
         private async void RestartGameAsync()
         {
+            _pauseMenuDisposables.Clear();
+            
             UniTask hidePlayerTask = _gameStateMachine.HidePlayerAsync();
             UniTask hidePauseMenuTask = HideView(_pauseMenu, _viewHolders.Center, _viewHolders.Right).ToUniTask();
 
@@ -109,6 +106,8 @@ namespace Maze2D.UI
 
         private async void RegenerateLevelAsync()
         {
+            _pauseMenuDisposables.Clear();
+            
             UniTask hidePauseMenuTask = HideView(_pauseMenu, _viewHolders.Center, _viewHolders.Right).ToUniTask();
             await _gameStateMachine.HidePlayerAsync();
             
@@ -129,6 +128,8 @@ namespace Maze2D.UI
 
         private async void ExitGameAsync()
         {
+            _pauseMenuDisposables.Clear();
+            
             UniTask exitTask = _gameStateMachine.ExitAsync();
             UniTask navigateTask = NavigateToMainMenu(_pauseMenu).ToUniTask();
             
@@ -137,6 +138,8 @@ namespace Maze2D.UI
 
         private Sequence ResumeGame()
         {
+            _pauseMenuDisposables.Clear();
+            
             return HideView(_pauseMenu, _viewHolders.Center, _viewHolders.Right)
                 .AppendCallback(() => _gameStateMachine.Continue());
         }
@@ -146,7 +149,7 @@ namespace Maze2D.UI
             if (_pauseMenu == null)
             {
                 _pauseMenu = _viewFactory.CreateView<PauseMenu>();
-                _pauseMenu.CommandInvoked.AddListener(ProcessPauseMenuCommand);
+                SubscribeToPauseMenuCommands(_pauseMenu, _pauseMenuDisposables);
             }
             
             _audioManager.PlayOneShot(_pauseClip);
@@ -154,7 +157,7 @@ namespace Maze2D.UI
             return ShowView(_pauseMenu, _viewHolders.Right, _viewHolders.Center);
         }
 
-        private Sequence NavigateToSettings(MonoBehaviour currentView)
+        private Sequence NavigateToSettings()
         {
             SettingsMenu settingsMenu = _viewFactory.CreateView<SettingsMenu>();
             settingsMenu.OnBack.AddListener(() =>
@@ -162,8 +165,10 @@ namespace Maze2D.UI
                 NavigateToMainMenu(settingsMenu);
             });
             
+            _mainMenuDisposables.Clear();
+            
             return DOTween.Sequence()
-                .Append(HideView(currentView, _viewHolders.Center, _viewHolders.Left))
+                .Append(HideView(_mainMenu, _viewHolders.Center, _viewHolders.Left))
                 .Join(ShowView(settingsMenu, _viewHolders.Right, _viewHolders.Center));
         }
 
@@ -172,7 +177,7 @@ namespace Maze2D.UI
             if (_mainMenu == null)
             {
                 _mainMenu = _viewFactory.CreateView<MainMenu>();
-                SubscribeToMainMenuCommands(_mainMenu);
+                SubscribeToMainMenuCommands(_mainMenu, _mainMenuDisposables);
             }
 
             return DOTween.Sequence()
@@ -214,6 +219,8 @@ namespace Maze2D.UI
 
         private void OnDisable()
         {
+            _mainMenuDisposables.Clear();
+            _pauseMenuDisposables.Clear();
             _disposables.Clear();
         }
     }

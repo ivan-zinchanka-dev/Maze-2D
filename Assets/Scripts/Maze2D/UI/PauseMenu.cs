@@ -23,14 +23,15 @@ namespace Maze2D.UI
         [SerializeField] 
         private Button _mainMenuButton;
         
-        [field: SerializeField] 
-        public UnityEvent<CommandKind> CommandInvoked { get; private set; }
-        
-        
         [Inject] 
         private IInputSystemService _inputSystemService;
         
         private readonly ICollection<IDisposable> _disposables = new CompositeDisposable();
+        
+        public IReactiveCommand<Unit> ResumeCommand { get; private set; }
+        public IReactiveCommand<Unit> RestartLevelCommand { get; private set; }
+        public IReactiveCommand<Unit> NewLevelCommand { get; private set; }
+        public IReactiveCommand<Unit> MainMenuCommand { get; private set; }
         
         // TODO Try to use ReactiveCommand
         public enum CommandKind
@@ -41,13 +42,21 @@ namespace Maze2D.UI
             ToMainMenu = 3,
             Continue = 4,
         }
+        
+        private void Awake()
+        {
+            ResumeCommand = new ReactiveCommand<Unit>();
+            RestartLevelCommand = new ReactiveCommand<Unit>();
+            NewLevelCommand = new ReactiveCommand<Unit>();
+            MainMenuCommand = new ReactiveCommand<Unit>();
+        }
 
         private void OnEnable()
         {
-            InvokeCommandOnClick(_resumeButton, CommandKind.Continue);
-            InvokeCommandOnClick(_restartLevelButton, CommandKind.RestartLevel);
-            InvokeCommandOnClick(_newLevelButton, CommandKind.RegenerateLevel);
-            InvokeCommandOnClick(_mainMenuButton, CommandKind.ToMainMenu);
+            Bind(_resumeButton, ResumeCommand);
+            Bind(_restartLevelButton, RestartLevelCommand);
+            Bind(_newLevelButton, NewLevelCommand);
+            Bind(_mainMenuButton, MainMenuCommand);
             
             Observable.EveryUpdate()
                 .Where(ResumeGameDemand)
@@ -57,19 +66,18 @@ namespace Maze2D.UI
             SelectDefaultObject();
         }
         
+        private void Bind(Button button, IReactiveCommand<Unit> command)
+        {
+            button.OnClickAsObservable()
+                .Subscribe(unit => command.Execute(unit))
+                .AddTo(_disposables);
+        }
+        
         private void SelectDefaultObject()
         {
             EventSystem.current.SetSelectedGameObject(_resumeButton.gameObject);
         }
         
-        private void InvokeCommandOnClick(Button button, CommandKind commandKind)
-        {
-            button
-                .OnClickAsObservable()
-                .Subscribe(unit => CommandInvoked.Invoke(commandKind))
-                .AddTo(_disposables);
-        }
-
         private bool ResumeGameDemand(long unit)
         {
             return _inputSystemService.GetButtonDown(InputActions.Pause);
