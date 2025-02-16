@@ -1,5 +1,5 @@
 ﻿using System;
-using Maze2D.Game;
+using Maze2D.Domain;
 
 namespace Maze2D.Configs
 {

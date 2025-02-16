@@ -1,6 +1,6 @@
 ﻿using Cysharp.Threading.Tasks;
 using DG.Tweening;
-using Maze2D.Game;
+using Maze2D.Domain;
 using Maze2D.Maze;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -44,7 +44,7 @@ namespace Maze2D.Player
 
         private void Awake()
         {
-            Color initialColor = _storageService.GetPlayerColor();
+            Color initialColor = _storageService.Settings.Value.PlayerColor;
             initialColor.a = 0.0f;
             _spriteRenderer.color = initialColor;
         }

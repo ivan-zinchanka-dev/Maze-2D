@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Maze2D.Game;
+using Maze2D.Domain;
 using UnityEngine;
 
 namespace Maze2D.Configs

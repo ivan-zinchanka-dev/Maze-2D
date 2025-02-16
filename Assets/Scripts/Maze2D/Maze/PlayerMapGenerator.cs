@@ -1,6 +1,6 @@
 ﻿using Cysharp.Threading.Tasks;
 using Maze2D.Configs;
-using Maze2D.Game;
+using Maze2D.Domain;
 using Maze2D.Player;
 
 namespace Maze2D.Maze
@@ -26,7 +26,7 @@ namespace Maze2D.Maze
 
         public async UniTask<PlayerMap> GeneratePlayerMapAsync()
         {
-            Difficulty difficultyLevel = _storageService.GetDifficulty();
+            Difficulty difficultyLevel = _storageService.Settings.Value.GameDifficulty;
             DifficultyConfig config = _difficultyConfigContainer.GetConfigByLevel(difficultyLevel);
             
             WallState[,] maze = _mazeGenerator.Generate(config.MazeWidth, config.MazeHeight);

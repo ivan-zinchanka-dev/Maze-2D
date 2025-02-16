@@ -2,7 +2,7 @@
 using Maze2D.CodeBase.Controls;
 using Maze2D.CodeBase.View;
 using Maze2D.Configs;
-using Maze2D.Game;
+using Maze2D.Domain;
 using Maze2D.Maze;
 using Maze2D.Player;
 using UnityEngine;
@@ -32,7 +32,7 @@ namespace Maze2D.Management
         protected override void Configure(IContainerBuilder builder)
         {
             builder.RegisterInstance<IInputSystemService>(new InputSystemService(true));
-            builder.RegisterInstance<StorageService>(new StorageService(Difficulty.Easy));
+            builder.RegisterInstance<StorageService>(new StorageService());
             builder.RegisterInstance<ViewFactory>(_viewFactory);
             builder.RegisterInstance<DifficultyConfigContainer>(_difficultyConfigContainer);
             builder.RegisterInstance<AudioManager>(_audioManager);

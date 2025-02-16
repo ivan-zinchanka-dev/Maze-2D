@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using Maze2D.CodeBase.Controls;
 using Maze2D.CodeBase.Extensions;
 using Maze2D.Controls;
-using Maze2D.Extensions;
-using Maze2D.Game;
+using Maze2D.Domain;
 using UniRx;
 using UnityEngine;
 using UnityEngine.Events;
@@ -23,16 +22,19 @@ namespace Maze2D.UI
         [Inject] private IInputSystemService _inputSystemService;
         [Inject] private StorageService _storageService;
         
+        private Settings _settings;
         private List<ColorToggle> _colorToggles;
         
         private readonly ICollection<IDisposable> _disposables = new CompositeDisposable();
 
         [field: SerializeField] 
         public UnityEvent OnBack { get; private set; }
-
+        
         private void Awake()
         {
-            _difficultySlider.value = (float)_storageService.GetDifficulty();
+            _settings = _storageService.Settings.Value;
+            
+            _difficultySlider.value = (float)_settings.GameDifficulty;
             InitializePlayerColors();
         }
 
@@ -41,8 +43,7 @@ namespace Maze2D.UI
             _colorToggles = new List<ColorToggle>(
                 _playerColors.transform.GetComponentsInChildren<ColorToggle>(true));
             
-            Color32 playerColor = _storageService.GetPlayerColor();
-            
+            Color32 playerColor = _settings.PlayerColor;
             int foundIndex = _colorToggles.FindIndex(toggle => playerColor.Equals((Color32)toggle.Color));
 
             if (foundIndex == -1)
@@ -69,18 +70,25 @@ namespace Maze2D.UI
             Observable.EveryUpdate().Where(BackDemand)
                 .Subscribe(u => EventSystem.current.Submit(_backButton.gameObject))
                 .AddTo(_disposables);
-            
-            EventSystem.current.SetSelectedGameObject(_difficultySlider.gameObject);
+
+            SelectDefaultObject();
         }
 
+        private void SelectDefaultObject()
+        {
+            EventSystem.current.SetSelectedGameObject(_difficultySlider.gameObject);
+        }
+        
         private void OnDifficultyChanged(float value)
         {
-            _storageService.SetDifficulty((Difficulty)value);
+            _settings.GameDifficulty = (Difficulty)value;
+            _settings.Save();
         }
         
         private void OnPlayerColorSelected(Color color)
         {
-            _storageService.SetPlayerColor(color);
+            _settings.PlayerColor = color;
+            _settings.Save();
         }
 
         private void OnBackClick()
