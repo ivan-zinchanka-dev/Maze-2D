@@ -5,7 +5,6 @@ using Maze2D.Configs;
 using Maze2D.Game;
 using Maze2D.Maze;
 using Maze2D.Player;
-using Maze2D.UI;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -13,9 +12,9 @@ using VContainer.Unity;
 namespace Maze2D.Management
 {
     public class GameSceneScope : LifetimeScope
-    {
+    { 
         [SerializeField] 
-        private HeadUpDisplay _headUpDisplay;
+        private GameNavigationManager _gameNavigationManager;
         [SerializeField] 
         private GameStateMachine _gameStateMachine;
         [SerializeField] 
@@ -38,11 +37,10 @@ namespace Maze2D.Management
             builder.RegisterInstance<DifficultyConfigContainer>(_difficultyConfigContainer);
             builder.RegisterInstance<AudioManager>(_audioManager);
 
-            builder.RegisterComponent<HeadUpDisplay>(_headUpDisplay);
+            builder.RegisterComponent<GameNavigationManager>(_gameNavigationManager);
             builder.RegisterComponent<GameStateMachine>(_gameStateMachine);
             builder.RegisterComponent<MazeRenderer>(_mazeRenderer);
             builder.RegisterComponent<PlayerControllerFactory>(_playerControllerFactory);
-            
             
             builder.Register<MazeGenerator>(Lifetime.Singleton);
             builder.Register<PlayerMapGenerator>(Lifetime.Singleton);

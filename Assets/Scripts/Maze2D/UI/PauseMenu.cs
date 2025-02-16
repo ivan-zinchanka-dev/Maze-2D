@@ -33,16 +33,6 @@ namespace Maze2D.UI
         public IReactiveCommand<Unit> NewLevelCommand { get; private set; }
         public IReactiveCommand<Unit> MainMenuCommand { get; private set; }
         
-        // TODO Try to use ReactiveCommand
-        public enum CommandKind
-        {
-            None = 0,
-            RestartLevel = 1,
-            RegenerateLevel = 2,
-            ToMainMenu = 3,
-            Continue = 4,
-        }
-        
         private void Awake()
         {
             ResumeCommand = new ReactiveCommand<Unit>();
