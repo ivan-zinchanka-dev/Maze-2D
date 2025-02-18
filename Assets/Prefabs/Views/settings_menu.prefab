@@ -2316,6 +2316,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _difficultySlider: {fileID: 6812298214957853958}
   _playerColors: {fileID: 6812298214532560758}
+  _musicVolumeSlider: {fileID: 1873276461188646538}
+  _soundsVolumeSlider: {fileID: 8041550295666079677}
   _backButton: {fileID: 6812298216320162181}
   <OnBack>k__BackingField:
     m_PersistentCalls:

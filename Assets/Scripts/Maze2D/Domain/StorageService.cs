@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using UniRx;
 using UnityEngine;
 
 namespace Maze2D.Domain
 {
-    public class StorageService
+    public class StorageService : IDisposable
     {
-        // TODO Add sounds settings
         private const string DifficultyKey = "difficulty";
         private const string PlayerColorKey = "color";
         private const string MusicVolumeKey = "music_volume";
@@ -18,6 +19,8 @@ namespace Maze2D.Domain
 
         public Lazy<Settings> Settings { get; private set; }
         
+        private readonly ICollection<IDisposable> _disposables = new CompositeDisposable();
+        
         public StorageService()
         {
             Settings = new Lazy<Settings>(CreateSettingsModel);
@@ -25,24 +28,28 @@ namespace Maze2D.Domain
         
         private Settings CreateSettingsModel()
         {
-            return new Settings(
+            var settings = new Settings(
                 ReadGameDifficulty(),
                 ReadPlayerColor(), 
-                Defaults.MusicVolume, 
-                Defaults.SoundsVolume,
+                ReadMusicVolume(), 
+                ReadSoundsVolume(),
                 SaveSettingsModel);
+
+            settings.GameDifficulty.Subscribe(WriteGameDifficulty).AddTo(_disposables);
+            settings.PlayerColor.Subscribe(WritePlayerColor).AddTo(_disposables);
+            settings.MusicVolume.Subscribe(WriteMusicVolume).AddTo(_disposables);
+            settings.SoundsVolume.Subscribe(WriteSoundsVolume).AddTo(_disposables);
+            return settings;
         }
         
         private void SaveSettingsModel()
         {
-            WriteDifficulty(Settings.Value.GameDifficulty);
-            WritePlayerColor(Settings.Value.PlayerColor);
             SaveWritings();
         }
 
         private Difficulty ReadGameDifficulty() {
             
-            return (Difficulty)PlayerPrefs.GetInt(DifficultyKey, (int)Defaults.GameDifficulty);
+            return (Difficulty)PlayerPrefs.GetInt(DifficultyKey, (int)Defaults.GameDifficulty.Value);
         }
         
         private Color32 ReadPlayerColor() {
@@ -54,10 +61,20 @@ namespace Maze2D.Domain
                 return result;
             }
 
-            return Defaults.PlayerColor;
+            return Defaults.PlayerColor.Value;
+        }
+
+        private float ReadMusicVolume()
+        {
+            return PlayerPrefs.GetFloat(MusicVolumeKey, Defaults.MusicVolume.Value);
         }
         
-        private void WriteDifficulty(Difficulty difficultyLevel) {
+        private float ReadSoundsVolume()
+        {
+            return PlayerPrefs.GetFloat(SoundsVolumeKey, Defaults.SoundsVolume.Value);
+        }
+
+        private void WriteGameDifficulty(Difficulty difficultyLevel) {
 
             PlayerPrefs.SetInt(DifficultyKey, (int)difficultyLevel);
         }
@@ -66,10 +83,25 @@ namespace Maze2D.Domain
         {
             PlayerPrefs.SetString(PlayerColorKey, "#" + ColorUtility.ToHtmlStringRGBA(playerColor));
         }
+        
+        private void WriteMusicVolume(float volume)
+        {
+            PlayerPrefs.SetFloat(MusicVolumeKey, volume);
+        }
+        
+        private void WriteSoundsVolume(float volume)
+        {
+            PlayerPrefs.SetFloat(SoundsVolumeKey, volume);
+        }
 
         private void SaveWritings()
         {
             PlayerPrefs.Save();
+        }
+
+        public void Dispose()
+        {
+            _disposables.Clear();
         }
     }
 }

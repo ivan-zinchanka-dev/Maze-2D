@@ -26,7 +26,7 @@ namespace Maze2D.Maze
 
         public async UniTask<PlayerMap> GeneratePlayerMapAsync()
         {
-            Difficulty difficultyLevel = _storageService.Settings.Value.GameDifficulty;
+            Difficulty difficultyLevel = _storageService.Settings.Value.GameDifficulty.Value;
             DifficultyConfig config = _difficultyConfigContainer.GetConfigByLevel(difficultyLevel);
             
             WallState[,] maze = _mazeGenerator.Generate(config.MazeWidth, config.MazeHeight);

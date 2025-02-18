@@ -15,12 +15,21 @@ namespace Maze2D.UI
 {
     public class SettingsMenu : MonoBehaviour
     {
-        [SerializeField] private Slider _difficultySlider;
-        [SerializeField] private ToggleGroup _playerColors;
-        [SerializeField] private Button _backButton;
+        [SerializeField] 
+        private Slider _difficultySlider;
+        [SerializeField] 
+        private ToggleGroup _playerColors;
+        [SerializeField] 
+        private Slider _musicVolumeSlider;
+        [SerializeField] 
+        private Slider _soundsVolumeSlider;
+        [SerializeField] 
+        private Button _backButton;
         
-        [Inject] private IInputSystemService _inputSystemService;
-        [Inject] private StorageService _storageService;
+        [Inject] 
+        private IInputSystemService _inputSystemService;
+        [Inject] 
+        private StorageService _storageService;
         
         private Settings _settings;
         private List<ColorToggle> _colorToggles;
@@ -34,8 +43,9 @@ namespace Maze2D.UI
         {
             _settings = _storageService.Settings.Value;
             
-            _difficultySlider.value = (float)_settings.GameDifficulty;
+            _difficultySlider.value = (float)_settings.GameDifficulty.Value;
             InitializePlayerColors();
+            InitializeAudioSettings();
         }
 
         private void InitializePlayerColors()
@@ -43,7 +53,7 @@ namespace Maze2D.UI
             _colorToggles = new List<ColorToggle>(
                 _playerColors.transform.GetComponentsInChildren<ColorToggle>(true));
             
-            Color32 playerColor = _settings.PlayerColor;
+            Color32 playerColor = _settings.PlayerColor.Value;
             int foundIndex = _colorToggles.FindIndex(toggle => playerColor.Equals((Color32)toggle.Color));
 
             if (foundIndex == -1)
@@ -56,14 +66,26 @@ namespace Maze2D.UI
             }
         }
 
-        private void OnEnable()
+        private void InitializeAudioSettings()
         {
-            _difficultySlider.OnValueChangedAsObservable().Subscribe(OnDifficultyChanged).AddTo(_disposables);
+            _musicVolumeSlider.value = _settings.MusicVolume.Value;
+            _soundsVolumeSlider.value = _settings.SoundsVolume.Value;
+        }
 
+        private void AddPlayerColorListeners()
+        {
             foreach (ColorToggle toggle in _colorToggles)
             {
                 toggle.OnColorSelected.AsObservable().Subscribe(OnPlayerColorSelected).AddTo(_disposables);
             }
+        }
+
+        private void OnEnable()
+        {
+            _difficultySlider.OnValueChangedAsObservable().Subscribe(OnDifficultySelected).AddTo(_disposables);
+            AddPlayerColorListeners();
+            _musicVolumeSlider.OnValueChangedAsObservable().Subscribe(OnMusicVolumeSelected).AddTo(_disposables);
+            _soundsVolumeSlider.OnValueChangedAsObservable().Subscribe(OnSoundsVolumeSelected).AddTo(_disposables);
             
             _backButton.OnClickAsObservable().Subscribe(u => OnBackClick()).AddTo(_disposables);
             
@@ -79,15 +101,27 @@ namespace Maze2D.UI
             EventSystem.current.SetSelectedGameObject(_difficultySlider.gameObject);
         }
         
-        private void OnDifficultyChanged(float value)
+        private void OnDifficultySelected(float value)
         {
-            _settings.GameDifficulty = (Difficulty)value;
+            _settings.GameDifficulty.Value = (Difficulty)value;
             _settings.Save();
         }
         
         private void OnPlayerColorSelected(Color color)
         {
-            _settings.PlayerColor = color;
+            _settings.PlayerColor.Value = color;
+            _settings.Save();
+        }
+
+        private void OnMusicVolumeSelected(float musicVolume)
+        {
+            _settings.MusicVolume.Value = musicVolume;
+            _settings.Save();
+        }
+        
+        private void OnSoundsVolumeSelected(float soundsVolume)
+        {
+            _settings.SoundsVolume.Value = soundsVolume;
             _settings.Save();
         }
 

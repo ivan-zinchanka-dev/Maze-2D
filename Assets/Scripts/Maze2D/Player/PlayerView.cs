@@ -44,7 +44,7 @@ namespace Maze2D.Player
 
         private void Awake()
         {
-            Color initialColor = _storageService.Settings.Value.PlayerColor;
+            Color initialColor = _storageService.Settings.Value.PlayerColor.Value;
             initialColor.a = 0.0f;
             _spriteRenderer.color = initialColor;
         }
