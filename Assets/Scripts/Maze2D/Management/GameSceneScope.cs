@@ -28,11 +28,13 @@ namespace Maze2D.Management
         private ViewFactory _viewFactory;
         [SerializeField] 
         private DifficultyConfigContainer _difficultyConfigContainer;
+        [SerializeField] 
+        private DefaultSettingsConfig _defaultSettingsConfig;
         
         protected override void Configure(IContainerBuilder builder)
         {
             builder.RegisterInstance<IInputSystemService>(new InputSystemService(true));
-            builder.RegisterInstance<StorageService>(new StorageService());
+            builder.RegisterInstance<StorageService>(new StorageService(_defaultSettingsConfig.Settings));
             builder.RegisterInstance<ViewFactory>(_viewFactory);
             builder.RegisterInstance<DifficultyConfigContainer>(_difficultyConfigContainer);
             builder.RegisterInstance<AudioManager>(_audioManager);

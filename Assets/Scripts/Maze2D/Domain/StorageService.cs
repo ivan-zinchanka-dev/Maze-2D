@@ -12,17 +12,14 @@ namespace Maze2D.Domain
         private const string MusicVolumeKey = "music_volume";
         private const string SoundsVolumeKey = "sounds_volume";
         
-        private static readonly Settings Defaults = new Settings(
-            Difficulty.Easy,
-            new Color(1.0f, 0.1680528f, 0.0f, 1.0f),
-            0.8f, 1.0f);
-
+        private readonly Settings _defaults;
         public Lazy<Settings> Settings { get; private set; }
         
         private readonly ICollection<IDisposable> _disposables = new CompositeDisposable();
         
-        public StorageService()
+        public StorageService(Settings defaults)
         {
+            _defaults = defaults;
             Settings = new Lazy<Settings>(CreateSettingsModel);
         }
         
@@ -49,7 +46,7 @@ namespace Maze2D.Domain
 
         private Difficulty ReadGameDifficulty() {
             
-            return (Difficulty)PlayerPrefs.GetInt(DifficultyKey, (int)Defaults.GameDifficulty.Value);
+            return (Difficulty)PlayerPrefs.GetInt(DifficultyKey, (int)_defaults.GameDifficulty.Value);
         }
         
         private Color32 ReadPlayerColor() {
@@ -61,17 +58,17 @@ namespace Maze2D.Domain
                 return result;
             }
 
-            return Defaults.PlayerColor.Value;
+            return _defaults.PlayerColor.Value;
         }
 
         private float ReadMusicVolume()
         {
-            return PlayerPrefs.GetFloat(MusicVolumeKey, Defaults.MusicVolume.Value);
+            return PlayerPrefs.GetFloat(MusicVolumeKey, _defaults.MusicVolume.Value);
         }
         
         private float ReadSoundsVolume()
         {
-            return PlayerPrefs.GetFloat(SoundsVolumeKey, Defaults.SoundsVolume.Value);
+            return PlayerPrefs.GetFloat(SoundsVolumeKey, _defaults.SoundsVolume.Value);
         }
 
         private void WriteGameDifficulty(Difficulty difficultyLevel) {

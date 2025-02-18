@@ -876,6 +876,7 @@ MonoBehaviour:
   _audioManager: {fileID: 461760354}
   _viewFactory: {fileID: 1176036562}
   _difficultyConfigContainer: {fileID: 11400000, guid: 77eba8f50a3f73f4098010af747f784f, type: 2}
+  _defaultSettingsConfig: {fileID: 11400000, guid: e6a954e59d0d8664db7d098795ee76f5, type: 2}
 --- !u!4 &1833461628
 Transform:
   m_ObjectHideFlags: 0
