@@ -104,25 +104,21 @@ namespace Maze2D.UI
         private void OnDifficultySelected(float value)
         {
             _settings.GameDifficulty.Value = (Difficulty)value;
-            _settings.Save();
         }
         
         private void OnPlayerColorSelected(Color color)
         {
             _settings.PlayerColor.Value = color;
-            _settings.Save();
         }
 
         private void OnMusicVolumeSelected(float musicVolume)
         {
             _settings.MusicVolume.Value = musicVolume;
-            _settings.Save();
         }
         
         private void OnSoundsVolumeSelected(float soundsVolume)
         {
             _settings.SoundsVolume.Value = soundsVolume;
-            _settings.Save();
         }
 
         private void OnBackClick()

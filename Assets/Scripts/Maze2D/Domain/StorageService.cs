@@ -29,8 +29,7 @@ namespace Maze2D.Domain
                 ReadGameDifficulty(),
                 ReadPlayerColor(), 
                 ReadMusicVolume(), 
-                ReadSoundsVolume(),
-                SaveSettingsModel);
+                ReadSoundsVolume());
 
             settings.GameDifficulty.Subscribe(WriteGameDifficulty).AddTo(_disposables);
             settings.PlayerColor.Subscribe(WritePlayerColor).AddTo(_disposables);
@@ -39,11 +38,6 @@ namespace Maze2D.Domain
             return settings;
         }
         
-        private void SaveSettingsModel()
-        {
-            SaveWritings();
-        }
-
         private Difficulty ReadGameDifficulty() {
             
             return (Difficulty)PlayerPrefs.GetInt(DifficultyKey, (int)_defaults.GameDifficulty.Value);
@@ -74,28 +68,27 @@ namespace Maze2D.Domain
         private void WriteGameDifficulty(Difficulty difficultyLevel) {
 
             PlayerPrefs.SetInt(DifficultyKey, (int)difficultyLevel);
+            PlayerPrefs.Save();
         }
         
         private void WritePlayerColor(Color32 playerColor)
         {
             PlayerPrefs.SetString(PlayerColorKey, "#" + ColorUtility.ToHtmlStringRGBA(playerColor));
+            PlayerPrefs.Save();
         }
         
         private void WriteMusicVolume(float volume)
         {
             PlayerPrefs.SetFloat(MusicVolumeKey, volume);
+            PlayerPrefs.Save();
         }
         
         private void WriteSoundsVolume(float volume)
         {
             PlayerPrefs.SetFloat(SoundsVolumeKey, volume);
-        }
-
-        private void SaveWritings()
-        {
             PlayerPrefs.Save();
         }
-
+        
         public void Dispose()
         {
             _disposables.Clear();

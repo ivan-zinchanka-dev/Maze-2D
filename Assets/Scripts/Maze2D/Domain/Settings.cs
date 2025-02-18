@@ -1,5 +1,4 @@
-﻿using System;
-using UniRx;
+﻿using UniRx;
 using UnityEngine;
 
 namespace Maze2D.Domain
@@ -16,22 +15,16 @@ namespace Maze2D.Domain
         public IReactiveProperty<float> MusicVolume => _musicVolume;
         public IReactiveProperty<float> SoundsVolume =>_soundsVolume;
         
-        private event Action OnSave;
-        
         public Settings(
             Difficulty gameDifficulty, 
             Color32 playerColor, 
             float musicVolume, 
-            float soundsVolume,
-            Action onSave = null)
+            float soundsVolume)
         {
             _gameDifficulty = new ReactiveProperty<Difficulty>(gameDifficulty);
             _playerColor = new ReactiveProperty<Color32>(playerColor);
             _musicVolume = new ReactiveProperty<float>(musicVolume);
             _soundsVolume = new ReactiveProperty<float>(soundsVolume);
-            OnSave = onSave;
         }
-        
-        public void Save() => OnSave?.Invoke();
     }
 }
