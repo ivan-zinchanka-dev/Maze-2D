@@ -5,6 +5,7 @@ namespace Maze2D.Domain
 {
     public class StorageService
     {
+        // TODO Add sounds settings
         private const string DifficultyKey = "difficulty";
         private const string PlayerColorKey = "color";
         private const string MusicVolumeKey = "music_volume";
