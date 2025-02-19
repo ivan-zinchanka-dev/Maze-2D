@@ -112,8 +112,6 @@ namespace Maze2D.Management
         {
             _playerController.enabled = false;
             _currentState.Value = GameState.Pending;
-            
-            // TODO sound on starting
         }
 
         private void Update()

@@ -129,6 +129,8 @@ namespace Maze2D.Management
             await _gameStateMachine.HidePlayerAsync();
             await _gameStateMachine.ExitAsync();
             await _gameStateMachine.PlayAsync(NextLevelAsync);
+            
+            OnLevelRegeneration?.Invoke();
         }
 
         private async void ExitGameAsync()
