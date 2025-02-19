@@ -28,10 +28,9 @@ namespace Maze2D.UI
         
         [Inject] 
         private IInputSystemService _inputSystemService;
-        [Inject] 
-        private StorageService _storageService;
+        [Inject]
+        private Lazy<Settings> _settings;
         
-        private Settings _settings;
         private List<ColorToggle> _colorToggles;
         
         private readonly ICollection<IDisposable> _disposables = new CompositeDisposable();
@@ -41,9 +40,7 @@ namespace Maze2D.UI
         
         private void Awake()
         {
-            _settings = _storageService.Settings.Value;
-            
-            _difficultySlider.value = (float)_settings.GameDifficulty.Value;
+            _difficultySlider.value = (float)_settings.Value.GameDifficulty.Value;
             InitializePlayerColors();
             InitializeAudioSettings();
         }
@@ -53,7 +50,7 @@ namespace Maze2D.UI
             _colorToggles = new List<ColorToggle>(
                 _playerColors.transform.GetComponentsInChildren<ColorToggle>(true));
             
-            Color32 playerColor = _settings.PlayerColor.Value;
+            Color32 playerColor = _settings.Value.PlayerColor.Value;
             int foundIndex = _colorToggles.FindIndex(toggle => playerColor.Equals((Color32)toggle.Color));
 
             if (foundIndex == -1)
@@ -68,8 +65,8 @@ namespace Maze2D.UI
 
         private void InitializeAudioSettings()
         {
-            _musicVolumeSlider.value = _settings.MusicVolume.Value;
-            _soundsVolumeSlider.value = _settings.SoundsVolume.Value;
+            _musicVolumeSlider.value = _settings.Value.MusicVolume.Value;
+            _soundsVolumeSlider.value = _settings.Value.SoundsVolume.Value;
         }
 
         private void AddPlayerColorListeners()
@@ -103,22 +100,22 @@ namespace Maze2D.UI
         
         private void OnDifficultySelected(float value)
         {
-            _settings.GameDifficulty.Value = (Difficulty)value;
+            _settings.Value.GameDifficulty.Value = (Difficulty)value;
         }
         
         private void OnPlayerColorSelected(Color color)
         {
-            _settings.PlayerColor.Value = color;
+            _settings.Value.PlayerColor.Value = color;
         }
 
         private void OnMusicVolumeSelected(float musicVolume)
         {
-            _settings.MusicVolume.Value = musicVolume;
+            _settings.Value.MusicVolume.Value = musicVolume;
         }
         
         private void OnSoundsVolumeSelected(float soundsVolume)
         {
-            _settings.SoundsVolume.Value = soundsVolume;
+            _settings.Value.SoundsVolume.Value = soundsVolume;
         }
 
         private void OnBackClick()

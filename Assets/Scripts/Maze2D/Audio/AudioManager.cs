@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Cysharp.Threading.Tasks;
 using Maze2D.Domain;
 using UniRx;
 using UnityEngine;
@@ -19,21 +18,19 @@ namespace Maze2D.Audio
         private AudioMixer _mainAudioMixer;
 
         [Inject] 
-        private StorageService _storageService;
-        private Settings _settings;
+        private Lazy<Settings> _settings;
 
         private readonly ICollection<IDisposable> _disposables = new CompositeDisposable();
         
         private void Awake()
         {
             _mainAudioMixer = _mainAudioSource.outputAudioMixerGroup.audioMixer;
-            _settings = _storageService.Settings.Value;
         }
 
         private void OnEnable()
         {
-            _settings.MusicVolume.Subscribe(SetMusicVolumeToMixer).AddTo(_disposables);
-            _settings.SoundsVolume.Subscribe(SetSoundsVolumeToMixer).AddTo(_disposables);
+            _settings.Value.MusicVolume.Subscribe(SetMusicVolumeToMixer).AddTo(_disposables);
+            _settings.Value.SoundsVolume.Subscribe(SetSoundsVolumeToMixer).AddTo(_disposables);
         }
 
         private void Start()
@@ -58,8 +55,8 @@ namespace Maze2D.Audio
 
         private void SetAudioSettingsToMixer()
         {
-            SetMusicVolumeToMixer(_settings.MusicVolume.Value);
-            SetSoundsVolumeToMixer(_settings.SoundsVolume.Value);
+            SetMusicVolumeToMixer(_settings.Value.MusicVolume.Value);
+            SetSoundsVolumeToMixer(_settings.Value.SoundsVolume.Value);
         }
 
         private static float LinearToDecibel(float linear)

@@ -1,4 +1,5 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using System;
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using Maze2D.Domain;
 using Maze2D.Maze;
@@ -18,8 +19,9 @@ namespace Maze2D.Player
         private float _showHideDuration = 0.25f;
         [SerializeField] 
         private SpriteRenderer _spriteRenderer;
+        
         [Inject] 
-        private StorageService _storageService;
+        private Lazy<Settings> _settings;
         
         private PlayerMap _map;
         private Vector2Int _currentPosInMap;
@@ -44,7 +46,7 @@ namespace Maze2D.Player
 
         private void Awake()
         {
-            Color initialColor = _storageService.Settings.Value.PlayerColor.Value;
+            Color initialColor = _settings.Value.PlayerColor.Value;
             initialColor.a = 0.0f;
             _spriteRenderer.color = initialColor;
         }

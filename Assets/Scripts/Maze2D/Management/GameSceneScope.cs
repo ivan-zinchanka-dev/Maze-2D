@@ -1,4 +1,5 @@
-﻿using Maze2D.Audio;
+﻿using System;
+using Maze2D.Audio;
 using Maze2D.CodeBase.Controls;
 using Maze2D.CodeBase.View;
 using Maze2D.Configs;
@@ -33,8 +34,12 @@ namespace Maze2D.Management
         
         protected override void Configure(IContainerBuilder builder)
         {
+            StorageService storageService = new StorageService(_defaultSettingsConfig.Settings);
+            
+            builder.RegisterInstance<StorageService>(storageService);
+            builder.RegisterInstance<Lazy<Settings>>(storageService.Settings);
             builder.RegisterInstance<IInputSystemService>(new InputSystemService(true));
-            builder.RegisterInstance<StorageService>(new StorageService(_defaultSettingsConfig.Settings));
+            
             builder.RegisterInstance<ViewFactory>(_viewFactory);
             builder.RegisterInstance<DifficultyConfigContainer>(_difficultyConfigContainer);
             builder.RegisterInstance<AudioManager>(_audioManager);
