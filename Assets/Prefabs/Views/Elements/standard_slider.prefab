@@ -398,6 +398,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _audioClips:
   - {fileID: 8300000, guid: 1e00058e369dc2e42820c8d793075cc9, type: 3}
+  _cooldownSeconds: 0.15
 --- !u!1 &9003948192048926174
 GameObject:
   m_ObjectHideFlags: 0
