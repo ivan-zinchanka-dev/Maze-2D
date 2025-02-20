@@ -193,7 +193,7 @@ GameObject:
   - component: {fileID: 6812298214532560757}
   - component: {fileID: 6812298214532560758}
   m_Layer: 5
-  m_Name: player_colors
+  m_Name: color_toggles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -368,7 +368,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5170140445171851893, guid: d2ccf16506e4b88418c183c311b9b6b4, type: 3}
       propertyPath: m_Name
-      value: player_color_label
+      value: color_label
       objectReference: {fileID: 0}
     - target: {fileID: 5170140445171851898, guid: d2ccf16506e4b88418c183c311b9b6b4, type: 3}
       propertyPath: m_Pivot.x
@@ -647,7 +647,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4977523880389948544, guid: f75a797910a480a4580f86b323233fc2, type: 3}
       propertyPath: m_Name
-      value: sounds_volume_slider
+      value: volume_slider
       objectReference: {fileID: 0}
     - target: {fileID: 6993154631054324414, guid: f75a797910a480a4580f86b323233fc2, type: 3}
       propertyPath: m_AnchorMax.x
@@ -905,7 +905,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5170140445171851893, guid: d2ccf16506e4b88418c183c311b9b6b4, type: 3}
       propertyPath: m_Name
-      value: sounds_volume_label
+      value: volume_label
       objectReference: {fileID: 0}
     - target: {fileID: 5170140445171851898, guid: d2ccf16506e4b88418c183c311b9b6b4, type: 3}
       propertyPath: m_Pivot.x
@@ -1282,7 +1282,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4977523880389948544, guid: f75a797910a480a4580f86b323233fc2, type: 3}
       propertyPath: m_Name
-      value: music_volume_slider
+      value: volume_slider
       objectReference: {fileID: 0}
     - target: {fileID: 6993154631054324414, guid: f75a797910a480a4580f86b323233fc2, type: 3}
       propertyPath: m_AnchorMax.x
@@ -1806,7 +1806,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5170140445171851893, guid: d2ccf16506e4b88418c183c311b9b6b4, type: 3}
       propertyPath: m_Name
-      value: music_volume_label
+      value: volume_label
       objectReference: {fileID: 0}
     - target: {fileID: 5170140445171851898, guid: d2ccf16506e4b88418c183c311b9b6b4, type: 3}
       propertyPath: m_Pivot.x
