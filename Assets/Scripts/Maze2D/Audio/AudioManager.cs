@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Maze2D.Domain;
 using UniRx;
 using UnityEngine;
@@ -8,6 +9,7 @@ using VContainer;
 
 namespace Maze2D.Audio
 {
+    // TODO Add ILogger
     public class AudioManager : MonoBehaviour
     {
         private const string MusicVolumeKey = "music_volume";
@@ -16,15 +18,31 @@ namespace Maze2D.Audio
         [SerializeField] 
         private AudioSource _mainAudioSource;
         private AudioMixer _mainAudioMixer;
-
+        [SerializeField] 
+        private int _maxConcurrentSounds = 250;
+        
         [Inject] 
         private Lazy<Settings> _settings;
 
+        private readonly LinkedList<Task> _audioTasks = new LinkedList<Task>();
         private readonly ICollection<IDisposable> _disposables = new CompositeDisposable();
+        
+        public void PlayOneShot(AudioClip audioClip)
+        {
+            if (_audioTasks.Count > _maxConcurrentSounds)
+            {
+                return;
+            }
+
+            AddAudioTask(audioClip.length);
+            
+            _mainAudioSource.PlayOneShot(audioClip);
+        }
         
         private void Awake()
         {
             _mainAudioMixer = _mainAudioSource.outputAudioMixerGroup.audioMixer;
+            _mainAudioMixer.updateMode = AudioMixerUpdateMode.UnscaledTime;
         }
 
         private void OnEnable()
@@ -38,9 +56,15 @@ namespace Maze2D.Audio
             SetAudioSettingsToMixer();
         }
 
-        public void PlayOneShot(AudioClip audioClip)
+        private void AddAudioTask(float clipDurationSeconds)
         {
-            _mainAudioSource.PlayOneShot(audioClip);
+            Task audioTask = Task.Delay(TimeSpan.FromSeconds(clipDurationSeconds));
+            audioTask.ContinueWith(task =>
+            {
+                _audioTasks.Remove(audioTask);
+            }, TaskScheduler.FromCurrentSynchronizationContext());
+            
+            _audioTasks.AddLast(audioTask);
         }
 
         private void SetMusicVolumeToMixer(float volume)

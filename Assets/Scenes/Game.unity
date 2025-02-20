@@ -383,6 +383,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mainAudioSource: {fileID: 461760353}
+  _maxConcurrentSounds: 20
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
