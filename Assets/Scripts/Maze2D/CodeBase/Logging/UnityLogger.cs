@@ -25,6 +25,8 @@ namespace Maze2D.CodeBase.Logging
         private string BuildMessage(Exception exception, string message, params object[] args)
         {
             StringBuilder messageBuilder = new StringBuilder();
+            messageBuilder.Append($"<{typeof(TCategory).FullName}> ");
+            
             bool hasMessage = !string.IsNullOrEmpty(message);
             
             if (hasMessage)
