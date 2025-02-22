@@ -5,10 +5,6 @@ using UnityEngine;
 
 namespace Maze2D.CodeBase.Logging
 {
-    //TODO LogConfig
-    // Add Unity
-    // Add File (roll, limit)
-    // Set output template, use json serialization?
     public class UnityLogger<TCategory> : ILogger<TCategory> 
     {
         public void Log(LogEventLevel logLevel, string message, params object[] args)
@@ -18,14 +14,14 @@ namespace Maze2D.CodeBase.Logging
         
         public void Log(LogEventLevel logLevel, Exception exception, string message, params object[] args)
         {
-            string builtMessage = BuildMessage(exception, message, args);
+            string builtMessage = BuildMessage(logLevel, exception, message, args);
             Debug.unityLogger.Log(ToLogType(logLevel), builtMessage);
         }
         
-        private string BuildMessage(Exception exception, string message, params object[] args)
+        private string BuildMessage(LogEventLevel logLevel, Exception exception, string message, params object[] args)
         {
             StringBuilder messageBuilder = new StringBuilder();
-            messageBuilder.Append($"<{typeof(TCategory).FullName}> ");
+            messageBuilder.Append($"[{logLevel}] <{typeof(TCategory).FullName}> ");
             
             bool hasMessage = !string.IsNullOrEmpty(message);
             

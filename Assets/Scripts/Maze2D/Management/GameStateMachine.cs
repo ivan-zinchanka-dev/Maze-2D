@@ -70,25 +70,15 @@ namespace Maze2D.Management
             switch (currentState)
             {
                 case GameState.Played:
-                    OnPlayed();
+                    _playerController.enabled = true;
                     break;
                 
                 case GameState.Paused:
-                    OnPaused();
+                    _playerController.enabled = false;
                     break;
             }
             
             _logger.LogDebug($"Game state: {currentState}");
-        }
-
-        private void OnPlayed()
-        {
-            _playerController.enabled = true;
-        }
-        
-        private void OnPaused()
-        {
-            _playerController.enabled = false;
         }
 
         public async UniTask HidePlayerAsync()
@@ -125,10 +115,12 @@ namespace Maze2D.Management
             _playerController.enabled = false;
             _currentState.Value = GameState.Pending;
         }
-
+        
+        // TODO Observable
         private void Update()
         {
-            if (_currentState.Value != GameState.Pending && _inputSystemService.GetButtonDown(InputActions.Pause))
+            if (_currentState.Value != GameState.Pending && 
+                _inputSystemService.GetButtonDown(InputActions.Pause))
             {
                 _currentState.Value = GameState.Paused;
             }
