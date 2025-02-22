@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Threading.Tasks;
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Maze2D.CodeBase.Controls;
 using Maze2D.CodeBase.Logging.Contracts;
@@ -29,7 +29,10 @@ namespace Maze2D.Management
         
         private PlayerController _playerController;
         private readonly ReactiveProperty<GameState> _currentState = new (GameState.Pending);
-        private IDisposable _stateChanging;
+        
+        private IDisposable _stateChangeListener;
+        private readonly ICollection<IDisposable> _playerInputListeners = new CompositeDisposable();
+        
         private ILogger<GameStateMachine> _logger;
         
         public IReadOnlyReactiveProperty<GameState> CurrentState => _currentState;
@@ -56,7 +59,7 @@ namespace Maze2D.Management
 
         private void Awake()
         {
-            _stateChanging = _currentState.Pairwise().Subscribe(pair =>
+            _stateChangeListener = _currentState.Pairwise().Subscribe(pair =>
             {
                 if (pair.Previous != pair.Current)
                 {
@@ -65,6 +68,20 @@ namespace Maze2D.Management
             });
         }
 
+        private void OnEnable()
+        {
+            Observable.EveryUpdate()
+                .Where(IsPauseDemand)
+                .Subscribe(unit => _currentState.Value = GameState.Paused)
+                .AddTo(_playerInputListeners);
+        }
+
+        private bool IsPauseDemand(long unit)
+        {
+            return _currentState.Value != GameState.Pending && 
+                   _inputSystemService.GetButtonDown(InputActions.Pause);
+        }
+        
         private void OnStateChanged(GameState currentState)
         {
             switch (currentState)
@@ -116,24 +133,14 @@ namespace Maze2D.Management
             _currentState.Value = GameState.Pending;
         }
         
-        // TODO Observable
-        private void Update()
+        private void OnDisable()
         {
-            if (_currentState.Value != GameState.Pending && 
-                _inputSystemService.GetButtonDown(InputActions.Pause))
-            {
-                _currentState.Value = GameState.Paused;
-            }
+            _playerInputListeners.Clear();
         }
 
         private void OnDestroy()
         {
-            _stateChanging?.Dispose();
-            
-            /*if (CurrentState.Value == GameState.Played || CurrentState.Value == GameState.Paused)
-            {
-                _playerController.Finished.RemoveListener(OnMapFinished);
-            }*/
+            _stateChangeListener?.Dispose();
         }
     }
 }
