@@ -33,12 +33,14 @@ namespace Maze2D.Management
         private DifficultyConfigContainer _difficultyConfigContainer;
         [SerializeField] 
         private DefaultSettingsConfig _defaultSettingsConfig;
+        [SerializeField] 
+        private LogEventLevel _minimumLogLevel = LogEventLevel.Debug;
         
         protected override void Configure(IContainerBuilder builder)
         {
             StorageService storageService = new StorageService(_defaultSettingsConfig.Settings);
 
-            builder.Register<ILoggerFactory, UnityLoggerFactory>(Lifetime.Singleton);
+            builder.RegisterInstance<ILoggerFactory>(new UnityLoggerFactory(_minimumLogLevel));
             
             builder.RegisterInstance<StorageService>(storageService);
             builder.RegisterInstance<Lazy<Settings>>(storageService.Settings);

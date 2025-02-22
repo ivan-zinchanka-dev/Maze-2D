@@ -5,8 +5,15 @@ using UnityEngine;
 
 namespace Maze2D.CodeBase.Logging
 {
-    public class UnityLogger<TCategory> : ILogger<TCategory> 
+    public class UnityLogger<TCategory> : ILogger<TCategory>
     {
+        private readonly LogEventLevel _minimumLevel;
+
+        public UnityLogger(LogEventLevel minimumLevel = LogEventLevel.Verbose)
+        {
+            _minimumLevel = minimumLevel;
+        }
+
         public void Log(LogEventLevel logLevel, string message, params object[] args)
         {
             Log(logLevel, null, message, args);
@@ -14,8 +21,11 @@ namespace Maze2D.CodeBase.Logging
         
         public void Log(LogEventLevel logLevel, Exception exception, string message, params object[] args)
         {
-            string builtMessage = BuildMessage(logLevel, exception, message, args);
-            Debug.unityLogger.Log(ToLogType(logLevel), builtMessage);
+            if (logLevel >= _minimumLevel)
+            {
+                string builtMessage = BuildMessage(logLevel, exception, message, args);
+                Debug.unityLogger.Log(ToLogType(logLevel), builtMessage);
+            }
         }
         
         private string BuildMessage(LogEventLevel logLevel, Exception exception, string message, params object[] args)
