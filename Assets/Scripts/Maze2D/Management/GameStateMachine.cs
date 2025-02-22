@@ -2,6 +2,9 @@
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using Maze2D.CodeBase.Controls;
+using Maze2D.CodeBase.Logging.Contracts;
+using Maze2D.CodeBase.Logging.Contracts.Generic;
+using Maze2D.CodeBase.Logging.Extensions;
 using Maze2D.CodeBase.View;
 using Maze2D.Controls;
 using Maze2D.Maze;
@@ -27,9 +30,16 @@ namespace Maze2D.Management
         private PlayerController _playerController;
         private readonly ReactiveProperty<GameState> _currentState = new (GameState.Pending);
         private IDisposable _stateChanging;
+        private ILogger<GameStateMachine> _logger;
         
         public IReadOnlyReactiveProperty<GameState> CurrentState => _currentState;
         public UnityEvent LevelFinished => _playerController.Finished;
+        
+        [Inject]
+        private void InjectLogger(ILoggerFactory loggerFactory)
+        {
+            _logger = loggerFactory.CreateLogger<GameStateMachine>();
+        }
         
         public async UniTask PlayAsync(Action onMapFinished)
         {
@@ -67,6 +77,8 @@ namespace Maze2D.Management
                     OnPaused();
                     break;
             }
+            
+            _logger.LogDebug($"Game state: {currentState}");
         }
 
         private void OnPlayed()

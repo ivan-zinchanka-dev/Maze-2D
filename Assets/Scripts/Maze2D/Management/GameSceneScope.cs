@@ -1,6 +1,8 @@
 ﻿using System;
 using Maze2D.Audio;
 using Maze2D.CodeBase.Controls;
+using Maze2D.CodeBase.Logging;
+using Maze2D.CodeBase.Logging.Contracts;
 using Maze2D.CodeBase.View;
 using Maze2D.Configs;
 using Maze2D.Domain;
@@ -35,6 +37,8 @@ namespace Maze2D.Management
         protected override void Configure(IContainerBuilder builder)
         {
             StorageService storageService = new StorageService(_defaultSettingsConfig.Settings);
+
+            builder.Register<ILoggerFactory, UnityLoggerFactory>(Lifetime.Singleton);
             
             builder.RegisterInstance<StorageService>(storageService);
             builder.RegisterInstance<Lazy<Settings>>(storageService.Settings);

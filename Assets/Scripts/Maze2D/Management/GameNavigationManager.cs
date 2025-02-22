@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using Maze2D.CodeBase.Logging.Contracts;
+using Maze2D.CodeBase.Logging.Contracts.Generic;
+using Maze2D.CodeBase.Logging.Extensions;
 using Maze2D.CodeBase.View;
 using Maze2D.UI;
 using UniRx;
@@ -38,6 +41,7 @@ namespace Maze2D.Management
         private ViewNavigationService _viewNavigationService;
         private MainMenu _mainMenu;
         private PauseMenu _pauseMenu;
+        private ILogger<GameNavigationManager> _logger;
         
         [Serializable]
         private struct ViewHolders {
@@ -46,7 +50,13 @@ namespace Maze2D.Management
             public RectTransform Center;
             public RectTransform Right;
         }
-        
+
+        [Inject]
+        private void InjectLogger(ILoggerFactory loggerFactory)
+        {
+            _logger = loggerFactory.CreateLogger<GameNavigationManager>();
+        }
+
         private void Awake()
         {
             _viewNavigationService = new ViewNavigationService(_viewNavigationDuration);
@@ -86,14 +96,20 @@ namespace Maze2D.Management
         
         private Sequence StartGame()
         {
+            _logger.LogDebug("Begin game starting");
             _mainMenuDisposables.Clear();
             
-            return _viewNavigationService.HideView(_mainMenu, _viewHolders.Center, _viewHolders.Left)
+            Sequence tween = _viewNavigationService.HideView(_mainMenu, _viewHolders.Center, _viewHolders.Left)
                 .AppendCallback(() => _gameStateMachine.PlayAsync(NextLevelAsync).Forget());
+
+            _logger.LogDebug("End game starting");
+            return tween;
         }
         
         private async void RestartGameAsync()
         {
+            _logger.LogDebug("Begin game restarting");
+            
             _pauseMenuDisposables.Clear();
             
             UniTask hidePlayerTask = _gameStateMachine.HidePlayerAsync();
@@ -104,10 +120,14 @@ namespace Maze2D.Management
             
             _gameStateMachine.RestartLevel();
             await _gameStateMachine.ShowPlayerAsync();
+            
+            _logger.LogDebug("End game restarting");
         }
 
         private async void RegenerateLevelAsync()
         {
+            _logger.LogDebug("Begin level regeneration");
+            
             _pauseMenuDisposables.Clear();
             
             UniTask hidePauseMenuTask = _viewNavigationService
@@ -120,10 +140,13 @@ namespace Maze2D.Management
             OnLevelRegeneration?.Invoke();
             
             await _gameStateMachine.PlayAsync(NextLevelAsync);
+            
+            _logger.LogDebug("End level regeneration");
         }
         
         private async void NextLevelAsync()
         {
+            _logger.LogDebug("Begin moving to next level");
             OnLevelFinished?.Invoke();
             
             await _gameStateMachine.HidePlayerAsync();
@@ -131,28 +154,37 @@ namespace Maze2D.Management
             await _gameStateMachine.PlayAsync(NextLevelAsync);
             
             OnLevelRegeneration?.Invoke();
+            _logger.LogDebug("End moving to next level");
         }
 
         private async void ExitGameAsync()
         {
+            _logger.LogDebug("Begin exiting to main menu");
             _pauseMenuDisposables.Clear();
             
             UniTask exitTask = _gameStateMachine.ExitAsync();
             UniTask navigateTask = NavigateToMainMenu(_pauseMenu).ToUniTask();
             
             await UniTask.WhenAll(exitTask, navigateTask);
+            _logger.LogDebug("Exiting to main menu completed");
         }
 
         private Sequence ResumeGame()
         {
+            _logger.LogDebug("Begin game resuming");
             _pauseMenuDisposables.Clear();
             
-            return _viewNavigationService.HideView(_pauseMenu, _viewHolders.Center, _viewHolders.Right)
+            Sequence tween = _viewNavigationService.HideView(_pauseMenu, _viewHolders.Center, _viewHolders.Right)
                 .AppendCallback(() => _gameStateMachine.Continue());
+            
+            _logger.LogDebug("End game resuming");
+            return tween;
         }
         
         private Sequence NavigateToPauseMenu()
         {
+            _logger.LogDebug("Start navigating to pause menu");
+            
             if (_pauseMenu == null)
             {
                 _pauseMenu = _viewFactory.CreateView<PauseMenu>();
@@ -160,12 +192,17 @@ namespace Maze2D.Management
             }
             
             OnPause?.Invoke();
+            Sequence tween = _viewNavigationService
+                .ShowView(_pauseMenu, _viewHolders.Right, _viewHolders.Center);
             
-            return _viewNavigationService.ShowView(_pauseMenu, _viewHolders.Right, _viewHolders.Center);
+            _logger.LogDebug("End navigating to pause menu");
+            return tween;
         }
 
         private Sequence NavigateToSettings()
         {
+            _logger.LogDebug("Start navigating to settings menu");
+            
             SettingsMenu settingsMenu = _viewFactory.CreateView<SettingsMenu>();
             settingsMenu.OnBack.AddListener(() =>
             {
@@ -174,22 +211,30 @@ namespace Maze2D.Management
             
             _mainMenuDisposables.Clear();
             
-            return DOTween.Sequence()
+            Sequence tween = DOTween.Sequence()
                 .Append(_viewNavigationService.HideView(_mainMenu, _viewHolders.Center, _viewHolders.Left))
                 .Join(_viewNavigationService.ShowView(settingsMenu, _viewHolders.Right, _viewHolders.Center));
+            
+            _logger.LogDebug("End navigating to settings menu");
+            return tween;
         }
 
         private Sequence NavigateToMainMenu(MonoBehaviour currentView)
         {
+            _logger.LogDebug("Start navigating to main menu");
+            
             if (_mainMenu == null)
             {
                 _mainMenu = _viewFactory.CreateView<MainMenu>();
                 SubscribeToMainMenuCommands(_mainMenu, _mainMenuDisposables);
             }
 
-            return DOTween.Sequence()
+            Sequence tween =  DOTween.Sequence()
                 .Append(_viewNavigationService.HideView(currentView, _viewHolders.Center, _viewHolders.Right))
                 .Join(_viewNavigationService.ShowView(_mainMenu, _viewHolders.Left, _viewHolders.Center));
+
+            _logger.LogDebug("End navigating to main menu");
+            return tween;
         }
         
         private void OnDisable()
