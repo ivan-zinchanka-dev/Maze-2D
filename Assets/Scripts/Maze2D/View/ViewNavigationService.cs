@@ -1,7 +1,7 @@
 ﻿using DG.Tweening;
 using UnityEngine;
 
-namespace Maze2D.UI
+namespace Maze2D.View
 {
     internal class ViewNavigationService
     {
