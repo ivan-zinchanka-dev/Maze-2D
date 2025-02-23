@@ -1,8 +1,8 @@
 ﻿using System;
 using Cysharp.Threading.Tasks;
-using Maze2D.CodeBase.Logging.Contracts;
-using Maze2D.CodeBase.Logging.Contracts.Generic;
-using Maze2D.CodeBase.Logging.Extensions;
+using JanZinch.Services.Logging.Contracts;
+using JanZinch.Services.Logging.Contracts.Generic;
+using JanZinch.Services.Logging.Extensions;
 using Maze2D.Configs;
 using Maze2D.Domain;
 using Maze2D.Player;

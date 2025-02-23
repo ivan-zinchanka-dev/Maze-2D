@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Maze2D.CodeBase.Logging.Contracts
+namespace JanZinch.Services.Logging.Contracts
 {
     public interface ILogger
     {

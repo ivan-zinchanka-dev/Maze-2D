@@ -1,4 +1,4 @@
-﻿namespace Maze2D.CodeBase.Logging.Contracts.Generic
+﻿namespace JanZinch.Services.Logging.Contracts.Generic
 {
     public interface ILogger<out TCategory> : ILogger { }
 }

@@ -1,7 +1,7 @@
-﻿using Maze2D.CodeBase.Logging.Contracts;
-using Maze2D.CodeBase.Logging.Contracts.Generic;
+﻿using JanZinch.Services.Logging.Contracts;
+using JanZinch.Services.Logging.Contracts.Generic;
 
-namespace Maze2D.CodeBase.Logging
+namespace JanZinch.Services.Logging.Standard
 {
     public class UnityLoggerFactory : ILoggerFactory
     {

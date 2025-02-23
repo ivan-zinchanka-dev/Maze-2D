@@ -1,4 +1,4 @@
-﻿namespace Maze2D.CodeBase.Logging
+﻿namespace JanZinch.Services.Logging
 {
     public enum LogEventLevel
     {

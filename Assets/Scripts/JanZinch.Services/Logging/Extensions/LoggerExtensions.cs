@@ -1,7 +1,7 @@
 ﻿using System;
-using Maze2D.CodeBase.Logging.Contracts;
+using JanZinch.Services.Logging.Contracts;
 
-namespace Maze2D.CodeBase.Logging.Extensions
+namespace JanZinch.Services.Logging.Extensions
 {
     public static class LoggerExtensions
     {

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
-using Maze2D.CodeBase.Logging.Contracts;
-using Maze2D.CodeBase.Logging.Contracts.Generic;
-using Maze2D.CodeBase.Logging.Extensions;
+using JanZinch.Services.Logging.Contracts;
+using JanZinch.Services.Logging.Contracts.Generic;
+using JanZinch.Services.Logging.Extensions;
 using Maze2D.CodeBase.View;
 using Maze2D.UI;
 using UniRx;

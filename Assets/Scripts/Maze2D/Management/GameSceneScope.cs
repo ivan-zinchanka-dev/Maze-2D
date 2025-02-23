@@ -2,9 +2,10 @@
 using JanZinch.Services.Audio.Contracts;
 using JanZinch.Services.InputSystem.Contracts;
 using JanZinch.Services.InputSystem.Standard;
+using JanZinch.Services.Logging;
+using JanZinch.Services.Logging.Contracts;
+using JanZinch.Services.Logging.Standard;
 using Maze2D.Audio;
-using Maze2D.CodeBase.Logging;
-using Maze2D.CodeBase.Logging.Contracts;
 using Maze2D.CodeBase.View;
 using Maze2D.Configs;
 using Maze2D.Domain;
@@ -18,6 +19,7 @@ namespace Maze2D.Management
 {
     public class GameSceneScope : LifetimeScope
     { 
+        [Header("References")]
         [SerializeField] 
         private GameNavigationManager _gameNavigationManager;
         [SerializeField] 
@@ -28,13 +30,14 @@ namespace Maze2D.Management
         private PlayerControllerFactory _playerControllerFactory;
         [SerializeField] 
         private AudioManager _audioManager;
-        
         [SerializeField] 
         private ViewFactory _viewFactory;
         [SerializeField] 
         private DifficultyConfigContainer _difficultyConfigContainer;
         [SerializeField] 
         private DefaultSettingsConfig _defaultSettingsConfig;
+        
+        [Header("Configuration")]
         [SerializeField] 
         private LogEventLevel _minimumLogLevel = LogEventLevel.Debug;
         
