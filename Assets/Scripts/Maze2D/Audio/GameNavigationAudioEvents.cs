@@ -9,7 +9,7 @@ using VContainer;
 
 namespace Maze2D.Audio
 {
-    public class GameNavigationAudioEvents : MonoBehaviour
+    internal class GameNavigationAudioEvents : MonoBehaviour
     {
         [SerializeField] 
         private GameNavigationManager _gameNavigationManager;

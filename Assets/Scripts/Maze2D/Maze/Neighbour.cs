@@ -2,7 +2,7 @@
 
 namespace Maze2D.Maze
 {
-    public struct Neighbour {
+    internal struct Neighbour {
 
         public Vector2Int Position;
         public WallState SharedWall;

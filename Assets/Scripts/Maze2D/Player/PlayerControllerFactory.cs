@@ -4,11 +4,10 @@ using VContainer.Unity;
 
 namespace Maze2D.Player
 {
-    public class PlayerControllerFactory : MonoBehaviour
+    internal class PlayerControllerFactory : MonoBehaviour
     {
         [SerializeField] 
         private PlayerController _playerPrefab;
-        
         [Inject] 
         private IObjectResolver _container;
         

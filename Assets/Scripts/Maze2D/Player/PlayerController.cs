@@ -6,11 +6,10 @@ using VContainer;
 
 namespace Maze2D.Player
 {
-    public class PlayerController : MonoBehaviour
+    internal class PlayerController : MonoBehaviour
     {
         [SerializeField] 
         private PlayerView _playerView;
-        
         [field:SerializeField] 
         public UnityEvent Finished { get; private set; }
 
@@ -26,12 +25,9 @@ namespace Maze2D.Player
         
         private void Update()
         {
-            //if (!_canMove || GameManager.Instance.Pause) return;
-
             if (_playerView.IsFinished())
             {
                 Finished?.Invoke();
-                //GameManager.Instance.RegenerateMaze();
             }
             else if (_inputSystemService.GetButton(InputActions.Right))
             {

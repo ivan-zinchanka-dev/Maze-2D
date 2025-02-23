@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Maze2D.View
 {
     [CreateAssetMenu(fileName = "view_container", menuName = "Containers/ViewContainer", order = 0)]
-    public class ViewContainer : ScriptableObject
+    internal class ViewContainer : ScriptableObject
     {
         [SerializeField] private List<MonoBehaviour> _viewPrefabs;
 

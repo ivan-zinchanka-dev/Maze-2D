@@ -1,9 +1,9 @@
 ﻿using UniRx;
 using UnityEngine;
 
-namespace Maze2D.Domain
+namespace Maze2D.Settings
 {
-    public class Settings
+    internal class Settings
     {
         private readonly ReactiveProperty<Difficulty> _gameDifficulty;
         private readonly ReactiveProperty<Color32> _playerColor;

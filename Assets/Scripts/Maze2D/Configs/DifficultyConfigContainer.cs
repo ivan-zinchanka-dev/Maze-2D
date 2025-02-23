@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
-using Maze2D.Domain;
+using Maze2D.Settings;
 using UnityEngine;
 
 namespace Maze2D.Configs
 {
     [CreateAssetMenu(fileName = "difficulty_config", menuName = "Configs/Difficulty", order = 0)]
-    public class DifficultyConfigContainer : ScriptableObject
+    internal class DifficultyConfigContainer : ScriptableObject
     {
         [SerializeField] private List<DifficultyConfig> _configs;
 

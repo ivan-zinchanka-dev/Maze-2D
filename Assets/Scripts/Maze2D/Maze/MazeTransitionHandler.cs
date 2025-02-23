@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Maze2D.Maze
 {
-    public class MazeTransitionHandler
+    internal class MazeTransitionHandler
     {
         private const float TransitionDuration = 1.0f;
         private readonly Transform _maze;

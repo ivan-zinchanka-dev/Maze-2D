@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Maze2D.Maze
 {
-    public class MazeGenerator
+    internal class MazeGenerator
     {
         public WallState[,] Generate(int width, int height) {
 

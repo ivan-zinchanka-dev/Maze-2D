@@ -1,17 +1,15 @@
 ﻿using System;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
-using Maze2D.Domain;
 using Maze2D.Maze;
 using UnityEngine;
-using UnityEngine.Serialization;
 using VContainer;
 using Random = UnityEngine.Random;
 
 namespace Maze2D.Player
 {
     [DisallowMultipleComponent]
-    public class PlayerView : MonoBehaviour
+    internal class PlayerView : MonoBehaviour
     {
         [SerializeField] 
         private float _stepDuration = 0.25f;
@@ -21,7 +19,7 @@ namespace Maze2D.Player
         private SpriteRenderer _spriteRenderer;
         
         [Inject] 
-        private Lazy<Settings> _settings;
+        private Lazy<Settings.Settings> _settings;
         
         private PlayerMap _map;
         private Vector2Int _currentPosInMap;

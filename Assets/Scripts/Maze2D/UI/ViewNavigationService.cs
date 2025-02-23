@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Maze2D.UI
 {
-    public class ViewNavigationService
+    internal class ViewNavigationService
     {
         private readonly float _navigationDuration;
         

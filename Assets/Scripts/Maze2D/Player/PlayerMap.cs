@@ -5,7 +5,7 @@ using Maze2D.Maze;
 
 namespace Maze2D.Player
 {
-    public readonly struct PlayerMap : IAsyncDisposable
+    internal readonly struct PlayerMap : IAsyncDisposable
     {
         private readonly Func<UniTask> _disposeMethod;
         

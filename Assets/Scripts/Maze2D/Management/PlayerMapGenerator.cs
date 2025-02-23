@@ -4,21 +4,22 @@ using JanZinch.Services.Logging.Contracts;
 using JanZinch.Services.Logging.Contracts.Generic;
 using JanZinch.Services.Logging.Extensions;
 using Maze2D.Configs;
-using Maze2D.Domain;
+using Maze2D.Maze;
 using Maze2D.Player;
+using Maze2D.Settings;
 
-namespace Maze2D.Maze
+namespace Maze2D.Management
 {
-    public class PlayerMapGenerator
+    internal class PlayerMapGenerator
     {
-        private readonly Lazy<Settings> _settings;
+        private readonly Lazy<Settings.Settings> _settings;
         private readonly DifficultyConfigContainer _difficultyConfigContainer;
         private readonly MazeGenerator _mazeGenerator;
         private readonly MazeRenderer _mazeRenderer;
         private readonly ILogger<PlayerMapGenerator> _logger;
         
         public PlayerMapGenerator(
-            Lazy<Settings> settings, 
+            Lazy<Settings.Settings> settings, 
             DifficultyConfigContainer difficultyConfigContainer, 
             MazeGenerator mazeGenerator, 
             MazeRenderer mazeRenderer,

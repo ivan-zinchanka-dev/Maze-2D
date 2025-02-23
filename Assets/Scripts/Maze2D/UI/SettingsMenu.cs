@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using JanZinch.Services.InputSystem.Contracts;
 using JanZinch.Services.InputSystem.Retention;
 using Maze2D.Controls;
-using Maze2D.Domain;
+using Maze2D.Settings;
 using UniRx;
 using UnityEngine;
 using UnityEngine.Events;
@@ -13,7 +13,7 @@ using VContainer;
 
 namespace Maze2D.UI
 {
-    public class SettingsMenu : MonoBehaviour
+    internal class SettingsMenu : MonoBehaviour
     {
         [SerializeField] 
         private Slider _difficultySlider;
@@ -29,7 +29,7 @@ namespace Maze2D.UI
         [Inject] 
         private IInputSystemService _inputSystemService;
         [Inject]
-        private Lazy<Settings> _settings;
+        private Lazy<Settings.Settings> _settings;
         
         private List<ColorToggle> _colorToggles;
         

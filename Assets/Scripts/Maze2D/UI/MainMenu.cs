@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace Maze2D.UI
 {
-    public class MainMenu : MonoBehaviour
+    internal class MainMenu : MonoBehaviour
     {
         [SerializeField] 
         private Button _playButton;

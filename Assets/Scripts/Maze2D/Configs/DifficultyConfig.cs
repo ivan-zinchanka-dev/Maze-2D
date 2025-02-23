@@ -1,10 +1,10 @@
 ﻿using System;
-using Maze2D.Domain;
+using Maze2D.Settings;
 
 namespace Maze2D.Configs
 {
     [Serializable]
-    public struct DifficultyConfig
+    internal struct DifficultyConfig
     {
         public Difficulty Level;
         public int MazeWidth;

@@ -4,7 +4,7 @@ using UnityEngine.EventSystems;
 namespace JanZinch.Services.InputSystem.Retention
 {
     [RequireComponent(typeof(EventSystem))]
-    internal class EventSystemRetention : MonoBehaviour
+    public class EventSystemRetention : MonoBehaviour
     {
         [SerializeField] 
         private EventSystem _eventSystem;

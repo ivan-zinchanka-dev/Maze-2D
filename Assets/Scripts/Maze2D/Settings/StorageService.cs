@@ -3,29 +3,29 @@ using System.Collections.Generic;
 using UniRx;
 using UnityEngine;
 
-namespace Maze2D.Domain
+namespace Maze2D.Settings
 {
-    public class StorageService : IDisposable
+    internal class StorageService : IDisposable
     {
         private const string DifficultyKey = "difficulty";
         private const string PlayerColorKey = "color";
         private const string MusicVolumeKey = "music_volume";
         private const string SoundsVolumeKey = "sounds_volume";
         
-        private readonly Settings _defaults;
-        public Lazy<Settings> Settings { get; private set; }
+        private readonly Maze2D.Settings.Settings _defaults;
+        public Lazy<Maze2D.Settings.Settings> Settings { get; private set; }
         
         private readonly ICollection<IDisposable> _disposables = new CompositeDisposable();
         
-        public StorageService(Settings defaults)
+        public StorageService(Maze2D.Settings.Settings defaults)
         {
             _defaults = defaults;
-            Settings = new Lazy<Settings>(CreateSettingsModel);
+            Settings = new Lazy<Maze2D.Settings.Settings>(CreateSettingsModel);
         }
         
-        private Settings CreateSettingsModel()
+        private Maze2D.Settings.Settings CreateSettingsModel()
         {
-            var settings = new Settings(
+            var settings = new Maze2D.Settings.Settings(
                 ReadGameDifficulty(),
                 ReadPlayerColor(), 
                 ReadMusicVolume(), 

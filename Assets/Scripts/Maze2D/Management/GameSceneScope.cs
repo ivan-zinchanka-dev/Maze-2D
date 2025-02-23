@@ -7,9 +7,9 @@ using JanZinch.Services.Logging.Contracts;
 using JanZinch.Services.Logging.Standard;
 using Maze2D.Audio;
 using Maze2D.Configs;
-using Maze2D.Domain;
 using Maze2D.Maze;
 using Maze2D.Player;
+using Maze2D.Settings;
 using Maze2D.View;
 using UnityEngine;
 using VContainer;
@@ -48,7 +48,7 @@ namespace Maze2D.Management
             builder.RegisterInstance<ILoggerFactory>(new UnityLoggerFactory(_minimumLogLevel));
             
             builder.RegisterInstance<StorageService>(storageService);
-            builder.RegisterInstance<Lazy<Settings>>(storageService.Settings);
+            builder.RegisterInstance<Lazy<Settings.Settings>>(storageService.Settings);
             builder.RegisterInstance<IInputSystemService>(new InputSystemService(true));
             
             builder.RegisterInstance<ViewFactory>(_viewFactory);

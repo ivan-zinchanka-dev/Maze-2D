@@ -3,7 +3,7 @@
 namespace Maze2D.Maze
 {
     [Flags]
-    public enum WallState
+    internal enum WallState
     {
         // 0000 - NO WALLS
         // 1111 - LEFT, RIGHT, UP, DOWN

@@ -16,7 +16,7 @@ using VContainer;
 
 namespace Maze2D.Management
 {
-    public class GameStateMachine : MonoBehaviour
+    internal class GameStateMachine : MonoBehaviour
     {
         [Inject] 
         private IInputSystemService _inputSystemService;

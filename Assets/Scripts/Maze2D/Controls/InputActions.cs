@@ -1,6 +1,6 @@
 ﻿namespace Maze2D.Controls
 {
-    public static class InputActions
+    internal static class InputActions
     {
         public const string Right = "Right";
         public const string Left = "Left";

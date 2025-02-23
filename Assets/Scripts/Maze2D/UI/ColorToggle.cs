@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace Maze2D.UI
 {
-    public class ColorToggle : MonoBehaviour
+    internal class ColorToggle : MonoBehaviour
     {
         [SerializeField] 
         private Toggle _toggle;

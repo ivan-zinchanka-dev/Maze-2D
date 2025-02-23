@@ -1,6 +1,6 @@
 ﻿namespace Maze2D.Management
 {
-    public enum GameState
+    internal enum GameState
     {
         None = 0,
         Pending = 1,

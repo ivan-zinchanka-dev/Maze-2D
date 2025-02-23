@@ -11,7 +11,7 @@ using VContainer;
 
 namespace Maze2D.UI
 {
-    public class PauseMenu : MonoBehaviour
+    internal class PauseMenu : MonoBehaviour
     {
         [SerializeField] 
         private Button _resumeButton;

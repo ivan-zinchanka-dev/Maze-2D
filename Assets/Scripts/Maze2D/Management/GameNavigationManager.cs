@@ -14,7 +14,7 @@ using VContainer;
 
 namespace Maze2D.Management
 {
-    public class GameNavigationManager : MonoBehaviour
+    internal class GameNavigationManager : MonoBehaviour
     {
         [SerializeField] 
         private float _viewNavigationDuration = 0.4f;

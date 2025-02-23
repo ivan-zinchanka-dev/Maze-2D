@@ -4,7 +4,7 @@ using VContainer.Unity;
 
 namespace Maze2D.View
 {
-    public class ViewFactory : MonoBehaviour
+    internal class ViewFactory : MonoBehaviour
     {
         [SerializeField] 
         private RectTransform _viewParent;

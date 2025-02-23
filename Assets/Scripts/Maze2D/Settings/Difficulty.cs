@@ -1,6 +1,6 @@
-﻿namespace Maze2D.Domain
+﻿namespace Maze2D.Settings
 {
-    public enum Difficulty
+    internal enum Difficulty
     {
         Easy = 0, 
         Normal = 1, 

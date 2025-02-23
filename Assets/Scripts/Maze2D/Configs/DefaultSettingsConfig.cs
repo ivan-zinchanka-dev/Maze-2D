@@ -1,15 +1,16 @@
 ﻿using System;
+using Maze2D.Settings;
 using UnityEngine;
 
-namespace Maze2D.Domain
+namespace Maze2D.Configs
 {
     [CreateAssetMenu(fileName = "default_settings", menuName = "Configs/DefaultSettings", order = 0)]
-    public class DefaultSettingsConfig : ScriptableObject
+    internal class DefaultSettingsConfig : ScriptableObject
     {
         [SerializeField] 
         private DefaultSettings _settings;
 
-        public Settings Settings => Map(_settings);
+        public Settings.Settings Settings => Map(_settings);
         
         [Serializable]
         private struct DefaultSettings
@@ -23,9 +24,9 @@ namespace Maze2D.Domain
             public float SoundsVolume;
         }
 
-        private Settings Map(DefaultSettings settings)
+        private Settings.Settings Map(DefaultSettings settings)
         {
-            return new Settings(
+            return new Settings.Settings(
                 settings.GameDifficulty,
                 settings.PlayerColor,
                 settings.MusicVolume,

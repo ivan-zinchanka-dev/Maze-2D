@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Maze2D.Maze
 {
-    public class MazeRenderer : MonoBehaviour
+    internal class MazeRenderer : MonoBehaviour
     {
         [SerializeField] 
         private Transform _wallPrefab;
