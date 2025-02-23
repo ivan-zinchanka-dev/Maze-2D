@@ -2,7 +2,7 @@
 using VContainer;
 using VContainer.Unity;
 
-namespace Maze2D.CodeBase.View
+namespace Maze2D.View
 {
     public class ViewFactory : MonoBehaviour
     {

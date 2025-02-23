@@ -600,9 +600,9 @@ GameObject:
   - component: {fileID: 1176036561}
   - component: {fileID: 1176036563}
   - component: {fileID: 1176036560}
+  - component: {fileID: 1176036564}
   - component: {fileID: 1176036559}
   - component: {fileID: 1176036562}
-  - component: {fileID: 1176036564}
   m_Layer: 0
   m_Name: management
   m_TagString: Untagged

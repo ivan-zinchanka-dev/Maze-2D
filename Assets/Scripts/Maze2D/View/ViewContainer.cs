@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace Maze2D.CodeBase.View
+namespace Maze2D.View
 {
     [CreateAssetMenu(fileName = "view_container", menuName = "Containers/ViewContainer", order = 0)]
     public class ViewContainer : ScriptableObject
