@@ -1,28 +1,22 @@
 ﻿using System.Collections.Generic;
+using JanZinch.Services.Audio.Contracts;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using VContainer;
 
-namespace Maze2D.Audio
+namespace JanZinch.Services.Audio.Events
 {
     [RequireComponent(typeof(Selectable))]
-    public class OnSelectAudioEvent : MonoBehaviour, ISelectHandler, IPointerEnterHandler
+    public class OnSubmitAudioEvent : MonoBehaviour, ISubmitHandler, IPointerClickHandler
     {
         [SerializeField] 
         private List<AudioClip> _audioClips;
         [Inject] 
-        private AudioManager _audioManager;
+        private IAudioManger _audioManager;
 
-        public void OnSelect(BaseEventData eventData)
-        {
-            if (eventData is not PointerEventData)
-            {
-                PlayRandomClip();
-            }
-        }
-
-        public void OnPointerEnter(PointerEventData eventData) => PlayRandomClip();
+        public void OnSubmit(BaseEventData eventData) => PlayRandomClip();
+        public void OnPointerClick(PointerEventData eventData) => PlayRandomClip();
         
         private void PlayRandomClip()
         {

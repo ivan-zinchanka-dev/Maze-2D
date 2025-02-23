@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using JanZinch.Services.Audio.Contracts;
 using Maze2D.Domain;
 using UniRx;
 using UnityEngine;
@@ -9,21 +10,19 @@ using VContainer;
 
 namespace Maze2D.Audio
 {
-    // TODO Add ILogger
-    public class AudioManager : MonoBehaviour
+    public class AudioManager : MonoBehaviour, IAudioManger
     {
         private const string MusicVolumeKey = "music_volume";
         private const string SoundsVolumeKey = "sounds_volume";
         
         [SerializeField] 
         private AudioSource _mainAudioSource;
-        private AudioMixer _mainAudioMixer;
         [SerializeField] 
         private int _maxConcurrentSounds = 250;
-        
         [Inject] 
         private Lazy<Settings> _settings;
 
+        private AudioMixer _mainAudioMixer;
         private readonly LinkedList<Task> _audioTasks = new LinkedList<Task>();
         private readonly ICollection<IDisposable> _disposables = new CompositeDisposable();
         

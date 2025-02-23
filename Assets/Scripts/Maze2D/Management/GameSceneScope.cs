@@ -1,4 +1,5 @@
 ﻿using System;
+using JanZinch.Services.Audio.Contracts;
 using Maze2D.Audio;
 using Maze2D.CodeBase.Controls;
 using Maze2D.CodeBase.Logging;
@@ -48,7 +49,7 @@ namespace Maze2D.Management
             
             builder.RegisterInstance<ViewFactory>(_viewFactory);
             builder.RegisterInstance<DifficultyConfigContainer>(_difficultyConfigContainer);
-            builder.RegisterInstance<AudioManager>(_audioManager);
+            builder.RegisterInstance<IAudioManger>(_audioManager);
 
             builder.RegisterComponent<GameNavigationManager>(_gameNavigationManager);
             builder.RegisterComponent<GameStateMachine>(_gameStateMachine);

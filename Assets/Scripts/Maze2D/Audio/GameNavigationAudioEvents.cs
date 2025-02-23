@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using JanZinch.Services.Audio.Contracts;
 using Maze2D.Management;
 using UniRx;
 using UnityEngine;
@@ -12,7 +13,6 @@ namespace Maze2D.Audio
     {
         [SerializeField] 
         private GameNavigationManager _gameNavigationManager;
-        
         [Space]
         [SerializeField] 
         private AudioClip _onPauseAudioClip;
@@ -20,9 +20,8 @@ namespace Maze2D.Audio
         private AudioClip _levelRegenerationAudioClip;
         [SerializeField]
         private AudioClip _levelFinishedAudioClip;
-        
         [Inject] 
-        private AudioManager _audioManager;
+        private IAudioManger _audioManager;
 
         private readonly ICollection<IDisposable> _disposables = new CompositeDisposable();
         

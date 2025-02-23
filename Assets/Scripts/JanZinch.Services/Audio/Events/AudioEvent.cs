@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using JanZinch.Services.Audio.Contracts;
 using UnityEngine;
 using VContainer;
 using Random = UnityEngine.Random;
 
-namespace Maze2D.Audio
+namespace JanZinch.Services.Audio.Events
 {
     public class AudioEvent : MonoBehaviour
     {
@@ -13,7 +14,7 @@ namespace Maze2D.Audio
         [SerializeField] [Range(0.15f, 1f)]
         private float _cooldownSeconds = 0.15f;
         [Inject] 
-        private AudioManager _audioManager;
+        private IAudioManger _audioManager;
         
         private float _lastPlayTime;
 
