@@ -1,4 +1,4 @@
-﻿namespace Maze2D.CodeBase.Controls
+﻿namespace JanZinch.Services.InputSystem.Contracts
 {
     public interface IInputSystemService
     {

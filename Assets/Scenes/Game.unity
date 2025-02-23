@@ -237,7 +237,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 187925616}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1151f893a75341f8b66464e1aa3d835f, type: 3}
+  m_Script: {fileID: 11500000, guid: 0c637861193d49a18d25446c0b9f3062, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _eventSystem: {fileID: 187925618}
@@ -878,6 +878,7 @@ MonoBehaviour:
   _viewFactory: {fileID: 1176036562}
   _difficultyConfigContainer: {fileID: 11400000, guid: 77eba8f50a3f73f4098010af747f784f, type: 2}
   _defaultSettingsConfig: {fileID: 11400000, guid: e6a954e59d0d8664db7d098795ee76f5, type: 2}
+  _minimumLogLevel: 1
 --- !u!4 &1833461628
 Transform:
   m_ObjectHideFlags: 0

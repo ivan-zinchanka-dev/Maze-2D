@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using Maze2D.CodeBase.Controls;
-using Maze2D.CodeBase.Extensions;
+using JanZinch.Services.InputSystem.Contracts;
+using JanZinch.Services.InputSystem.Retention;
 using Maze2D.Controls;
 using Maze2D.Domain;
 using UniRx;

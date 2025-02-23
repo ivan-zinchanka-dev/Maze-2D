@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using Maze2D.CodeBase.Controls;
-using Maze2D.CodeBase.Extensions;
+using JanZinch.Services.InputSystem.Contracts;
+using JanZinch.Services.InputSystem.Retention;
 using Maze2D.Controls;
 using UniRx;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using VContainer;

@@ -1,5 +1,4 @@
-﻿using System;
-using Maze2D.CodeBase.Controls;
+﻿using JanZinch.Services.InputSystem.Contracts;
 using Maze2D.Controls;
 using UnityEngine;
 using UnityEngine.Events;

@@ -1,8 +1,7 @@
-﻿using Maze2D.CodeBase.Controls;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Maze2D.CodeBase.Extensions
+namespace JanZinch.Services.InputSystem.Retention
 {
     public static class EventSystemExtensions
     {

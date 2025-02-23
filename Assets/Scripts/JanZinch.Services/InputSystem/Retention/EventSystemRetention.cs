@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Maze2D.CodeBase.Controls
+namespace JanZinch.Services.InputSystem.Retention
 {
     [RequireComponent(typeof(EventSystem))]
     internal class EventSystemRetention : MonoBehaviour

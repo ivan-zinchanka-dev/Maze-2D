@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using JanZinch.Services.InputSystem.Contracts;
+using UnityEngine;
 
-namespace Maze2D.CodeBase.Controls
+namespace JanZinch.Services.InputSystem.Standard
 {
     public class InputSystemService : IInputSystemService
     {

@@ -1,7 +1,8 @@
 ﻿using System;
 using JanZinch.Services.Audio.Contracts;
+using JanZinch.Services.InputSystem.Contracts;
+using JanZinch.Services.InputSystem.Standard;
 using Maze2D.Audio;
-using Maze2D.CodeBase.Controls;
 using Maze2D.CodeBase.Logging;
 using Maze2D.CodeBase.Logging.Contracts;
 using Maze2D.CodeBase.View;

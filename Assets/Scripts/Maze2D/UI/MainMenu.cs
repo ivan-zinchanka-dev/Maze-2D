@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Maze2D.CodeBase.Extensions;
+using JanZinch.Services.InputSystem.Retention;
 using UniRx;
 using UnityEngine;
 using UnityEngine.EventSystems;

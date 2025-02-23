@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
-using Maze2D.CodeBase.Controls;
+using JanZinch.Services.InputSystem.Contracts;
 using Maze2D.CodeBase.Logging.Contracts;
 using Maze2D.CodeBase.Logging.Contracts.Generic;
 using Maze2D.CodeBase.Logging.Extensions;
