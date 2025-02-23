@@ -81,7 +81,7 @@ namespace Maze2D.Management
             pauseMenu.ResumeCommand.Subscribe(u => ResumeGame()).AddTo(disposables);
             pauseMenu.RestartLevelCommand.Subscribe(u => RestartGameAsync()).AddTo(disposables);
             pauseMenu.NewLevelCommand.Subscribe(u => RegenerateLevelAsync()).AddTo(disposables);
-            pauseMenu.MainMenuCommand.Subscribe(u => ExitGameAsync()).AddTo(disposables);
+            pauseMenu.MainMenuCommand.Subscribe(u => ExitToMainMenuAsync()).AddTo(disposables);
         }
         
         private void OnGameStateChanged(GameState gameState)
@@ -96,19 +96,34 @@ namespace Maze2D.Management
         
         private Sequence StartGame()
         {
-            _logger.LogDebug("Begin game starting");
+            const string processName = "Game starting";
+            _logger.LogDebug(GetProcessBegunMessage(processName));
             _mainMenuDisposables.Clear();
             
             Sequence tween = _viewNavigationService.HideView(_mainMenu, _viewHolders.Center, _viewHolders.Left)
                 .AppendCallback(() => _gameStateMachine.PlayAsync(NextLevelAsync).Forget());
 
-            _logger.LogDebug("End game starting");
+            _logger.LogDebug(GetProcessCompletedMessage(processName));
+            return tween;
+        }
+        
+        private Sequence ResumeGame()
+        {
+            const string processName = "Game resuming";
+            _logger.LogDebug(GetProcessBegunMessage(processName));
+            _pauseMenuDisposables.Clear();
+            
+            Sequence tween = _viewNavigationService.HideView(_pauseMenu, _viewHolders.Center, _viewHolders.Right)
+                .AppendCallback(() => _gameStateMachine.Continue());
+            
+            _logger.LogDebug(GetProcessCompletedMessage(processName));
             return tween;
         }
         
         private async void RestartGameAsync()
         {
-            _logger.LogDebug("Begin game restarting");
+            const string processName = "Game restarting";
+            _logger.LogDebug(GetProcessBegunMessage(processName));
             
             _pauseMenuDisposables.Clear();
             
@@ -121,12 +136,13 @@ namespace Maze2D.Management
             _gameStateMachine.RestartLevel();
             await _gameStateMachine.ShowPlayerAsync();
             
-            _logger.LogDebug("End game restarting");
+            _logger.LogDebug(GetProcessCompletedMessage(processName));
         }
 
         private async void RegenerateLevelAsync()
         {
-            _logger.LogDebug("Begin level regeneration");
+            const string processName = "Level regeneration";
+            _logger.LogDebug(GetProcessBegunMessage(processName));
             
             _pauseMenuDisposables.Clear();
             
@@ -138,15 +154,15 @@ namespace Maze2D.Management
             await hidePauseMenuTask;
             
             OnLevelRegeneration?.Invoke();
-            
             await _gameStateMachine.PlayAsync(NextLevelAsync);
             
-            _logger.LogDebug("End level regeneration");
+            _logger.LogDebug(GetProcessCompletedMessage(processName));
         }
         
         private async void NextLevelAsync()
         {
-            _logger.LogDebug("Begin moving to next level");
+            const string processName = "Moving to next level";
+            _logger.LogDebug(GetProcessBegunMessage(processName));
             OnLevelFinished?.Invoke();
             
             await _gameStateMachine.HidePlayerAsync();
@@ -154,36 +170,26 @@ namespace Maze2D.Management
             await _gameStateMachine.PlayAsync(NextLevelAsync);
             
             OnLevelRegeneration?.Invoke();
-            _logger.LogDebug("End moving to next level");
+            _logger.LogDebug(GetProcessCompletedMessage(processName));
         }
 
-        private async void ExitGameAsync()
+        private async void ExitToMainMenuAsync()
         {
-            _logger.LogDebug("Begin exiting to main menu");
+            const string processName = "Exiting to main menu";
+            _logger.LogDebug(GetProcessBegunMessage(processName));
             _pauseMenuDisposables.Clear();
             
             UniTask exitTask = _gameStateMachine.ExitAsync();
             UniTask navigateTask = NavigateToMainMenu(_pauseMenu).ToUniTask();
             
             await UniTask.WhenAll(exitTask, navigateTask);
-            _logger.LogDebug("Exiting to main menu completed");
-        }
-
-        private Sequence ResumeGame()
-        {
-            _logger.LogDebug("Begin game resuming");
-            _pauseMenuDisposables.Clear();
-            
-            Sequence tween = _viewNavigationService.HideView(_pauseMenu, _viewHolders.Center, _viewHolders.Right)
-                .AppendCallback(() => _gameStateMachine.Continue());
-            
-            _logger.LogDebug("End game resuming");
-            return tween;
+            _logger.LogDebug(GetProcessCompletedMessage(processName));
         }
         
         private Sequence NavigateToPauseMenu()
         {
-            _logger.LogDebug("Start navigating to pause menu");
+            const string processName = "Navigating to pause menu";
+            _logger.LogDebug(GetProcessBegunMessage(processName));
             
             if (_pauseMenu == null)
             {
@@ -195,13 +201,14 @@ namespace Maze2D.Management
             Sequence tween = _viewNavigationService
                 .ShowView(_pauseMenu, _viewHolders.Right, _viewHolders.Center);
             
-            _logger.LogDebug("End navigating to pause menu");
+            _logger.LogDebug(GetProcessCompletedMessage(processName));
             return tween;
         }
 
         private Sequence NavigateToSettings()
         {
-            _logger.LogDebug("Start navigating to settings menu");
+            const string processName = "Navigating to settings menu";
+            _logger.LogDebug(GetProcessBegunMessage(processName));
             
             SettingsMenu settingsMenu = _viewFactory.CreateView<SettingsMenu>();
             settingsMenu.OnBack.AddListener(() =>
@@ -215,13 +222,14 @@ namespace Maze2D.Management
                 .Append(_viewNavigationService.HideView(_mainMenu, _viewHolders.Center, _viewHolders.Left))
                 .Join(_viewNavigationService.ShowView(settingsMenu, _viewHolders.Right, _viewHolders.Center));
             
-            _logger.LogDebug("End navigating to settings menu");
+            _logger.LogDebug(GetProcessCompletedMessage(processName));
             return tween;
         }
 
         private Sequence NavigateToMainMenu(MonoBehaviour currentView)
         {
-            _logger.LogDebug("Start navigating to main menu");
+            const string processName = "Navigating to main menu";
+            _logger.LogDebug(GetProcessBegunMessage(processName));
             
             if (_mainMenu == null)
             {
@@ -233,8 +241,18 @@ namespace Maze2D.Management
                 .Append(_viewNavigationService.HideView(currentView, _viewHolders.Center, _viewHolders.Right))
                 .Join(_viewNavigationService.ShowView(_mainMenu, _viewHolders.Left, _viewHolders.Center));
 
-            _logger.LogDebug("End navigating to main menu");
+            _logger.LogDebug(GetProcessCompletedMessage(processName));
             return tween;
+        }
+        
+        private static string GetProcessBegunMessage(string processName)
+        {
+            return processName + " has begun";
+        }
+
+        private static string GetProcessCompletedMessage(string processName)
+        {
+            return processName + " completed";
         }
         
         private void OnDisable()
